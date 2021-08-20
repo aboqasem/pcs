@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  workspace:
+    container_name: myplatform.dev-workspace
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    environment:
+      - NEXT_PUBLIC_BFF_URL=http://localhost:8000/api/
+      - DB_HOST=db
+      - CORS_ORIGINS=http://localhost:4200
+      - COOKIE_SECRET=this is a secret
+    ports:
+      - '4200:4200'
+      - '8000:8000'
+    volumes:
+      - ../:/workspace
+    depends_on:
+      - db
+
+  db:
+    container_name: myplatform.dev-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: myplatform
+      POSTGRES_PASSWORD: myplatform
+      POSTGRES_DB: myplatform
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./session-table.sql:/docker-entrypoint-initdb.d/session-table.sql

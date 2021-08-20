@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["node", "jest"],
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["apps/web/*"],
+      "@aboqasem/mapped-types": ["libs/shared/mapped-types/src/index.ts"],
+      "@myplatform/shared-data-access": ["libs/shared/data-access/src/index.ts"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "next-env.d.ts",
+    "../../libs/shared/mapped-types/**/*.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

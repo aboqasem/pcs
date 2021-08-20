@@ -1,0 +1,11 @@
+FROM node:lts-alpine
+
+WORKDIR /workspace
+
+VOLUME [ "/workspace" ]
+
+EXPOSE 4200 ${PORT:-8000}
+
+RUN npm install -g npm@latest
+
+CMD ./scripts/entry-point.dev.js

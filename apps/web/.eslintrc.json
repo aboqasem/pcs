@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "plugin:@nrwl/nx/react-typescript",
+    "../../.eslintrc.json",
+    "next",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@next/next/no-img-element": "off"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ],
+  "env": {
+    "jest": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.js",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"],
+    "jsx": "react"
+  },
+  "include": [
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.spec.js",
+    "**/*.spec.jsx",
+    "**/*.d.ts",
+    "../../libs/shared/mapped-types/**/*.d.ts"
+  ]
+}

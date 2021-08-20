@@ -1,0 +1,12 @@
+{
+  "name": "@aboqasem/mapped-types",
+  "version": "1.0.0",
+  "description": "A fork of the [@nestjs/mapped-types](https://github.com/nestjs/mapped-types/tree/1.0.0) module for compatibility with the browser.",
+  "author": "Mohammad Al Zouabi <mb.alzouabi@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.0",
+    "reflect-metadata": "^0.1.12"
+  }
+}
