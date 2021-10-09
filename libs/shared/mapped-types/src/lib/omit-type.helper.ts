@@ -1,14 +1,15 @@
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 import {
   inheritPropertyInitializers,
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from './type-helpers.utils';
-import { MappedType, Type } from './types';
+import { TMappedType } from './types';
 
 export function OmitType<T, K extends keyof T>(
-  classRef: Type<T>,
+  classRef: ClassConstructor<T>,
   keys: readonly K[],
-): MappedType<Omit<T, typeof keys[number]>> {
+): TMappedType<Omit<T, typeof keys[number]>> {
   const isInheritedPredicate = (propertyKey: string) => !keys.includes(propertyKey as K);
 
   abstract class OmitClassType {
@@ -20,5 +21,5 @@ export function OmitType<T, K extends keyof T>(
   inheritValidationMetadata(classRef, OmitClassType, isInheritedPredicate);
   inheritTransformationMetadata(classRef, OmitClassType, isInheritedPredicate);
 
-  return OmitClassType as MappedType<Omit<T, typeof keys[number]>>;
+  return OmitClassType as TMappedType<Omit<T, typeof keys[number]>>;
 }

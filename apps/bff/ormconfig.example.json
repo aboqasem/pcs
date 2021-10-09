@@ -1,0 +1,11 @@
+{
+  "type": "postgres",
+  "url": "postgresql://pcs:pcs@localhost:5432/pcs",
+  "logging": true,
+  "entities": ["apps/bff/src/db/entities/*.ts"],
+  "migrations": ["apps/bff/src/db/migrations/**/*.ts"],
+  "cli": {
+    "entitiesDir": "apps/bff/src/db/entities",
+    "migrationsDir": "apps/bff/src/db/migrations"
+  }
+}

@@ -1,4 +1,4 @@
-import { UserDto } from '@myplatform/shared-data-access';
+import { UserDto } from '@pcs/shared-data-access';
 
 declare global {
   namespace Express {

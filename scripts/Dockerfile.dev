@@ -4,8 +4,10 @@ WORKDIR /workspace
 
 VOLUME [ "/workspace" ]
 
-EXPOSE 4200 ${PORT:-8000}
+EXPOSE 4200 8000
 
-RUN npm install -g npm@latest
+RUN npm install -g pnpm@latest
+
+RUN pnpm config set store-dir /.pnpm-store
 
 CMD ./scripts/entry-point.dev.js

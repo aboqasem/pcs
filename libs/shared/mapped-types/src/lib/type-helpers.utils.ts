@@ -1,7 +1,6 @@
 import * as classTransformerStorage from 'class-transformer/cjs/storage';
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 import * as classValidator from 'class-validator';
-
-import { Type } from './types';
 
 export function applyIsOptionalDecorator(targetClass: Function, propertyKey: string) {
   const decoratorFactory = classValidator.IsOptional();
@@ -9,7 +8,7 @@ export function applyIsOptionalDecorator(targetClass: Function, propertyKey: str
 }
 
 export function inheritValidationMetadata(
-  parentClass: Type<any>,
+  parentClass: ClassConstructor<any>,
   targetClass: Function,
   isPropertyInherited?: (key: string) => boolean,
 ) {
@@ -55,19 +54,19 @@ export function inheritValidationMetadata(
   return undefined;
 }
 
-type TransformMetadataKey =
+type TTransformMetadataKey =
   | '_excludeMetadatas'
   | '_exposeMetadatas'
   | '_typeMetadatas'
   | '_transformMetadatas';
 
 export function inheritTransformationMetadata(
-  parentClass: Type<any>,
+  parentClass: ClassConstructor<any>,
   targetClass: Function,
   isPropertyInherited?: (key: string) => boolean,
 ) {
   try {
-    const transformMetadataKeys: TransformMetadataKey[] = [
+    const transformMetadataKeys: TTransformMetadataKey[] = [
       '_excludeMetadatas',
       '_exposeMetadatas',
       '_transformMetadatas',
@@ -85,8 +84,8 @@ export function inheritTransformationMetadata(
 }
 
 function inheritTransformerMetadata(
-  key: TransformMetadataKey,
-  parentClass: Type<any>,
+  key: TTransformMetadataKey,
+  parentClass: ClassConstructor<any>,
   targetClass: Function,
   isPropertyInherited?: (key: string) => boolean,
 ) {
@@ -124,7 +123,7 @@ function inheritTransformerMetadata(
 
 export function inheritPropertyInitializers(
   target: Record<string, any>,
-  sourceClass: Type<any>,
+  sourceClass: ClassConstructor<any>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isPropertyInherited = (key: string) => true,
 ) {

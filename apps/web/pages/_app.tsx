@@ -1,18 +1,30 @@
+import { Globals } from '@/components';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { useState } from 'react';
+import { Hydrate, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import 'tailwindcss/tailwind.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new DefaultQueryClient());
+
   return (
     <>
       <Head>
-        <title>MyPlatform — The Programming Materials Platform</title>
-        <meta name="description" content="Create, share, and attempt programming materials." />
+        <title>PCS — The Programming Classwork System</title>
       </Head>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Globals />
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Hydrate>
+      </QueryClientProvider>
     </>
   );
 }
