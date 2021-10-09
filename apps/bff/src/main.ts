@@ -1,26 +1,34 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import passport from 'passport';
-import { AppModule } from 'src/app/app.module';
-import { WithDataInterceptor } from 'src/app/common/interceptors/with-data.interceptor';
-import session from 'src/app/common/session';
-import config, { NodeEnv } from 'src/app/config/config';
+import { AppModule } from 'src/app.module';
+import { config, NodeEnv } from 'src/config/config';
+import { session } from 'src/config/session.config';
+import { WithDataInterceptor } from 'src/shared/interceptors/with-data.interceptor';
+import { CustomValidationPipe } from 'src/shared/pipes/custom-validation.pipe';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: config.LOG_LEVELS,
+  });
 
   app.setGlobalPrefix('api');
   app.enableCors({ origin: config.CORS_ORIGINS, credentials: true });
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new CustomValidationPipe({
+      whitelist: true,
+    }),
+  );
   app.useGlobalInterceptors(new WithDataInterceptor());
 
   app.use(helmet());
 
-  if (config.NODE_ENV === NodeEnv.PRODUCTION) {
+  if (config.NODE_ENV === NodeEnv.Production) {
+    // required for heroku
     app.set('trust proxy', 1);
   }
 
@@ -31,7 +39,7 @@ async function bootstrap(): Promise<void> {
   app.use(cookieParser());
 
   await app.listen(config.PORT).then(async () => {
-    Logger.debug(`Running on: http://localhost:${config.PORT}/`, bootstrap.name);
+    Logger.log(`Running on: http://localhost:${config.PORT}/`, bootstrap.name);
   });
 }
 

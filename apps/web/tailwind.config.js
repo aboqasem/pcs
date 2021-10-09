@@ -4,6 +4,7 @@ const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
+  mode: 'jit',
   purge: [
     path.join(__dirname, 'pages/**/*.{js,ts,jsx,tsx}'),
     path.join(__dirname, 'components/**/*.{js,ts,jsx,tsx}'),
@@ -15,11 +16,6 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
-    },
-  },
-  variants: {
-    extend: {
-      opacity: ['disabled'],
     },
   },
   plugins: [require('@tailwindcss/forms')],

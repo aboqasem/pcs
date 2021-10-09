@@ -3,29 +3,31 @@ const { exec } = require('child_process');
 const { readdir } = require('fs').promises;
 const path = require('path');
 
+const nativeModules = [];
+
 (async () => {
   try {
     await readdir(path.resolve(__dirname, '..', 'node_modules'));
-  } catch (error) {
+  } catch (e) {
     await execute({
-      command: 'npm install',
-      description: 'No node_modules found, running npm install...',
+      command: 'pnpm install',
+      description: 'No node_modules found, running pnpm install...',
     });
   }
 
-  try {
-    const bcrypt = require('bcrypt');
-    const hash = bcrypt.hashSync('should work', 10);
-    bcrypt.compareSync('should work', hash);
-  } catch (error) {
-    await execute({
-      command: 'npx rimraf node_modules/bcrypt/ && npm install bcrypt',
-      description: 'bcrypt does not work, reinstalling...',
-    });
+  for (const module of nativeModules) {
+    try {
+      require(module);
+    } catch (e) {
+      await execute({
+        command: `npx rimraf node_modules/${module}/ && pnpm install ${module}`,
+        description: `${module} needs reinstalling...`,
+      });
+    }
   }
 
   return execute({
-    command: 'npx nx run-many --target=serve --projects=web,bff --parallel',
+    command: 'pnpm nx -- run-many --target=serve --projects=web,bff --parallel',
     description: 'Serving projects web and bff...',
   });
 })().then(process.exit);

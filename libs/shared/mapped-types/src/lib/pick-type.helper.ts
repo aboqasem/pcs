@@ -1,14 +1,15 @@
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 import {
   inheritPropertyInitializers,
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from './type-helpers.utils';
-import { MappedType, Type } from './types';
+import { TMappedType } from './types';
 
 export function PickType<T, K extends keyof T>(
-  classRef: Type<T>,
+  classRef: ClassConstructor<T>,
   keys: readonly K[],
-): MappedType<Pick<T, typeof keys[number]>> {
+): TMappedType<Pick<T, typeof keys[number]>> {
   const isInheritedPredicate = (propertyKey: string) => keys.includes(propertyKey as K);
 
   abstract class PickClassType {
@@ -19,5 +20,5 @@ export function PickType<T, K extends keyof T>(
   inheritValidationMetadata(classRef, PickClassType, isInheritedPredicate);
   inheritTransformationMetadata(classRef, PickClassType, isInheritedPredicate);
 
-  return PickClassType as MappedType<Pick<T, typeof keys[number]>>;
+  return PickClassType as TMappedType<Pick<T, typeof keys[number]>>;
 }

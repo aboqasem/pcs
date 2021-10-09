@@ -1,56 +1,60 @@
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 import {
   inheritPropertyInitializers,
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from './type-helpers.utils';
-import { MappedType, Type } from './types';
+import { TMappedType } from './types';
 
-export function IntersectionType<A, B>(target: Type<A>, source: Type<B>): MappedType<A & B>;
+export function IntersectionType<A, B>(
+  target: ClassConstructor<A>,
+  source: ClassConstructor<B>,
+): TMappedType<A & B>;
 
 export function IntersectionType<A, B, C>(
-  target: Type<A>,
-  sourceB: Type<B>,
-  sourceC: Type<C>,
-): MappedType<A & B & C>;
+  target: ClassConstructor<A>,
+  sourceB: ClassConstructor<B>,
+  sourceC: ClassConstructor<C>,
+): TMappedType<A & B & C>;
 
 export function IntersectionType<A, B, C, D>(
-  target: Type<A>,
-  sourceB: Type<B>,
-  sourceC: Type<C>,
-  sourceD: Type<D>,
-): MappedType<A & B & C & D>;
+  target: ClassConstructor<A>,
+  sourceB: ClassConstructor<B>,
+  sourceC: ClassConstructor<C>,
+  sourceD: ClassConstructor<D>,
+): TMappedType<A & B & C & D>;
 
 export function IntersectionType<A, B, C, D, E>(
-  target: Type<A>,
-  sourceB: Type<B>,
-  sourceC: Type<C>,
-  sourceD: Type<D>,
-  sourceE: Type<E>,
-): MappedType<A & B & C & D & E>;
+  target: ClassConstructor<A>,
+  sourceB: ClassConstructor<B>,
+  sourceC: ClassConstructor<C>,
+  sourceD: ClassConstructor<D>,
+  sourceE: ClassConstructor<E>,
+): TMappedType<A & B & C & D & E>;
 
 export function IntersectionType<A, B, C, D, E, F>(
-  target: Type<A>,
-  sourceB: Type<B>,
-  sourceC: Type<C>,
-  sourceD: Type<D>,
-  sourceE: Type<E>,
-  sourceF: Type<F>,
-): MappedType<A & B & C & D & E & F>;
+  target: ClassConstructor<A>,
+  sourceB: ClassConstructor<B>,
+  sourceC: ClassConstructor<C>,
+  sourceD: ClassConstructor<D>,
+  sourceE: ClassConstructor<E>,
+  sourceF: ClassConstructor<F>,
+): TMappedType<A & B & C & D & E & F>;
 
 export function IntersectionType<A, B, C, D, E, F, G>(
-  target: Type<A>,
-  sourceB: Type<B>,
-  sourceC: Type<C>,
-  sourceD: Type<D>,
-  sourceE: Type<E>,
-  sourceF: Type<F>,
-  sourceG: Type<G>,
-): MappedType<A & B & C & D & E & F & G>;
+  target: ClassConstructor<A>,
+  sourceB: ClassConstructor<B>,
+  sourceC: ClassConstructor<C>,
+  sourceD: ClassConstructor<D>,
+  sourceE: ClassConstructor<E>,
+  sourceF: ClassConstructor<F>,
+  sourceG: ClassConstructor<G>,
+): TMappedType<A & B & C & D & E & F & G>;
 
-export function IntersectionType<A, T extends Type[]>(
-  classA: Type<A>,
+export function IntersectionType<A, T extends ClassConstructor<any>[]>(
+  classA: ClassConstructor<A>,
   ...classRefs: T
-): MappedType<A> {
+): TMappedType<A> {
   const allClassRefs = [classA, ...classRefs];
 
   abstract class IntersectionClassType {
@@ -72,5 +76,5 @@ export function IntersectionType<A, T extends Type[]>(
     value: `Intersection${intersectedNames}`,
   });
 
-  return IntersectionClassType as MappedType<A>;
+  return IntersectionClassType as TMappedType<A>;
 }

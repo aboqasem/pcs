@@ -4,7 +4,7 @@
     "paths": {
       "*": ["apps/bff/*"],
       "@aboqasem/mapped-types": ["libs/shared/mapped-types/src/index.ts"],
-      "@myplatform/shared-data-access": ["libs/shared/data-access/src/index.ts"]
+      "@pcs/shared-data-access": ["libs/shared/data-access/src/index.ts"]
     }
   },
   "files": [],

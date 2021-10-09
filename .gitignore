@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+*.test.hbs
+*.test.hbs.json
+
 # compiled output
 /dist
 /tmp
@@ -8,9 +11,11 @@
 # Env
 .env*
 !.env.example
+ormconfig.json
 
 # dependencies
-/node_modules
+**/node_modules
+.pnpm-store
 
 # IDEs and editors
 /.idea

@@ -1,13 +1,17 @@
 export enum PagePath {
   Landing = '/',
-  SignUp = '/auth/sign-up',
+
   SignIn = '/auth/sign-in',
+  RetrievePassword = '/auth/retrieve-password',
+
   Dashboard = '/dashboard',
 }
 
 export enum BffPath {
-  Me = 'users/me',
-  SignUp = 'auth/sign-up',
+  Users = 'users',
+  Profile = 'users/profile',
+
   SignIn = 'auth/sign-in',
   SignOut = 'auth/sign-out',
+  RetrievePassword = 'auth/retrieve-password',
 }

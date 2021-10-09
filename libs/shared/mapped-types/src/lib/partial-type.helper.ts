@@ -1,12 +1,13 @@
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 import {
   applyIsOptionalDecorator,
   inheritPropertyInitializers,
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from './type-helpers.utils';
-import { MappedType, Type } from './types';
+import { TMappedType } from './types';
 
-export function PartialType<T>(classRef: Type<T>): MappedType<Partial<T>> {
+export function PartialType<T>(classRef: ClassConstructor<T>): TMappedType<Partial<T>> {
   abstract class PartialClassType {
     constructor() {
       inheritPropertyInitializers(this, classRef);
@@ -26,5 +27,5 @@ export function PartialType<T>(classRef: Type<T>): MappedType<Partial<T>> {
     value: `Partial${classRef.name}`,
   });
 
-  return PartialClassType as MappedType<Partial<T>>;
+  return PartialClassType as TMappedType<Partial<T>>;
 }

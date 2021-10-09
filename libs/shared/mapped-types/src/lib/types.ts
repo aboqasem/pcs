@@ -1,7 +1,3 @@
-export type Type<T = {}> = new (...args: any[]) => T;
+import { ClassConstructor } from 'class-transformer/types/interfaces';
 
-export type MappedType<T = {}> = Type<T> & (new () => T);
-
-export type Never<K extends keyof any> = {
-  [k in K]?: never;
-};
+export type TMappedType<T = {}> = ClassConstructor<T> & (new () => T);

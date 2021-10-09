@@ -1,30 +1,41 @@
 version: '3.8'
 services:
   workspace:
-    container_name: myplatform.dev-workspace
+    container_name: pcsdev-workspace
     build:
       context: ./
       dockerfile: Dockerfile.dev
     environment:
       NEXT_PUBLIC_BFF_URL: http://localhost:8000/api/
-      DATABASE_URL: postgresql://myplatform:myplatform@db:5432/myplatform
+
       CORS_ORIGINS: http://localhost:4200
       COOKIE_SECRET: this is a secret
+
+      DATABASE_URL: postgresql://pcs:pcs@db:5432/pcs
+      DATABASE_LOGGING: true
+
+      APP_SIGN_IN_URL: http://localhost:4200/auth/sign-in
+
+      ADMIN_EMAIL:
+      ADMIN_USERNAME:
+      ADMIN_FULL_NAME:
+      ADMIN_PASSWORD:
     ports:
       - '4200:4200'
       - '8000:8000'
     volumes:
       - ../:/workspace
+      - ~/.pnpm-store:/.pnpm-store
     depends_on:
       - db
 
   db:
-    container_name: myplatform.dev-db
+    container_name: pcsdev-db
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: myplatform
-      POSTGRES_PASSWORD: myplatform
-      POSTGRES_DB: myplatform
+      POSTGRES_USER: pcs
+      POSTGRES_PASSWORD: pcs
+      POSTGRES_DB: pcs
     ports:
       - '5432:5432'

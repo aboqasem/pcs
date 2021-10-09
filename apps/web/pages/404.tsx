@@ -1,4 +1,4 @@
-import { Link } from '@/components/common';
+import { Link } from '@/components';
 import Void from '@/public/assets/void.svg';
 import Image from 'next/image';
 
@@ -10,11 +10,11 @@ export default function NotFound() {
           <div className="flex flex-col flex-grow w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex-shrink-0 pt-10 sm:pt-16">
               <Link href="/" className="inline-flex">
-                <span className="sr-only">MyPlatform</span>
+                <span className="sr-only">PCS</span>
                 <img
                   className="w-auto h-12"
                   src="https://tailwindui.com/img/logos/workflow-mark.svg?color=blue&shade=600"
-                  alt="My Platform's Logo"
+                  alt="PCS's Logo"
                 />
               </Link>
             </div>
@@ -44,15 +44,15 @@ export default function NotFound() {
         <footer className="flex-shrink-0 bg-gray-50">
           <div className="w-full px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <nav className="flex space-x-4">
-              <Link href="#" className="text-sm font-medium text-gray-500 hover:text-gray-600">
+              <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-600">
                 Contact Support
               </Link>
               <span className="inline-block border-l border-gray-300" aria-hidden="true" />
-              <Link href="#" className="text-sm font-medium text-gray-500 hover:text-gray-600">
+              <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-600">
                 Status
               </Link>
               <span className="inline-block border-l border-gray-300" aria-hidden="true" />
-              <Link href="#" className="text-sm font-medium text-gray-500 hover:text-gray-600">
+              <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-600">
                 Twitter
               </Link>
             </nav>
