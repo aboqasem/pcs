@@ -15,7 +15,6 @@ ormconfig.json
 
 # dependencies
 **/node_modules
-.pnpm-store
 
 # IDEs and editors
 /.idea
@@ -36,6 +35,7 @@ ormconfig.json
 /coverage
 /libpeerconnection.log
 npm-debug.log
+.pnpm-debug.log
 yarn-error.log
 testem.log
 /typings
