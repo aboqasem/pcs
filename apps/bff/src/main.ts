@@ -1,11 +1,12 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { NodeEnv } from '@pcs/shared-data-access';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import passport from 'passport';
 import { AppModule } from 'src/app.module';
-import { config, NodeEnv } from 'src/config/config';
+import { config } from 'src/config/config';
 import { session } from 'src/config/session.config';
 import { WithDataInterceptor } from 'src/shared/interceptors/with-data.interceptor';
 import { CustomValidationPipe } from 'src/shared/pipes/custom-validation.pipe';

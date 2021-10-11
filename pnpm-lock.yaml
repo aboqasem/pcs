@@ -27,6 +27,7 @@ specifiers:
   '@sendgrid/mail': ^7.4.7
   '@tailwindcss/forms': ^0.3.4
   '@testing-library/react': ^12.1.2
+  '@testing-library/react-hooks': 7.0.1
   '@types/bcrypt': ^5.0.0
   '@types/connect-pg-simple': ^4.2.4
   '@types/cookie-parser': ^1.4.2
@@ -148,6 +149,7 @@ devDependencies:
   '@nrwl/web': 12.9.0_36318772156452b39f287cca16c4e131
   '@nrwl/workspace': 12.9.0_prettier@2.4.1+ts-node@10.2.1
   '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
+  '@testing-library/react-hooks': 7.0.1_react-dom@17.0.2+react@17.0.2
   '@types/bcrypt': 5.0.0
   '@types/connect-pg-simple': 4.2.4
   '@types/cookie-parser': 1.4.2
@@ -3373,6 +3375,28 @@ packages:
       pretty-format: 27.2.5
     dev: true
 
+  /@testing-library/react-hooks/7.0.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-bpEQ2SHSBSzBmfJ437NmnP+oArQ7aVmmULiAp6Ag2rtyLBLPNFSMmgltUbFGmQOJdPWo4Ub31kpUC5T46zXNwQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+      react-test-renderer: '>=16.9.0'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-test-renderer:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@types/react': 17.0.27
+      '@types/react-dom': 17.0.9
+      '@types/react-test-renderer': 17.0.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-error-boundary: 3.1.3_react@17.0.2
+    dev: true
+
   /@testing-library/react/12.1.2_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-ihQiEOklNyHIpo2Y8FREkyD1QAea054U0MVbwH1m8N9TxeFz+KoJ9LkqoKqJlzx2JDm56DVwaJ1r36JYxZM05g==}
     engines: {node: '>=12'}
@@ -3615,6 +3639,12 @@ packages:
 
   /@types/react-dom/17.0.9:
     resolution: {integrity: sha512-wIvGxLfgpVDSAMH5utdL9Ngm5Owu0VsGmldro3ORLXV8CShrL8awVj06NuEXFQ5xyaYfdca7Sgbk/50Ri1GdPg==}
+    dependencies:
+      '@types/react': 17.0.27
+    dev: true
+
+  /@types/react-test-renderer/17.0.1:
+    resolution: {integrity: sha512-3Fi2O6Zzq/f3QR9dRnlnHso9bMl7weKCviFmfF6B4LS1Uat6Hkm15k0ZAQuDz+UBq6B3+g+NM6IT2nr5QgPzCw==}
     dependencies:
       '@types/react': 17.0.27
     dev: true
@@ -11475,6 +11505,16 @@ packages:
       react: 17.0.2
       scheduler: 0.20.2
     dev: false
+
+  /react-error-boundary/3.1.3_react@17.0.2:
+    resolution: {integrity: sha512-A+F9HHy9fvt9t8SNDlonq01prnU8AmkjvGKV4kk8seB9kU3xMEO8J/PQlLVmoOIDODl5U2kufSBs4vrWIqhsAA==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.15.4
+      react: 17.0.2
+    dev: true
 
   /react-hook-form/7.17.2_react@17.0.2:
     resolution: {integrity: sha512-oBaHwlYnbpzSFdNrs43QpcM+K2A0kUeNjV86ECYkCimlR1Ctl+tz4oQQd9plfGYkO7PJGLVMOVpUtL5EHjAcYQ==}

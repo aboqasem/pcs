@@ -9,6 +9,10 @@
       "path": "../apps/web"
     },
     {
+      "name": "🧪 web-e2e",
+      "path": "../apps/web-e2e"
+    },
+    {
       "name": "🧱 shared/data-access",
       "path": "../libs/shared/data-access"
     },
