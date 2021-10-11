@@ -17,8 +17,9 @@ export interface ISignInFormProps {
 }
 
 export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignInFormProps) {
-  const router = useRouter();
+  const { query } = useRouter();
   const resolver = useValidationResolver(SignInDto);
+
   const {
     register,
     handleSubmit,
@@ -50,10 +51,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
     [signIn],
   );
 
-  const forgotPasswordHref = useRef({
-    pathname: PagePath.RetrievePassword,
-    query: router.query,
-  });
+  const forgotPasswordHref = useRef({ pathname: PagePath.RetrievePassword, query });
 
   return (
     <>

@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <Hydrate state={pageProps.dehydratedState}>
           <Globals />
           <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
+          <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'} />
         </Hydrate>
       </QueryClientProvider>
     </>

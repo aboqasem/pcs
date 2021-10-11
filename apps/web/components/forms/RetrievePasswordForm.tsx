@@ -10,8 +10,9 @@ import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
 
 export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
-  const router = useRouter();
+  const { query } = useRouter();
   const resolver = useValidationResolver(RetrievePasswordDto);
+
   const {
     register,
     handleSubmit,
@@ -26,12 +27,6 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
   });
 
   const retrievePassword = useRetrievePasswordMutation({
-    onSuccess: () => {
-      toast.success('An email containing your credentials has been sent to you!', {
-        duration: 5000,
-      });
-      router.push(PagePath.SignIn, { query: router.query });
-    },
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
@@ -52,10 +47,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
     [retrievePassword],
   );
 
-  const signInHref = useRef({
-    pathname: PagePath.SignIn,
-    query: router.query,
-  });
+  const signInHref = useRef({ pathname: PagePath.SignIn, query });
 
   return (
     <div className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">

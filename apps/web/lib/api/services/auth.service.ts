@@ -1,7 +1,9 @@
 import { bffAxios } from '@/lib/api/axios.config';
-import { BffPath } from '@/lib/constants';
+import { BffPath, PagePath } from '@/lib/constants';
 import { RetrievePasswordDto, SignInDto, UserDto } from '@pcs/shared-data-access';
-import { useMutation, UseMutationOptions } from 'react-query';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
+import { useMutation, UseMutationOptions, useQueryClient } from 'react-query';
 
 export type TSignInVariables = SignInDto;
 export type TSignInData = UserDto;
@@ -34,11 +36,30 @@ export function useSignInMutation(
 }
 
 export function useSignOutMutation(options?: UseMutationOptions<TSignOutData, Error>) {
-  return useMutation(AuthService.signOut, options);
+  const queryClient = useQueryClient();
+  const { push } = useRouter();
+
+  return useMutation(AuthService.signOut, {
+    onSettled: async () => {
+      await push(PagePath.SignIn);
+      queryClient.removeQueries();
+    },
+    ...options,
+  });
 }
 
 export function useRetrievePasswordMutation(
   options?: UseMutationOptions<TRetrievePasswordData, Error, TRetrievePasswordVariables>,
 ) {
-  return useMutation(AuthService.retrievePassword, options);
+  const { push, query } = useRouter();
+
+  return useMutation(AuthService.retrievePassword, {
+    onSuccess: () => {
+      toast.success('An email containing your credentials has been sent to you!', {
+        duration: 5000,
+      });
+      push(PagePath.SignIn, { query });
+    },
+    ...options,
+  });
 }

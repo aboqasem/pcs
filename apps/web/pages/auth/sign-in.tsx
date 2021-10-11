@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
 
 export default function SignIn() {
-  const router = useRouter();
+  const { push } = useRouter();
   const intendedPath = useQueryParam<string>('intended') || PagePath.Dashboard;
 
   // to mark true after authenticating and on pushing to dashboard.
@@ -18,7 +18,7 @@ export default function SignIn() {
 
   const onSignInSuccess = useCallback(() => {
     didAuthenticateAndPush.current = true;
-    router.push(intendedPath);
+    push(intendedPath);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intendedPath]);
 

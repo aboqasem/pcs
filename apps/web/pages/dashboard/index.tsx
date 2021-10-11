@@ -4,28 +4,21 @@ import { PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { dehydrate, useQueryClient } from 'react-query';
+import { dehydrate } from 'react-query';
 
-export default function Index() {
-  const { push } = useRouter();
-  const queryClient = useQueryClient();
+export default function Dashboard() {
   const profile = useProfileQuery({
     onError: (e) => {
       toast.error(e.message);
       signOut.mutate();
     },
   });
-  const signOut = useSignOutMutation({
-    onSettled: async () => {
-      await push(PagePath.SignIn);
-      queryClient.removeQueries();
-    },
-  });
 
-  const onSignOutClick = useCallback(async () => {
+  const signOut = useSignOutMutation();
+
+  const onSignOutClick = useCallback(() => {
     signOut.mutate();
   }, [signOut]);
 
