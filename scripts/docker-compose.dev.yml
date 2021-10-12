@@ -14,6 +14,9 @@ services:
       DATABASE_URL: postgresql://pcs:pcs@db:5432/pcs
       DATABASE_LOGGING: true
 
+      SENDGRID_API_KEY:
+      SENDGRID_FROM:
+
       APP_SIGN_IN_URL: http://localhost:4200/auth/sign-in
 
       ADMIN_EMAIL:
