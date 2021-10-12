@@ -29,7 +29,7 @@ export function IsUserUsername<Target = any>(
         '$property may only consist of Latin letters (A to Z), Arabic numerals (0 to 9), and special characters (._)',
     })(target, propertyKey);
 
-    Matches(/^(?![^_.]+[_.]{2,}[^_.]+).*$/, {
+    Matches(/^(?!.+[_.]{2,}.+).*$/, {
       ...validationOptions,
       message: '$property should not contain subsequent special characters',
     })(target, propertyKey);
@@ -68,12 +68,12 @@ export function IsUserFullName(): PropertyDecorator {
       message: "$property may only consist of Latin letters (A to Z) and punctuation marks ('-.)",
     })(target, propertyKey);
 
-    Matches(/^(?![^\-.' ]+[\-.' ]{2,}[^\-.' ]+).*$/, {
-      message: '$property should not contain subsequent punctuation marks',
+    Matches(/^(?!.+[\-.']{2,}.+)(?!.+[ ]{2,}.+).*$/, {
+      message: '$property should not contain subsequent punctuation marks or spaces',
     })(target, propertyKey);
 
     Matches(/^(?!^[\-.' ]+.*)(?!.*[\-.' ]+$).*$/, {
-      message: '$property should not start nor end with a punctuation mark',
+      message: '$property should not start nor end with a punctuation mark or space',
     })(target, propertyKey);
 
     IsNotEmpty()(target, propertyKey);
