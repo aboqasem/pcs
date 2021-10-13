@@ -4,9 +4,8 @@ import { PagePath } from '@/lib/constants';
 import { useValidationResolver } from '@/lib/hooks';
 import { SignInDto, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
-import React, { memo, useCallback, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
 import { HiXCircle } from 'react-icons/hi';
 
@@ -34,20 +33,16 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
     resolver,
   });
 
-  const signIn = useSignInMutation({
-    onSuccess,
-    onError: (error) => {
-      toast.error(error.message, { id: 'signInError' });
-    },
-  });
+  const signIn = useSignInMutation({ onSuccess });
 
   const isLoading = signIn.isLoading;
   const isDisabled = !isDirty || isLoading || signIn.isSuccess;
 
-  const onSubmit = useCallback(
-    (values: SignInDto) => {
-      signIn.mutate(values);
-    },
+  const onSubmit = useMemo(
+    () =>
+      handleSubmit((values: SignInDto) => {
+        signIn.mutate(values);
+      }),
     [signIn],
   );
 
@@ -70,7 +65,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="relative px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6">
               <TextField
                 {...register('username')}
                 label="Username or email address"

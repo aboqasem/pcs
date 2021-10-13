@@ -4,7 +4,7 @@ import { PagePath } from '@/lib/constants';
 import { useValidationResolver } from '@/lib/hooks';
 import { RetrievePasswordDto, ValidationException } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
-import React, { memo, useCallback, useRef } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
@@ -40,10 +40,11 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
   const isLoading = retrievePassword.isLoading;
   const isDisabled = !isDirty || isLoading || retrievePassword.isSuccess;
 
-  const onSubmit = useCallback(
-    (values: RetrievePasswordDto) => {
-      retrievePassword.mutate(values);
-    },
+  const onSubmit = useMemo(
+    () =>
+      handleSubmit((values: RetrievePasswordDto) => {
+        retrievePassword.mutate(values);
+      }),
     [retrievePassword],
   );
 
@@ -65,7 +66,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="relative px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             <TextField
               {...register('email')}
               label="Email address"

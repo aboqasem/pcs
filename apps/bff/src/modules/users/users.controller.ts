@@ -17,13 +17,13 @@ export class UsersController {
 
   @Get('profile')
   @UserAuth()
-  profile(@Req() req: Request): UserDto {
+  getProfile(@Req() req: Request): UserDto {
     return req.user!;
   }
 
   @Post()
   @UserAuth({ roles: [UserRole.Admin] })
-  async create(@Body() dto: CreateUsersDto): Promise<CreatedUsersDto> {
+  async createUsers(@Body() dto: CreateUsersDto): Promise<CreatedUsersDto> {
     try {
       return await this.usersService.createAndInformUsers(dto);
     } catch (e) {
