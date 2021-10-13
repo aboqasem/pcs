@@ -1,14 +1,11 @@
 import { LoadingSpinner } from '@/components';
-import React, { useMemo } from 'react';
+import { memo, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useIsFetching } from 'react-query';
 
-export const Globals = React.memo(function Globals() {
+export const Globals = memo(function Globals() {
   const isFetching = useIsFetching();
-  const toastOptions = useMemo(
-    () => ({ loading: { icon: <LoadingSpinner className="w-4 h-4" /> } }),
-    [],
-  );
+  const toastOptions = useRef({ loading: { icon: <LoadingSpinner className="w-4 h-4" /> } });
 
   return (
     <>
@@ -17,7 +14,7 @@ export const Globals = React.memo(function Globals() {
           isFetching ? 'opacity-100' : 'opacity-0'
         }`}
       />
-      <Toaster toastOptions={toastOptions} />
+      <Toaster toastOptions={toastOptions.current} />
     </>
   );
 });
