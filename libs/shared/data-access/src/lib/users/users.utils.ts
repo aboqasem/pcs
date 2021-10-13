@@ -1,3 +1,4 @@
-import { UserDto, UserType } from './users.classes';
+import { plainToClass } from 'class-transformer';
+import { User, UserDto } from './users.classes';
 
-export const userToDto = ({ password, ...dto }: UserType): UserDto => dto;
+export const userToUserDto = ({ password, ...dto }: User): UserDto => plainToClass(UserDto, dto);

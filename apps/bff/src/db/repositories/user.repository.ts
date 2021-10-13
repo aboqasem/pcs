@@ -1,25 +1,18 @@
-import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { EntityRepository, FindConditions, FindOneOptions, Repository } from 'typeorm';
+import { UserEntity } from '../entities/user.entity';
 
-@EntityRepository(User)
-export class UsersRepository extends Repository<User> {
-  existsByUsername(username: string): Promise<boolean> {
-    return this.count({ where: { username } }).then(Boolean);
-  }
-
-  existsByEmail(email: string): Promise<boolean> {
-    return this.count({ where: { email } }).then(Boolean);
-  }
-
+@EntityRepository(UserEntity)
+export class UsersRepository extends Repository<UserEntity> {
   findByUsernameOrEmail(
     usernameOrEmail: string,
-    options?: Omit<FindOneOptions<User>, 'where'>,
-  ): Promise<User | undefined> {
-    return this.findOne({
-      where: usernameOrEmail.includes('@')
-        ? { email: usernameOrEmail }
-        : { username: usernameOrEmail },
-      ...options,
-    });
+    conditions?: Omit<FindConditions<UserEntity>, 'email' | 'username'>,
+    options?: FindOneOptions<UserEntity>,
+  ): Promise<UserEntity | undefined> {
+    return this.findOne(
+      usernameOrEmail.includes('@')
+        ? { email: usernameOrEmail, ...conditions }
+        : { username: usernameOrEmail, ...conditions },
+      options,
+    );
   }
 }

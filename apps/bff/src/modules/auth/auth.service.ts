@@ -11,8 +11,8 @@ export class AuthService {
     private readonly emailService: EmailService,
   ) {}
 
-  async sendPasswordTo(email: string): Promise<boolean> {
-    const user = await this.usersService.findPasswordByEmail(email);
+  async sendOwnPassword(email: string): Promise<boolean> {
+    const user = await this.usersService.getActiveUserByEmail(email, ['fullName', 'password']);
 
     if (!user) {
       return false;

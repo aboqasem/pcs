@@ -32,7 +32,7 @@ export class AuthController {
 
   @Post('retrieve-password')
   async retrievePassword(@Body() dto: RetrievePasswordDto): Promise<true> {
-    const foundAndSent = await this.authService.sendPasswordTo(dto.email);
+    const foundAndSent = await this.authService.sendOwnPassword(dto.email);
 
     if (!foundAndSent) {
       throw new BadPayloadException<RetrievePasswordDto>({ email: { message: 'Does not exist' } });

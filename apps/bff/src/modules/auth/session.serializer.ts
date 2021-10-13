@@ -20,7 +20,7 @@ export class SessionSerializer extends PassportSerializer {
     done: (err: Error | null, user?: Express.User | null) => void,
   ): void {
     this.usersService
-      .findById(id)
+      .getActiveUserById(id)
       .then((userDto) => done(null, userDto ?? null))
       .catch(done);
   }

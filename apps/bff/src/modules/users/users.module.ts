@@ -17,7 +17,7 @@ export class UsersModule implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     try {
-      await this.usersService.createAdminIfNotExists();
+      await this.usersService.createAndInformAdminIfNotExists();
     } catch (e) {
       console.error(
         'Failed to create an admin user, please provide ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_FULL_NAME, and ADMIN_PASSWORD environment variables. Failing reason:',

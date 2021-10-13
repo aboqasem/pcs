@@ -25,7 +25,7 @@ export class UsersController {
   @UserAuth({ roles: [UserRole.Admin] })
   async create(@Body() dto: CreateUsersDto): Promise<CreatedUsersDto> {
     try {
-      return await this.usersService.createUsers(dto);
+      return await this.usersService.createAndInformUsers(dto);
     } catch (e) {
       if (e instanceof ValidationException) {
         throw new BadPayloadException(e.errors);

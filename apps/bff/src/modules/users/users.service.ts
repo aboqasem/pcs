@@ -5,11 +5,11 @@ import {
   CreateUserDto,
   CreateUsersDto,
   TPropsErrors,
+  User,
   UserCredentials,
   UserDto,
   UserRole,
-  userToDto,
-  UserType,
+  userToUserDto,
   validateSync,
   ValidationException,
 } from '@pcs/shared-data-access';
@@ -29,22 +29,41 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  async findById(id: number): Promise<UserDto | undefined> {
-    const user = await this.usersRepository.findOne({ id });
-    return user && userToDto(user);
+  async getActiveUserById<TSelect extends TUserSelect>(
+    id: number,
+    select?: TSelect,
+  ): Promise<TGetUser<TSelect>> {
+    return this.usersRepository.findOne({ id, isActive: true }, { select });
   }
 
-  async findPasswordByEmail(
+  async getActiveUserByEmail<TSelect extends TUserSelect>(
     email: string,
-  ): Promise<Pick<UserType, 'fullName' | 'password'> | undefined> {
-    return this.usersRepository.findOne({ email }, { select: ['fullName', 'password'] });
+    select?: TSelect,
+  ): Promise<TGetUser<TSelect>> {
+    return this.usersRepository.findOne({ email, isActive: true }, { select });
   }
 
-  async findByCredentials(credentials: UserCredentials): Promise<UserDto | undefined> {
-    const user = await this.usersRepository.findByUsernameOrEmail(credentials.username);
+  async getActiveUserByCredentials<TSelect extends TUserSelect>(
+    credentials: UserCredentials,
+    select?: TSelect,
+  ): Promise<TGetUser<TSelect>> {
+    select = select ?? (['id', 'email', 'username', 'fullName', 'role', 'isActive'] as TSelect);
+
+    const user = await this.usersRepository.findByUsernameOrEmail(
+      credentials.username,
+      {
+        isActive: true,
+      },
+      // because we want the password for comparison, we have to select all those fields in UserDto as well as password
+      // since the password not selected by default
+      { select: [...select!, 'password'] },
+    );
 
     if (user?.password === credentials.password) {
-      return userToDto(user);
+      if (select!.includes('password')) {
+        return user;
+      }
+      return userToUserDto(user) as TGetUser<TSelect>;
     }
 
     return undefined;
@@ -55,19 +74,15 @@ export class UsersService {
     const ERROR_MSG = 'Has already been taken';
 
     await Promise.all(
-      users.map(async (dto, i) => {
-        const [username, email] = await Promise.all([
-          this.usersRepository
-            .existsByUsername(dto.username)
-            .then((exists) => (exists ? ERROR_MSG : undefined)),
-          this.usersRepository
-            .existsByEmail(dto.email)
-            .then((exists) => (exists ? ERROR_MSG : undefined)),
+      users.map(async ({ username, email }, i) => {
+        const [usernameError, emailError] = await Promise.all([
+          this.usersRepository.count({ username }).then((count) => (count ? ERROR_MSG : undefined)),
+          this.usersRepository.count({ email }).then((count) => (count ? ERROR_MSG : undefined)),
         ]);
 
-        if (username || email) {
-          usersErrors[`users.${i}.username` as any] = { message: username };
-          usersErrors[`users.${i}.email` as any] = { message: email };
+        if (usernameError || emailError) {
+          usersErrors[`users.${i}.username` as any] = { message: usernameError };
+          usersErrors[`users.${i}.email` as any] = { message: emailError };
 
           throw new ValidationException(usersErrors);
         }
@@ -75,7 +90,7 @@ export class UsersService {
     );
   }
 
-  async createUsers(dto: CreateUsersDto): Promise<CreatedUsersDto> {
+  async createAndInformUsers(dto: CreateUsersDto): Promise<CreatedUsersDto> {
     await this.usersAreUnique(dto);
 
     const users = dto.users.map((user) =>
@@ -85,62 +100,52 @@ export class UsersService {
       }),
     );
 
-    return {
-      users: await this.usersRepository
-        .insert(users)
-        // after success, send emails to the added users
-        .then((insertions) => {
-          this.emailService.send(
-            ...users.map(({ email, username, fullName, password, role }) => ({
-              to: email,
-              type: EmailType.NewUser,
-              data: {
-                fullName,
-                username,
-                password,
-                role,
-                signInUrl: config.APP_SIGN_IN_URL,
-              },
-            })),
-          );
+    const insertedUsersIds = await this.usersRepository.insert(users).then((insertions) => {
+      return insertions.identifiers.map(({ id }) => ({ id: id as CreatedUserDto['id'] }));
+    });
 
-          return insertions;
-        })
-        .then(({ identifiers }) =>
-          identifiers.map(({ id }) => ({ id: id as CreatedUserDto['id'] })),
-        ),
-    };
+    const emails = users.map((user) => ({
+      to: user.email,
+      type: EmailType.NewUser,
+      data: {
+        fullName: user.fullName,
+        username: user.username,
+        password: user.password,
+        role: user.role,
+        signInUrl: config.APP_SIGN_IN_URL,
+      },
+    }));
+    this.emailService.send(...emails);
+
+    return { usersIds: insertedUsersIds };
   }
 
-  async createAdminIfNotExists(): Promise<void> {
-    if (await this.usersRepository.count({ where: { role: UserRole.Admin } })) {
+  async createAndInformAdminIfNotExists(): Promise<void> {
+    if (await this.usersRepository.count({ where: { role: UserRole.Admin, isActive: true } })) {
       return;
     }
-
     this.logger.log('No admin user exists, creating one...');
 
-    const {
-      ADMIN_EMAIL: email,
-      ADMIN_USERNAME: username,
-      ADMIN_FULL_NAME: fullName,
-      ADMIN_PASSWORD: password,
-    } = process.env;
     const user = this.usersRepository.create({
-      email,
-      username,
-      fullName,
-      password,
+      email: process.env.ADMIN_EMAIL,
+      username: process.env.ADMIN_USERNAME,
+      fullName: process.env.ADMIN_FULL_NAME,
+      password: process.env.ADMIN_PASSWORD,
       role: UserRole.Admin,
     });
 
     const errors = validateSync(plainToClass(CreateUserDto, user));
-
     if (errors.length) {
       throw new ValidationException(errors);
     }
 
-    await this.createUsers({ users: [user] });
-
+    await this.createAndInformUsers({ users: [user] });
     this.logger.log('Admin user created.');
   }
 }
+
+type TUserSelect = (keyof User)[] | undefined;
+
+type TGetUser<TSelect extends TUserSelect> =
+  | (TSelect extends (keyof User)[] ? Pick<User, TSelect[number]> : UserDto)
+  | undefined;

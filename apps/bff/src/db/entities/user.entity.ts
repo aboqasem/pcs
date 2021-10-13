@@ -1,8 +1,8 @@
-import { UserRole, UserType } from '@pcs/shared-data-access';
+import { User as UserType, UserRole } from '@pcs/shared-data-access';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class User extends UserType {
+@Entity('user')
+export class UserEntity extends UserType {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -22,6 +22,6 @@ export class User extends UserType {
   @Column('bool', { default: true })
   isActive = true;
 
-  @Column('text')
+  @Column('text', { select: false })
   password!: string;
 }
