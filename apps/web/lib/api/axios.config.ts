@@ -15,7 +15,7 @@ bffAxios.interceptors.request.use(undefined, (error) => {
 
 bffAxios.interceptors.response.use(
   // unwrap received data
-  ({ data: { data } }: AxiosResponse<TAsData<unknown>>) => data,
+  ({ data }: AxiosResponse<unknown>) => (data as TAsData<unknown>).data,
   (error) => {
     const data = error.response?.data;
     const message = data?.message || data?.error || error.message;
