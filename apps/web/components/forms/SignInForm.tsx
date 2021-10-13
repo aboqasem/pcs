@@ -4,9 +4,8 @@ import { PagePath } from '@/lib/constants';
 import { useValidationResolver } from '@/lib/hooks';
 import { SignInDto, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
-import React, { memo, useCallback, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
 import { HiXCircle } from 'react-icons/hi';
 
@@ -34,21 +33,17 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
     resolver,
   });
 
-  const signIn = useSignInMutation({
-    onSuccess,
-    onError: (error) => {
-      toast.error(error.message, { id: 'signInError' });
-    },
-  });
+  const signInMutation = useSignInMutation({ onSuccess });
 
-  const isLoading = signIn.isLoading;
-  const isDisabled = !isDirty || isLoading || signIn.isSuccess;
+  const isLoading = signInMutation.isLoading;
+  const isDisabled = !isDirty || isLoading || signInMutation.isSuccess;
 
-  const onSubmit = useCallback(
-    (values: SignInDto) => {
-      signIn.mutate(values);
-    },
-    [signIn],
+  const onSubmit = useMemo(
+    () =>
+      handleSubmit((values: SignInDto) => {
+        signInMutation.mutate(values);
+      }),
+    [signInMutation],
   );
 
   const forgotPasswordHref = useRef({ pathname: PagePath.RetrievePassword, query });
@@ -70,7 +65,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="relative px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6">
               <TextField
                 {...register('username')}
                 label="Username or email address"
@@ -110,10 +105,10 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
               </div>
             </form>
 
-            {(isLoading || signIn.isSuccess) && (
+            {(isLoading || signInMutation.isSuccess) && (
               <Overlay className="sm:rounded-lg">
                 {isLoading && <LoadingSpinner className="w-10 h-10" />}
-                {signIn.isSuccess &&
+                {signInMutation.isSuccess &&
                   (error ? (
                     <div className="flex flex-col items-center justify-center p-4 mx-8 sm:rounded-md bg-red-50">
                       <div className="flex">
