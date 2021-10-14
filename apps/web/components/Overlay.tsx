@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
-/* eslint-disable-next-line */
-export interface IOverlayProps extends React.PropsWithChildren<{}> {
+export interface IOverlayProps extends React.PropsWithChildren<Record<string, unknown>> {
   className?: string;
 }
 

@@ -1,7 +1,6 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { memo, useMemo } from 'react';
 
-/* eslint-disable-next-line */
 export interface ILinkProps extends React.PropsWithChildren<NextLinkProps> {
   className?: string;
 }

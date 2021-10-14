@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import { GoVerified } from 'react-icons/go';
 import { HiXCircle } from 'react-icons/hi';
 
-/* eslint-disable-next-line */
 export interface ISignInFormProps {
   onSuccess: (data: UserDto, variables: SignInDto, context: unknown) => void | Promise<unknown>;
   error?: string;
@@ -43,7 +42,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
       handleSubmit((values: SignInDto) => {
         signInMutation.mutate(values);
       }),
-    [signInMutation],
+    [handleSubmit, signInMutation],
   );
 
   const forgotPasswordHref = useRef({ pathname: PagePath.RetrievePassword, query });

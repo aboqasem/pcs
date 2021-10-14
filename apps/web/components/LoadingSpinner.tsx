@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { ImSpinner2 } from 'react-icons/im';
 import { IconBaseProps } from 'react-icons/lib';
 
-/* eslint-disable-next-line */
 export interface ILoadingSpinnerProps extends IconBaseProps {}
 
 export const LoadingSpinner = memo(function LoadingSpinner({

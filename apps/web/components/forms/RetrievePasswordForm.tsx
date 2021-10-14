@@ -45,7 +45,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
       handleSubmit((values: RetrievePasswordDto) => {
         retrievePasswordMutation.mutate(values);
       }),
-    [retrievePasswordMutation],
+    [handleSubmit, retrievePasswordMutation],
   );
 
   const signInHref = useRef({ pathname: PagePath.SignIn, query });
