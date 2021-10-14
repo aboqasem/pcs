@@ -1,6 +1,6 @@
 import { bffAxios } from '@/lib/api/axios.config';
 import { BffPath } from '@/lib/constants';
-import { CreatedUsersDto, CreateUsersDto, UserDto } from '@pcs/shared-data-access';
+import { CreatedUsersDto, CreateUsersDto, HttpException, UserDto } from '@pcs/shared-data-access';
 import {
   FetchQueryOptions,
   QueryClient,
@@ -33,7 +33,7 @@ export class UsersService {
 }
 
 export function useProfileQuery<TData = TProfileData>(
-  options?: UseQueryOptions<TProfileData, Error, TData, TProfileQueryKey>,
+  options?: UseQueryOptions<TProfileData, HttpException, TData, TProfileQueryKey>,
 ) {
   return useQuery(usersQueryKeys.profile(), () => UsersService.profile(), {
     staleTime: 60 * 1000,
@@ -44,7 +44,7 @@ export function useProfileQuery<TData = TProfileData>(
 export function fetchProfile<TData = TProfileData>(
   cookie?: string,
   queryClient?: QueryClient,
-  options?: FetchQueryOptions<TProfileData, Error, TData, TProfileQueryKey>,
+  options?: FetchQueryOptions<TProfileData, HttpException, TData, TProfileQueryKey>,
 ) {
   if (queryClient) {
     return queryClient.fetchQuery(
@@ -57,7 +57,7 @@ export function fetchProfile<TData = TProfileData>(
 }
 
 export function useCreateUsersMutation(
-  options?: UseMutationOptions<TCreateUsersData, Error, TCreateUsersVariables>,
+  options?: UseMutationOptions<TCreateUsersData, HttpException, TCreateUsersVariables>,
 ) {
   return useMutation(UsersService.create, options);
 }

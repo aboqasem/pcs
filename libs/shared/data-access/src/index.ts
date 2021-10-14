@@ -1,4 +1,5 @@
 export * from './lib/shared/shared.decorators';
+export * from './lib/shared/shared.exceptions';
 export * from './lib/shared/shared.types';
 export * from './lib/shared/string.utils';
 export * from './lib/users/users.classes';

@@ -1,6 +1,6 @@
 import { bffAxios } from '@/lib/api/axios.config';
 import { BffPath, PagePath } from '@/lib/constants';
-import { RetrievePasswordDto, SignInDto, UserDto } from '@pcs/shared-data-access';
+import { HttpException, RetrievePasswordDto, SignInDto, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { useMutation, UseMutationOptions, useQueryClient } from 'react-query';
@@ -30,12 +30,12 @@ export class AuthService {
 }
 
 export function useSignInMutation(
-  options?: UseMutationOptions<TSignInData, Error, TSignInVariables>,
+  options?: UseMutationOptions<TSignInData, HttpException, TSignInVariables>,
 ) {
   return useMutation(AuthService.signIn, options);
 }
 
-export function useSignOutMutation(options?: UseMutationOptions<TSignOutData, Error>) {
+export function useSignOutMutation(options?: UseMutationOptions<TSignOutData, HttpException>) {
   const queryClient = useQueryClient();
   const { push } = useRouter();
 
@@ -49,7 +49,7 @@ export function useSignOutMutation(options?: UseMutationOptions<TSignOutData, Er
 }
 
 export function useRetrievePasswordMutation(
-  options?: UseMutationOptions<TRetrievePasswordData, Error, TRetrievePasswordVariables>,
+  options?: UseMutationOptions<TRetrievePasswordData, HttpException, TRetrievePasswordVariables>,
 ) {
   const { push, query } = useRouter();
 
