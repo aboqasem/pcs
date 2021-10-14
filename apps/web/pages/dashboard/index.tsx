@@ -1,4 +1,4 @@
-import { redirectIf, useProfileQuery, useSignOutMutation } from '@/lib/api';
+import { redirectIf, redirectionRules, useProfileQuery, useSignOutMutation } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import { PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
@@ -51,7 +51,11 @@ export default function Dashboard() {
 export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> = async (ctx) => {
   const queryClient = new DefaultQueryClient();
 
-  const result = await redirectIf([[PagePath.SignIn, 'isNotAuthenticated']], ctx, queryClient);
+  const result = await redirectIf(
+    [{ destination: PagePath.SignIn, predicate: redirectionRules.isNotAuthenticated }],
+    ctx,
+    queryClient,
+  );
 
   if (result.redirect) {
     return { redirect: result.redirect };

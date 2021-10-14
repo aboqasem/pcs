@@ -1,5 +1,5 @@
 import { SignInForm } from '@/components';
-import { redirectIf } from '@/lib/api';
+import { redirectIf, redirectionRules } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
 import { useQueryParam } from '@/lib/hooks';
 import { GetServerSideProps } from 'next';
@@ -41,7 +41,10 @@ export default function SignIn() {
 }
 
 export const getServerSideProps: GetServerSideProps<Record<string, never>> = async (ctx) => {
-  const result = await redirectIf([[PagePath.Dashboard, 'isAuthenticated']], ctx);
+  const result = await redirectIf(
+    [{ destination: PagePath.Dashboard, predicate: redirectionRules.isAuthenticated }],
+    ctx,
+  );
 
   if (result.redirect) {
     return { redirect: result.redirect };
