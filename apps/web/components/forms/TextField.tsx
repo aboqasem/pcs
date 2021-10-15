@@ -26,22 +26,15 @@ export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Om
 
 export const TextField = memo(
   forwardRef(function <TFieldValues extends FieldValues = FieldValues>(
-    {
-      id,
-      label,
-      onChange,
-      onBlur,
-      password: isPassword,
-      control,
-      ...props
-    }: TTextFieldProps<TFieldValues>,
+    { label, password: isPassword, control, ...props }: TTextFieldProps<TFieldValues>,
     forwardedRef: ForwardedRef<HTMLInputElement>,
   ) {
     const name = props.name as Path<TFieldValues>;
+    const id = props.id ?? name;
+
     const {
       errors: { [name]: error },
     } = useFormState({ control, name });
-
     const errorMessage = (error as TPropsErrors<TFieldValues>[typeof name])?.message;
     const isError = !!errorMessage;
 
@@ -65,12 +58,10 @@ export const TextField = memo(
             aria-invalid={isError}
             aria-describedby={isError ? `${id}-error` : undefined}
             {...props}
+            id={id}
             ref={forwardedRef}
-            id={id ?? name}
             name={name}
             type={inputType}
-            onChange={onChange}
-            onBlur={onBlur}
             className={`
               ${
                 isError
@@ -81,6 +72,7 @@ export const TextField = memo(
             `}
           />
 
+          {/* Right side icon for errors or actions */}
           {(isError || isPassword) && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-3">
               {isError && (
@@ -108,6 +100,7 @@ export const TextField = memo(
           )}
         </div>
 
+        {/* Error text below te field */}
         {isError && (
           <div className="mt-2 text-sm text-red-700">
             <ul id={`${id}-error`} className="pl-5 space-y-1 list-disc">
