@@ -1,4 +1,3 @@
-import { TCustomValidationOptions } from '@pcs/shared-data-access';
 import {
   IsEmail,
   IsEnum,
@@ -9,6 +8,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { TCustomValidationOptions } from '../validation/validation.types';
 import { UserRole } from './users.types';
 
 export function IsUserId(): PropertyDecorator {
@@ -68,11 +68,11 @@ export function IsUserFullName(): PropertyDecorator {
       message: "$property may only consist of Latin letters (A to Z) and punctuation marks ('-.)",
     })(target, propertyKey);
 
-    Matches(/^(?!.+[\-.']{2,}.+)(?!.+[ ]{2,}.+).*$/, {
+    Matches(/^(?!.+[-.']{2,}.+)(?!.+[ ]{2,}.+).*$/, {
       message: '$property should not contain subsequent punctuation marks or spaces',
     })(target, propertyKey);
 
-    Matches(/^(?!^[\-.' ]+.*)(?!.*[\-.' ]+$).*$/, {
+    Matches(/^(?!^[-.' ]+.*)(?!.*[-.' ]+$).*$/, {
       message: '$property should not start nor end with a punctuation mark or space',
     })(target, propertyKey);
 

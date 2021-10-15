@@ -12,7 +12,7 @@ describe('PartialType', () => {
   }
 
   class CreateUserDto extends BaseUserDto {
-    login: string = 'defaultLogin';
+    login = 'defaultLogin';
 
     @Expose()
     @Transform(({ value }) => value + '_transformed')

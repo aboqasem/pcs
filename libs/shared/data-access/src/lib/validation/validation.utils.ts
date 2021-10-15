@@ -1,7 +1,8 @@
-import { capitalize, firstWord, TPropsErrors, withoutFirstWord } from '@pcs/shared-data-access';
 import { isNotEmptyObject, ValidationError } from 'class-validator';
 import { iterate } from 'iterare';
 import { Path } from 'react-hook-form';
+import { capitalize, firstWord, withoutFirstWord } from '../shared/string.utils';
+import { TPropsErrors } from '../validation/validation.types';
 
 export function validationErrorsToPropsErrors<T extends Record<string, any> = Record<string, any>>(
   validationErrors: ValidationError[],
