@@ -10,9 +10,10 @@ export const Globals = memo(function Globals() {
   return (
     <>
       <LoadingSpinner
-        className={`fixed top-[0.5rem] right-[0.5rem] w-6 h-6 pointer-events-none transition ease-linear ${
-          isFetching ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`
+          ${isFetching ? 'opacity-100' : 'opacity-0'}
+          fixed top-[0.5rem] right-[0.5rem] w-6 h-6 pointer-events-none transition ease-linear
+        `}
       />
       <Toaster toastOptions={toastOptions.current} />
     </>

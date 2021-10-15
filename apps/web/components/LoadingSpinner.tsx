@@ -9,6 +9,12 @@ export const LoadingSpinner = memo(function LoadingSpinner({
   ...props
 }: ILoadingSpinnerProps) {
   return (
-    <ImSpinner2 className={`animate-spin text-blue-700 align-middle ${className}`} {...props} />
+    <ImSpinner2
+      className={`
+        animate-spin text-blue-700 align-middle
+        ${className}
+      `}
+      {...props}
+    />
   );
 });

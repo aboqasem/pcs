@@ -71,11 +71,14 @@ export const TextField = memo(
             type={inputType}
             onChange={onChange}
             onBlur={onBlur}
-            className={`block w-full border rounded-md shadow-sm appearance-none focus:outline-none sm:text-sm ${
-              isError
-                ? 'px-3 py-2 pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500 caret-red-500'
-                : 'px-3 py-2 placeholder-gray-400 border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-            }`}
+            className={`
+              ${
+                isError
+                  ? 'px-3 py-2 pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500 caret-red-500'
+                  : 'px-3 py-2 placeholder-gray-400 border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+              }
+              block w-full border rounded-md shadow-sm appearance-none focus:outline-none sm:text-sm
+            `}
           />
 
           {(isError || isPassword) && (
@@ -93,7 +96,10 @@ export const TextField = memo(
                   onClick={togglePasswordVisibility}
                 >
                   <PasswordVisibilityIcon
-                    className={`w-5 h-5 ${isError ? 'text-red-600' : 'text-gray-900'}`}
+                    className={`
+                      ${isError ? 'text-red-600' : 'text-gray-900'}
+                      w-5 h-5
+                    `}
                     aria-hidden="true"
                   />
                 </button>
