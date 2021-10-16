@@ -18,6 +18,7 @@ import { config } from 'src/config/config';
 import { UsersRepository } from 'src/db/repositories/user.repository';
 import { EmailType } from 'src/modules/email/email.types';
 import { generateRandomPassword } from 'src/shared/shared.utils';
+import { FindConditions } from 'typeorm';
 import { EmailService } from '../email/email.service';
 
 @Injectable()
@@ -28,6 +29,10 @@ export class UsersService {
     private readonly usersRepository: UsersRepository,
     private readonly emailService: EmailService,
   ) {}
+
+  async getAllUsers(conditions?: FindConditions<User> | undefined): Promise<UserDto[]> {
+    return this.usersRepository.find(conditions);
+  }
 
   async getActiveUserById<TSelect extends TUserSelect>(
     id: number,

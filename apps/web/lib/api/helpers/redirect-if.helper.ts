@@ -1,14 +1,17 @@
 import { fetchProfile } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
-import { UserDto } from '@pcs/shared-data-access';
+import { UserDto, UserRole } from '@pcs/shared-data-access';
 import { GetServerSidePropsContext, NextPageContext, Redirect } from 'next';
 import { QueryClient } from 'react-query';
 
 type TRedirectionRule = { destination: string; predicate: (user?: UserDto) => boolean };
 
 export const redirectionRules = {
-  isAuthenticated: (user?: UserDto) => !!user,
-  isNotAuthenticated: (user?: UserDto) => !user,
+  isAuthenticated: (user?: UserDto): user is UserDto => !!user,
+  isNotAuthenticated: (user?: UserDto): user is undefined => !user,
+  isNotInRoles: (roles: UserRole[]) => (user?: UserDto) => {
+    return redirectionRules.isNotAuthenticated(user) || !roles.includes(user.role);
+  },
 };
 
 export async function redirectIf(

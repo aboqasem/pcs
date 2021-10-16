@@ -3,6 +3,7 @@ export * from './forms/RetrievePasswordForm';
 export * from './forms/SignInForm';
 export * from './forms/TextField';
 export * from './Globals';
+export * from './layouts/MainSidebarLayout';
 export * from './Link';
 export * from './LoadingSpinner';
 export * from './Overlay';

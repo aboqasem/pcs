@@ -15,6 +15,12 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  @UserAuth({ roles: [UserRole.Admin] })
+  async getAll(): Promise<UserDto[]> {
+    return this.usersService.getAllUsers();
+  }
+
   @Get('profile')
   @UserAuth()
   getProfile(@Req() req: Request): UserDto {
