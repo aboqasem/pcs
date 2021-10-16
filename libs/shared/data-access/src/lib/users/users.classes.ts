@@ -9,7 +9,7 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { FilterByValidateIfFn } from '../shared/shared.decorators';
+import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
   IsPassword,
   IsUserEmail,
@@ -72,7 +72,7 @@ export class CreatedUsersDto {
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
-@FilterByValidateIfFn()
+@FilterDisabledConstraints()
 export class UserCredentials extends PickType(User, ['password']) {
   @IsUserUsernameOrEmail()
   username!: string;

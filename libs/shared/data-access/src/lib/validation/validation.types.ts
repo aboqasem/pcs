@@ -5,13 +5,16 @@ export type TPropsErrors<TSchema extends Record<string, any> = Record<string, an
   [K in Path<TSchema>]?: { message?: string };
 };
 
-export type TValidateIfFn<TTarget = any> = (target: TTarget, property: keyof TTarget) => boolean;
+export type TConstraintEnabledFn<TTarget = any> = (
+  target: TTarget,
+  property: keyof TTarget,
+) => boolean;
 
 export type TCustomValidationOptions<TTarget = any> = Omit<ValidationOptions, 'context'> & {
   context: Record<string, any> & {
     /**
-     * We added this to enable and disable validation decorators individually.
+     * We added this to enable and enable validation decorators individually.
      */
-    validateIf?: TValidateIfFn<TTarget>;
+    enabled?: TConstraintEnabledFn<TTarget>;
   };
 };

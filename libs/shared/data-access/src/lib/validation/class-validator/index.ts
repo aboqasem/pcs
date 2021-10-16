@@ -3,17 +3,17 @@ import {
   validateSync as cvValidateSync,
   ValidatorOptions,
 } from 'class-validator';
-import { FILTER_BY_VALIDATE_IF_KEY } from '../../shared/shared.decorators';
-import { filterErrorsConstraintsByValidateIfFns } from './class-validator.utils';
+import { FILTER_DISABLED_CONSTRAINTS_KEY } from '../validation.decorators';
+import { filterDisabledErrorsConstraints } from './class-validator.utils';
 
 export async function validate(object: object, validatorOptions?: ValidatorOptions) {
   const errors = await cvValidate(object, validatorOptions);
 
-  const filterByValidateIfFns =
-    Reflect.getMetadata(FILTER_BY_VALIDATE_IF_KEY, object.constructor) ?? false;
+  const filterDisabledConstraintsFns =
+    Reflect.getMetadata(FILTER_DISABLED_CONSTRAINTS_KEY, object.constructor) ?? false;
 
-  if (filterByValidateIfFns) {
-    filterErrorsConstraintsByValidateIfFns(errors);
+  if (filterDisabledConstraintsFns) {
+    filterDisabledErrorsConstraints(errors);
   }
 
   return errors;
@@ -22,11 +22,11 @@ export async function validate(object: object, validatorOptions?: ValidatorOptio
 export const validateSync = (object: object, validatorOptions?: ValidatorOptions) => {
   const errors = cvValidateSync(object, validatorOptions);
 
-  const filterByValidateIfFns =
-    Reflect.getMetadata(FILTER_BY_VALIDATE_IF_KEY, object.constructor) ?? false;
+  const filterDisabledConstraintsFns =
+    Reflect.getMetadata(FILTER_DISABLED_CONSTRAINTS_KEY, object.constructor) ?? false;
 
-  if (filterByValidateIfFns) {
-    filterErrorsConstraintsByValidateIfFns(errors);
+  if (filterDisabledConstraintsFns) {
+    filterDisabledErrorsConstraints(errors);
   }
 
   return errors;
