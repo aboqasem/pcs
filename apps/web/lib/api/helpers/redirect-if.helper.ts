@@ -6,11 +6,11 @@ import { QueryClient } from 'react-query';
 
 type TRedirectionRule = { destination: string; predicate: (user?: UserDto) => boolean };
 
-export const redirectionRules = {
+export const redirectionPredicates = {
   isAuthenticated: (user?: UserDto): user is UserDto => !!user,
   isNotAuthenticated: (user?: UserDto): user is undefined => !user,
   isNotInRoles: (roles: UserRole[]) => (user?: UserDto) => {
-    return redirectionRules.isNotAuthenticated(user) || !roles.includes(user.role);
+    return redirectionPredicates.isNotAuthenticated(user) || !roles.includes(user.role);
   },
 };
 

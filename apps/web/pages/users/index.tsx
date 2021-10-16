@@ -1,5 +1,5 @@
 import { Link, MainSidebarLayout } from '@/components';
-import { redirectIf, redirectionRules, useAllUsersQuery, useProfileQuery } from '@/lib/api';
+import { redirectIf, redirectionPredicates, useAllUsersQuery, useProfileQuery } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import { PagePath } from '@/lib/constants';
 import { useQueryParam } from '@/lib/hooks';
@@ -30,7 +30,7 @@ export default function Users() {
     () => users.find((u) => u.id === selectedUserId),
     [users, selectedUserId],
   );
-  const userNotFound = !isNaN(selectedUserId) && !selectedUser;
+  const isUserNotFound = !isNaN(selectedUserId) && !selectedUser;
 
   const usersSections = useRef(['Instructors', 'Students'] as const);
 
@@ -49,7 +49,7 @@ export default function Users() {
           <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
             {users.length ? (
               <div className="relative z-0 flex flex-1 overflow-hidden">
-                {selectedUser || userNotFound ? (
+                {selectedUser || isUserNotFound ? (
                   <div className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
                     {/* Breadcrumb */}
                     <nav
@@ -146,7 +146,7 @@ export default function Users() {
 
                 <aside
                   className={`
-                  ${selectedUser || userNotFound ? 'hidden' : ''}
+                  ${selectedUser || isUserNotFound ? 'hidden' : ''}
                   w-full flex-shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col xl:w-96
                 `}
                 >
@@ -219,10 +219,10 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
 
   const result = await redirectIf(
     [
-      { destination: PagePath.SignIn, predicate: redirectionRules.isNotAuthenticated },
+      { destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated },
       {
         destination: PagePath.Dashboard,
-        predicate: redirectionRules.isNotInRoles([UserRole.Admin]),
+        predicate: redirectionPredicates.isNotInRoles([UserRole.Admin]),
       },
     ],
     ctx,
