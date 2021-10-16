@@ -1,5 +1,5 @@
 import { RetrievePasswordForm } from '@/components';
-import { redirectIf, redirectionRules } from '@/lib/api';
+import { redirectIf, redirectionPredicates } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -18,7 +18,7 @@ export default function RetrievePassword() {
 
 export const getServerSideProps: GetServerSideProps<Record<string, never>> = async (ctx) => {
   const result = await redirectIf(
-    [{ destination: PagePath.Dashboard, predicate: redirectionRules.isAuthenticated }],
+    [{ destination: PagePath.Dashboard, predicate: redirectionPredicates.isAuthenticated }],
     ctx,
   );
 

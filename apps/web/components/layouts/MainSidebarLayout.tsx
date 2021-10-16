@@ -1,5 +1,5 @@
 import { Link } from '@/components';
-import { redirectIf, redirectionRules, useProfileQuery, useSignOutMutation } from '@/lib/api';
+import { redirectIf, redirectionPredicates, useProfileQuery, useSignOutMutation } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import { globalNavigation, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
@@ -243,7 +243,7 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
   const queryClient = new DefaultQueryClient();
 
   const result = await redirectIf(
-    [{ destination: PagePath.SignIn, predicate: redirectionRules.isNotAuthenticated }],
+    [{ destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated }],
     ctx,
     queryClient,
   );
