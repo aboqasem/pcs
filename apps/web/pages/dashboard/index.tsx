@@ -1,21 +1,16 @@
-import { redirectIf, redirectionRules, useProfileQuery, useSignOutMutation } from '@/lib/api';
+import { Link, MainSidebarLayout } from '@/components';
+import { redirectIf, redirectionRules, useProfileQuery } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { PagePath } from '@/lib/constants';
+import { dashboardActions, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useCallback } from 'react';
+import { BsArrowUpRight } from 'react-icons/bs';
 import { dehydrate } from 'react-query';
 
 export default function Dashboard() {
   const profileQuery = useProfileQuery();
   const { data: profile } = profileQuery;
-
-  const signOutMutation = useSignOutMutation();
-
-  const onSignOutClick = useCallback(() => {
-    signOutMutation.mutate();
-  }, [signOutMutation]);
 
   if (!profile) {
     return null;
@@ -27,23 +22,57 @@ export default function Dashboard() {
         <title>Dashboard</title>
       </Head>
 
-      <main className="flex items-start justify-between m-6">
-        <div>
-          <h1 className="pl-5 text-3xl">Welcome, {profile.fullName}!</h1>
-          <h2 className="pt-5 pl-5 text-2xl">
-            You are <strong className="font-semibold">{profile.role}</strong>
-          </h2>
+      <MainSidebarLayout>
+        <div className="flex flex-col px-4 m-6 mx-auto space-y-8 max-w-7xl sm:px-6 md:px-8">
+          <div>
+            <h1 className="text-3xl">Welcome, {profile.fullName}!</h1>
+          </div>
+
+          <div className="overflow-hidden bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
+            {dashboardActions[profile.role].map((action, i) => (
+              <div
+                key={action.title}
+                className={`
+                  ${i === 0 ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none' : ''}
+                  ${i === 1 ? 'sm:rounded-tr-lg' : ''}
+                  ${i === dashboardActions[profile.role].length - 2 ? 'sm:rounded-bl-lg' : ''}
+                  ${
+                    i === dashboardActions[profile.role].length - 1
+                      ? 'rounded-bl-lg rounded-br-lg sm:rounded-bl-none'
+                      : ''
+                  }
+                  relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500
+                `}
+              >
+                <div>
+                  <span
+                    className={`${action.iconColors} rounded-lg inline-flex p-3 ring-4 ring-white`}
+                  >
+                    <action.icon className="w-6 h-6" aria-hidden="true" />
+                  </span>
+                </div>
+
+                <div className="mt-8">
+                  <h3 className="text-lg font-medium">
+                    <Link href={action.href} className="focus:outline-none">
+                      {/* Extend touch target to entire panel */}
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      {action.title}
+                    </Link>
+                  </h3>
+                </div>
+
+                <span
+                  className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                  aria-hidden="true"
+                >
+                  <BsArrowUpRight className="w-6 h-6" />
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div>
-          <button
-            onClick={onSignOutClick}
-            disabled={signOutMutation.isLoading || !!signOutMutation.data}
-            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm disabled:opacity-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Sign out
-          </button>
-        </div>
-      </main>
+      </MainSidebarLayout>
     </>
   );
 }

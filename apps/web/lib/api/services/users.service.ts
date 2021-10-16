@@ -15,8 +15,12 @@ import {
 
 export const usersQueryKeys = {
   all: ['users'] as const,
+  list: () => [...usersQueryKeys.all, 'list'] as const,
   profile: () => [...usersQueryKeys.all, 'profile'] as const,
 };
+
+export type TAllUsersData = UserDto[];
+export type TAllUsersQueryKey = ReturnType<typeof usersQueryKeys.list>;
 
 export type TGetProfileData = UserDto;
 export type TGetProfileQueryKey = ReturnType<typeof usersQueryKeys.profile>;
@@ -25,6 +29,11 @@ export type TCreateUsersBody = CreateUsersDto;
 export type TCreateUsersData = CreatedUsersDto;
 
 export class UsersService {
+  static getAll = async (cookie?: string): Promise<TAllUsersData> => {
+    const options = cookie ? { headers: { cookie } } : {};
+    return bffAxios.get(BffPath.Users, options);
+  };
+
   static getProfile = async (cookie?: string): Promise<TGetProfileData> => {
     const options = cookie ? { headers: { cookie } } : {};
     return bffAxios.get(BffPath.Profile, options);
@@ -33,6 +42,15 @@ export class UsersService {
   static createUsers = async (body: TCreateUsersBody): Promise<TCreateUsersData> => {
     return bffAxios.post(BffPath.Users, body);
   };
+}
+
+export function useAllUsersQuery<TData = TAllUsersData>(
+  options?: UseQueryOptions<TAllUsersData, Error, TData, TAllUsersQueryKey>,
+) {
+  return useQuery(usersQueryKeys.list(), () => UsersService.getAll(), {
+    staleTime: 60 * 1000,
+    ...options,
+  });
 }
 
 export function useProfileQuery<TData = TGetProfileData>(

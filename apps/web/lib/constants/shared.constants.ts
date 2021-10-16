@@ -5,6 +5,8 @@ export enum PagePath {
   RetrievePassword = '/auth/retrieve-password',
 
   Dashboard = '/dashboard',
+
+  Users = '/users',
 }
 
 export enum BffPath {
