@@ -15,10 +15,3 @@ export const SetMetadata = <K = string, V = any>(
   decoratorFactory.KEY = metadataKey;
   return decoratorFactory;
 };
-
-export const FILTER_BY_VALIDATE_IF_KEY = 'FILTER_BY_VALIDATE_IF';
-/**
- * We added this to enable filtering by `validateIf` on schemas.
- */
-export const FilterByValidateIfFn = (value = true): TCustomDecorator<string> =>
-  SetMetadata(FILTER_BY_VALIDATE_IF_KEY, value);

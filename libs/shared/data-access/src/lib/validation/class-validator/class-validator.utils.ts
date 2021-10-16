@@ -1,23 +1,23 @@
 import { ValidationError } from 'class-validator';
-import { TValidateIfFn } from '../validation.types';
+import { TConstraintEnabledFn } from '../validation.types';
 
-export function filterErrorsConstraintsByValidateIfFns(errors: ValidationError[]): void {
-  emptyErrorsConstraintsByValidateIfFns(errors);
+export function filterDisabledErrorsConstraints(errors: ValidationError[]): void {
+  emptyErrorsFromDisabledConstraints(errors);
   filterEmptyErrors(errors);
 }
 
-function emptyErrorsConstraintsByValidateIfFns(errors: ValidationError[]): void {
+function emptyErrorsFromDisabledConstraints(errors: ValidationError[]): void {
   errors.forEach((e) => {
     if (e.children) {
-      emptyErrorsConstraintsByValidateIfFns(e.children);
+      emptyErrorsFromDisabledConstraints(e.children);
     }
     const constraintKeys = Object.keys(e.constraints ?? {});
 
     if (constraintKeys.length) {
       constraintKeys.forEach((key) => {
-        const validateIf: TValidateIfFn | undefined = e.contexts?.[key]?.validateIf;
-        if (validateIf && typeof validateIf === 'function' && e.target) {
-          if (!validateIf(e.target, e.property)) {
+        const enabledFn: TConstraintEnabledFn | undefined = e.contexts?.[key]?.enabled;
+        if (enabledFn && typeof enabledFn === 'function' && e.target) {
+          if (!enabledFn(e.target, e.property)) {
             delete e.constraints![key];
           }
         }

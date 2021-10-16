@@ -51,12 +51,9 @@ export function IsUserEmail<Target = any>(
 
 export function IsUserUsernameOrEmail(): PropertyDecorator {
   return function (target: Object, propertyKey: string | symbol) {
-    IsUserUsername({ context: { validateIf: (t, p) => !t[p]?.includes('@') } })(
-      target,
-      propertyKey,
-    );
+    IsUserUsername({ context: { enabled: (t, p) => !t[p]?.includes('@') } })(target, propertyKey);
 
-    IsUserEmail({ context: { validateIf: (t, p) => t[p]?.includes('@') } })(target, propertyKey);
+    IsUserEmail({ context: { enabled: (t, p) => t[p]?.includes('@') } })(target, propertyKey);
   };
 }
 
