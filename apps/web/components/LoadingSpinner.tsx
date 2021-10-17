@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { ImSpinner2 } from 'react-icons/im';
 import { IconBaseProps } from 'react-icons/lib';
 

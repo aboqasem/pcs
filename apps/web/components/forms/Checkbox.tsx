@@ -1,10 +1,4 @@
-import React, {
-  DetailedHTMLProps,
-  ForwardedRef,
-  forwardRef,
-  InputHTMLAttributes,
-  memo,
-} from 'react';
+import { DetailedHTMLProps, ForwardedRef, forwardRef, InputHTMLAttributes, memo } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 export type TCheckboxProps = DetailedHTMLProps<

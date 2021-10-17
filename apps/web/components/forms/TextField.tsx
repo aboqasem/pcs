@@ -1,11 +1,11 @@
 import { TPropsErrors } from '@pcs/shared-data-access';
-import React, { ForwardedRef, forwardRef, memo, useState } from 'react';
+import { ForwardedRef, forwardRef, HTMLProps, memo, useState } from 'react';
 import { ChangeHandler, Control, FieldValues, Path, useFormState } from 'react-hook-form';
 import { BiHide, BiShow } from 'react-icons/bi';
 import { HiExclamationCircle } from 'react-icons/hi';
 
 export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Omit<
-  React.HTMLProps<HTMLInputElement>,
+  HTMLProps<HTMLInputElement>,
   'name' | 'onBlur' | 'onChange' | 'autoComplete'
 > & {
   name: string;

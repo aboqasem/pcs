@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import { memo, PropsWithChildren } from 'react';
 
-export interface IOverlayProps extends React.PropsWithChildren<Record<string, unknown>> {
+export interface IOverlayProps extends PropsWithChildren<Record<string, unknown>> {
   className?: string;
 }
 

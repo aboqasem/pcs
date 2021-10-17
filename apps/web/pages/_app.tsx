@@ -18,10 +18,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>PCS — The Programming Classwork System</title>
       </Head>
+
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <Globals />
+
           <Component {...pageProps} />
+
           <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'} />
         </Hydrate>
       </QueryClientProvider>

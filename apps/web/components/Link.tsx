@@ -1,7 +1,7 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
-import { memo, useMemo } from 'react';
+import { memo, PropsWithChildren, useMemo } from 'react';
 
-export interface ILinkProps extends React.PropsWithChildren<NextLinkProps> {
+export interface ILinkProps extends PropsWithChildren<NextLinkProps> {
   className?: string;
 }
 
