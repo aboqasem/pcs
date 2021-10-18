@@ -16,7 +16,7 @@ export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Om
 } & (
     | {
         password: true;
-        autoComplete: 'new-password' | 'current-password';
+        autoComplete?: 'new-password' | 'current-password';
       }
     | {
         password?: false;
@@ -38,7 +38,7 @@ export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Om
 
 export const TextField = memo(
   forwardRef(function <TFieldValues extends FieldValues = FieldValues>(
-    { label, password: isPassword, control, ...props }: TTextFieldProps<TFieldValues>,
+    { label, password: isPassword, required, control, ...props }: TTextFieldProps<TFieldValues>,
     forwardedRef: ForwardedRef<HTMLInputElement>,
   ) {
     const name = props.name as Path<TFieldValues>;
@@ -57,20 +57,30 @@ export const TextField = memo(
       <FormField name={name} control={control}>
         {({ errors }) => (
           <div>
-            <label
-              htmlFor={id}
-              className={`
-                  block text-sm font-medium text-gray-700
-                  ${label ? '' : 'sr-only'}
-                `}
-            >
-              {label ?? props.placeholder}
-            </label>
+            <div className="flex justify-between">
+              <div>
+                <label
+                  htmlFor={id}
+                  className={`
+                    block text-sm font-medium text-gray-700
+                    ${label ? '' : 'sr-only'}
+                  `}
+                >
+                  {label ?? props.placeholder}
+                </label>
+              </div>
+
+              {!required && (
+                <span className="block text-sm text-gray-500" id={`${id}-optional`}>
+                  Optional
+                </span>
+              )}
+            </div>
 
             <div
               className={`
                  relative
-                 ${label ? 'mt-1' : ''}
+                 ${label || !required ? 'mt-1' : ''}
                `}
             >
               {PlaceholderIcon && (
@@ -80,7 +90,6 @@ export const TextField = memo(
               )}
 
               <input
-                autoComplete="off"
                 aria-invalid={!!errors}
                 aria-describedby={errors ? `${id}-error` : undefined}
                 {...props}
@@ -88,6 +97,7 @@ export const TextField = memo(
                 ref={forwardedRef}
                 name={name}
                 type={inputType}
+                autoComplete={props.autoComplete || 'off'}
                 className={`
                     ${
                       errors

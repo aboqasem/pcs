@@ -66,6 +66,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
           <div className="relative px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             <form onSubmit={onSubmit} className="space-y-6">
               <TextField
+                required
                 {...register('username')}
                 label="Username or email address"
                 autoComplete="email"
@@ -74,6 +75,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
               />
 
               <TextField
+                required
                 {...register('password')}
                 password
                 label="Password"
