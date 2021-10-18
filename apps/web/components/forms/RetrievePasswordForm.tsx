@@ -68,6 +68,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
         <div className="relative px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
             <TextField
+              required
               {...register('email')}
               label="Email address"
               autoComplete="email"
