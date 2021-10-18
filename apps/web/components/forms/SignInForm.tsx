@@ -82,7 +82,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
               />
 
               <div className="flex items-center justify-between">
-                <Checkbox label="Remember me" {...register('rememberMe')} />
+                <Checkbox label="Remember me" {...register('rememberMe')} control={control} />
                 <div className="text-sm">
                   <Link
                     href={forgotPasswordHref.current}
