@@ -1,4 +1,5 @@
 export * from './forms/elements/Checkbox';
+export * from './forms/elements/SelectMenu';
 export * from './forms/elements/TextField';
 export * from './forms/RetrievePasswordForm';
 export * from './forms/SignInForm';

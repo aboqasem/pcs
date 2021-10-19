@@ -1,4 +1,5 @@
 import { Link, MainSidebarLayout } from '@/components';
+import { CreateUsersForm } from '@/components/forms/CreateUsersForm';
 import { redirectIf, redirectionPredicates, useAllUsersQuery, useProfileQuery } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import { PagePath } from '@/lib/constants';
@@ -7,11 +8,12 @@ import { TPropsWithDehydratedState } from '@/lib/types';
 import { capitalize, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { HiChevronLeft, HiOutlineUser, HiUser } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
 
 export default function Users() {
+  const [isCreateUsersFormShown, setIsCreateUsersFormShown] = useState(false);
   const userIdQueryParam = useQueryParam<string>('id');
   const selectedUserId = +(userIdQueryParam || NaN);
 
@@ -31,6 +33,9 @@ export default function Users() {
     [users, selectedUserId],
   );
   const isUserNotFound = !isNaN(selectedUserId) && !selectedUser;
+
+  const openCreateUsersForm = useCallback(() => setIsCreateUsersFormShown(true), []);
+  const closeCreateUsersForm = useCallback(() => setIsCreateUsersFormShown(false), []);
 
   const usersSections = useRef(['Instructors', 'Students'] as const);
 
@@ -152,6 +157,15 @@ export default function Users() {
                 >
                   <div className="px-6 pt-6 pb-4">
                     <h2 className="text-lg font-medium text-gray-900">Users</h2>
+                    <div className="flex flex-col justify-stretch">
+                      <button
+                        type="button"
+                        className="inline-flex items-center justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
+                        onClick={openCreateUsersForm}
+                      >
+                        Create users
+                      </button>
+                    </div>
                   </div>
 
                   {/* Users list */}
@@ -210,6 +224,8 @@ export default function Users() {
           </div>
         </div>
       </MainSidebarLayout>
+
+      <CreateUsersForm isShown={isCreateUsersFormShown} close={closeCreateUsersForm} />
     </>
   );
 }
