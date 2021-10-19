@@ -9,7 +9,7 @@ import { capitalize, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { HiChevronLeft, HiOutlineUser, HiUser } from 'react-icons/hi';
+import { HiChevronLeft, HiOutlineUser, HiPlus, HiUser, HiUsers } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
 
 export default function Users() {
@@ -171,9 +171,9 @@ export default function Users() {
                   {/* Users list */}
                   <nav className="flex-1 min-h-0 overflow-y-auto" aria-label="Users">
                     {usersSections.current.map((role) => {
-                      const users = role === 'Instructors' ? instructors : students;
+                      const sectionUsers = role === 'Instructors' ? instructors : students;
 
-                      if (users.length === 0) {
+                      if (sectionUsers.length === 0) {
                         return null;
                       }
 
@@ -184,7 +184,7 @@ export default function Users() {
                           </div>
 
                           <ul role="list" className="relative z-0 divide-y divide-gray-200">
-                            {users.map((u) => {
+                            {sectionUsers.map((u) => {
                               const isCurrent = selectedUserId === u.id;
 
                               return (
@@ -220,7 +220,24 @@ export default function Users() {
                   </nav>
                 </aside>
               </div>
-            ) : null}
+            ) : (
+              <div className="flex flex-col items-center justify-center flex-1 text-center">
+                <HiUsers className="w-12 h-12 mx-auto text-gray-400" aria-hidden="true" />
+                <h3 className="mt-2 text-sm font-medium text-gray-900">No users</h3>
+                <p className="mt-1 text-sm text-gray-500">Start by creating new users.</p>
+
+                <div className="mt-6">
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    onClick={openCreateUsersForm}
+                  >
+                    <HiPlus className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
+                    Create Users
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </MainSidebarLayout>
