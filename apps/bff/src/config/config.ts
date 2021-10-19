@@ -115,7 +115,7 @@ class Configurations {
   /**
    * 'off' in production
    */
-  @Transform(({ value }) => value === 'false')
+  @Transform(({ value }) => value !== 'false')
   readonly SENDGRID_SANDBOX = !isProduction;
 
   @IsUrl({ require_tld: isProduction })
