@@ -86,8 +86,8 @@ export class UsersService {
         ]);
 
         if (usernameError || emailError) {
-          usersErrors[`users.${i}.username` as any] = { message: usernameError };
-          usersErrors[`users.${i}.email` as any] = { message: emailError };
+          usernameError && (usersErrors[`users.${i}.username` as any] = { message: usernameError });
+          emailError && (usersErrors[`users.${i}.email` as any] = { message: emailError });
 
           throw new ValidationException(usersErrors);
         }
