@@ -1,4 +1,4 @@
-import { Link, MainSidebarLayout } from '@/components';
+import { Link, LoadingSpinner, MainSidebarLayout } from '@/components';
 import { CreateUsersForm } from '@/components/forms/CreateUsersForm';
 import { redirectIf, redirectionPredicates, useAllUsersQuery, useProfileQuery } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
@@ -23,6 +23,7 @@ export default function Users() {
   const usersQuery = useAllUsersQuery({
     select: (users) => users.filter((u) => u.role !== UserRole.Admin),
   });
+  const areUsersLoading = usersQuery.isLoading;
   const users = useMemo(() => usersQuery.data ?? [], [usersQuery.data]);
 
   const instructors = useMemo(() => users.filter((u) => u.role === UserRole.Instructor), [users]);
@@ -222,20 +223,26 @@ export default function Users() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center flex-1 text-center">
-                <HiUsers className="w-12 h-12 mx-auto text-gray-400" aria-hidden="true" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No users</h3>
-                <p className="mt-1 text-sm text-gray-500">Start by creating new users.</p>
+                {areUsersLoading ? (
+                  <LoadingSpinner className="w-16 h-16" />
+                ) : (
+                  <>
+                    <HiUsers className="w-12 h-12 mx-auto text-gray-400" aria-hidden="true" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">No users</h3>
+                    <p className="mt-1 text-sm text-gray-500">Start by creating new users.</p>
 
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    onClick={openCreateUsersForm}
-                  >
-                    <HiPlus className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-                    Create Users
-                  </button>
-                </div>
+                    <div className="mt-6">
+                      <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        onClick={openCreateUsersForm}
+                      >
+                        <HiPlus className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
+                        Create Users
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
