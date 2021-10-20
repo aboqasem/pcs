@@ -17,8 +17,8 @@ export function validationErrorsToPropsErrors<T extends Record<string, any> = Re
     .reduce((propsErrors, errorConstraint) => {
       const property = firstWord(errorConstraint) as Path<T>;
       const constraint = capitalize(withoutFirstWord(errorConstraint));
-      if (propsErrors[property]) {
-        propsErrors[property]!.message = `${propsErrors[property]}\n${constraint}`;
+      if (propsErrors[property]?.message) {
+        propsErrors[property]!.message = `${propsErrors[property]!.message}\n${constraint}`;
       } else {
         propsErrors[property] = { message: constraint };
       }
