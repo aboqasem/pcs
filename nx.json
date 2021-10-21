@@ -26,22 +26,17 @@
       }
     ]
   },
-  "projects": {
-    "bff": {
-      "tags": []
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
     },
-    "shared-data-access": {
-      "tags": []
-    },
-    "shared-mapped-types": {
-      "tags": []
-    },
-    "web": {
-      "tags": []
-    },
-    "web-e2e": {
-      "tags": [],
-      "implicitDependencies": ["web"]
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   }
 }

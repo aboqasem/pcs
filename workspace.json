@@ -44,7 +44,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "shared-data-access": {
       "root": "libs/shared/data-access",
@@ -65,7 +66,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "shared-mapped-types": {
       "root": "libs/shared/mapped-types",
@@ -96,7 +98,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "web": {
       "root": "apps/web",
@@ -148,7 +151,8 @@
             "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
           }
         }
-      }
+      },
+      "tags": []
     },
     "web-e2e": {
       "root": "apps/web-e2e",
@@ -174,20 +178,9 @@
             "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
           }
         }
-      }
-    }
-  },
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["web"]
     }
   }
 }
