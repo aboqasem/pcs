@@ -17,7 +17,7 @@ export class UsersController {
 
   @Get()
   @UserAuth({ roles: [UserRole.Admin] })
-  async getAll(): Promise<UserDto[]> {
+  async getAllUsers(): Promise<UserDto[]> {
     return this.usersService.getAllUsers();
   }
 

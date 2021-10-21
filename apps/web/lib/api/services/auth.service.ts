@@ -36,7 +36,7 @@ export function useSignInMutation(
   return useMutation(AuthService.signIn, {
     onSettled: (user) => {
       if (user) {
-        queryCLient.setQueryData(usersQueryKeys.profile(), user);
+        queryCLient.setQueryData(usersQueryKeys.getProfile(), user);
       }
     },
     onError: (error) => {

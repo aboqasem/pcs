@@ -15,21 +15,21 @@ import {
 
 export const usersQueryKeys = {
   all: ['users'] as const,
-  list: () => [...usersQueryKeys.all, 'list'] as const,
-  profile: () => [...usersQueryKeys.all, 'profile'] as const,
+  getAllUsers: () => [...usersQueryKeys.all, 'get', 'all'] as const,
+  getProfile: () => [...usersQueryKeys.all, 'profile', 'get'] as const,
 };
 
-export type TAllUsersData = UserDto[];
-export type TAllUsersQueryKey = ReturnType<typeof usersQueryKeys.list>;
+export type TGetAllUsersData = UserDto[];
+export type TGetAllUsersQueryKey = ReturnType<typeof usersQueryKeys.getAllUsers>;
 
 export type TGetProfileData = UserDto;
-export type TGetProfileQueryKey = ReturnType<typeof usersQueryKeys.profile>;
+export type TGetProfileQueryKey = ReturnType<typeof usersQueryKeys.getProfile>;
 
 export type TCreateUsersBody = CreateUsersDto;
 export type TCreateUsersData = CreatedUsersDto;
 
 export class UsersService {
-  static getAll = async (cookie?: string): Promise<TAllUsersData> => {
+  static getAllUsers = async (cookie?: string): Promise<TGetAllUsersData> => {
     const options = cookie ? { headers: { cookie } } : {};
     return bffAxios.get(BffPath.Users, options);
   };
@@ -44,10 +44,10 @@ export class UsersService {
   };
 }
 
-export function useAllUsersQuery<TData = TAllUsersData>(
-  options?: UseQueryOptions<TAllUsersData, Error, TData, TAllUsersQueryKey>,
+export function useAllUsersQuery<TData = TGetAllUsersData>(
+  options?: UseQueryOptions<TGetAllUsersData, Error, TData, TGetAllUsersQueryKey>,
 ) {
-  return useQuery(usersQueryKeys.list(), () => UsersService.getAll(), {
+  return useQuery(usersQueryKeys.getAllUsers(), () => UsersService.getAllUsers(), {
     staleTime: 60 * 1000,
     ...options,
   });
@@ -59,7 +59,7 @@ export function useProfileQuery<TData = TGetProfileData>(
   const queryCLient = useQueryClient();
   const { push } = useRouter();
 
-  return useQuery(usersQueryKeys.profile(), () => UsersService.getProfile(), {
+  return useQuery(usersQueryKeys.getProfile(), () => UsersService.getProfile(), {
     staleTime: 60 * 1000,
     onSettled: async (user, error) => {
       if (!user) {
@@ -83,7 +83,7 @@ export function fetchProfile<TData = TGetProfileData>(
 ) {
   if (queryClient) {
     return queryClient.fetchQuery(
-      usersQueryKeys.profile(),
+      usersQueryKeys.getProfile(),
       () => UsersService.getProfile(cookie),
       options,
     );
