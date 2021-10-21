@@ -1,5 +1,4 @@
-import { Link, LoadingSpinner, MainSidebarLayout } from '@/components';
-import { CreateUsersForm } from '@/components/forms/CreateUsersForm';
+import { CreateUsersForm, Link, LoadingSpinner, MainSidebarLayout } from '@/components';
 import { redirectIf, redirectionPredicates, useAllUsersQuery, useProfileQuery } from '@/lib/api';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import { PagePath } from '@/lib/constants';
