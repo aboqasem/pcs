@@ -15,7 +15,7 @@ export const dashboardActions = {
       title: 'Manage students',
       href: PagePath.Users,
       icon: HiUsers,
-      iconColors: 'bg-indigo-50 text-indigo-700',
+      iconColors: 'bg-blue-50 text-blue-700',
     },
   ],
   [UserRole.Instructor]: [],
