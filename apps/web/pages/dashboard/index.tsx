@@ -28,48 +28,38 @@ export default function Dashboard() {
             <h1 className="text-3xl">Welcome, {profile.fullName}!</h1>
           </div>
 
-          <div className="overflow-hidden bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
-            {dashboardActions[profile.role].map((action, i) => (
-              <div
-                key={action.title}
-                className={`
-                  ${i === 0 ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none' : ''}
-                  ${i === 1 ? 'sm:rounded-tr-lg' : ''}
-                  ${i === dashboardActions[profile.role].length - 2 ? 'sm:rounded-bl-lg' : ''}
-                  ${
-                    i === dashboardActions[profile.role].length - 1
-                      ? 'rounded-bl-lg rounded-br-lg sm:rounded-bl-none'
-                      : ''
-                  }
-                  relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500
-                `}
-              >
-                <div>
-                  <span
-                    className={`${action.iconColors} rounded-lg inline-flex p-3 ring-4 ring-white`}
-                  >
-                    <action.icon className="w-6 h-6" aria-hidden="true" />
-                  </span>
-                </div>
-
-                <div className="mt-8">
-                  <h3 className="text-lg font-medium">
-                    <Link href={action.href} className="focus:outline-none">
-                      {/* Extend touch target to entire panel */}
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      {action.title}
-                    </Link>
-                  </h3>
-                </div>
-
-                <span
-                  className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
-                  aria-hidden="true"
+          <div className="overflow-hidden bg-white rounded-md shadow">
+            <ul role="list" className="divide-y divide-gray-200">
+              {dashboardActions[profile.role].map((action) => (
+                <li
+                  key={action.title}
+                  className="relative px-8 py-10 bg-white lg:px-12 group focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500"
                 >
-                  <BsArrowUpRight className="w-6 h-6" />
-                </span>
-              </div>
-            ))}
+                  <div className="flex items-center space-x-4">
+                    <span
+                      className={`${action.iconColors} rounded-lg inline-flex p-3 ring-4 ring-white`}
+                    >
+                      <action.icon className="w-6 h-6" aria-hidden="true" />
+                    </span>
+
+                    <h3 className="text-lg font-medium">
+                      <Link href={action.href} className="focus:outline-none">
+                        {/* Extend touch target to entire panel */}
+                        <span className="absolute inset-0" aria-hidden="true" />
+                        {action.title}
+                      </Link>
+                    </h3>
+                  </div>
+
+                  <span
+                    className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                    aria-hidden="true"
+                  >
+                    <BsArrowUpRight className="w-6 h-6" />
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </MainSidebarLayout>
