@@ -10,4 +10,4 @@ RUN npm install -g pnpm@latest
 
 RUN pnpm config set store-dir /.pnpm-store
 
-CMD ./scripts/entry-point.dev.js
+CMD ./scripts/bin/entry-point.dev.js
