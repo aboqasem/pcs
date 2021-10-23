@@ -12,7 +12,7 @@ import { TCustomValidationOptions } from '../validation/validation.types';
 import { UserRole } from './users.types';
 
 export function IsUserId(): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     IsNumber()(target, propertyKey);
   };
 }
@@ -20,7 +20,7 @@ export function IsUserId(): PropertyDecorator {
 export function IsUserUsername<Target = any>(
   validationOptions?: TCustomValidationOptions<Target>,
 ): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     Length(3, 15, validationOptions)(target, propertyKey);
 
     Matches(/^[a-zA-Z0-9._]*$/, {
@@ -44,13 +44,13 @@ export function IsUserUsername<Target = any>(
 export function IsUserEmail<Target = any>(
   validationOptions?: TCustomValidationOptions<Target>,
 ): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     IsEmail({}, validationOptions)(target, propertyKey);
   };
 }
 
 export function IsUserUsernameOrEmail(): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     IsUserUsername({ context: { enabled: (t, p) => !t[p]?.includes('@') } })(target, propertyKey);
 
     IsUserEmail({ context: { enabled: (t, p) => t[p]?.includes('@') } })(target, propertyKey);
@@ -58,7 +58,7 @@ export function IsUserUsernameOrEmail(): PropertyDecorator {
 }
 
 export function IsUserFullName(): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     Length(5, 255)(target, propertyKey);
 
     Matches(/^[A-Za-z\-.' ]*$/, {
@@ -78,13 +78,13 @@ export function IsUserFullName(): PropertyDecorator {
 }
 
 export function IsUserRole(): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+  return function (target, propertyKey) {
     IsEnum(UserRole)(target, propertyKey);
   };
 }
 
-export function IsPassword(): PropertyDecorator {
-  return function (target: Object, propertyKey: string | symbol) {
+export function IsUserPassword(): PropertyDecorator {
+  return function (target, propertyKey) {
     MinLength(8)(target, propertyKey);
 
     IsString()(target, propertyKey);

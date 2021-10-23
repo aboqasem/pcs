@@ -11,10 +11,10 @@ import {
 } from 'class-validator';
 import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
-  IsPassword,
   IsUserEmail,
   IsUserFullName,
   IsUserId,
+  IsUserPassword,
   IsUserRole,
   IsUserUsername,
   IsUserUsernameOrEmail,
@@ -40,7 +40,7 @@ export class User {
   @IsBoolean()
   isActive = true;
 
-  @IsPassword()
+  @IsUserPassword()
   password!: string;
 }
 
@@ -54,7 +54,7 @@ export class UserDto extends PickType(User, [
 ]) {}
 
 export class CreateUserDto extends PickType(User, ['email', 'username', 'fullName', 'role']) {
-  @IsPassword()
+  @IsUserPassword()
   @IsOptional()
   @Transform(({ value }) => (value === '' ? undefined : value))
   password?: string;
