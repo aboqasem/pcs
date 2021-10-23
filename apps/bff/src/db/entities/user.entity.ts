@@ -1,8 +1,8 @@
-import { User as UserType, UserRole } from '@pcs/shared-data-access';
+import { User, UserRole } from '@pcs/shared-data-access';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
-export class UserEntity extends UserType {
+export class UserEntity extends User {
   @PrimaryGeneratedColumn()
   id!: number;
 

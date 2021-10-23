@@ -1,4 +1,6 @@
-import { plainToClass } from 'class-transformer';
+import { transformToOtherSync } from '../shared/transformation.utils';
 import { User, UserDto } from './users.classes';
 
-export const userToUserDto = ({ password: _, ...dto }: User): UserDto => plainToClass(UserDto, dto);
+export const userToUserDto = (user: User): UserDto => {
+  return transformToOtherSync(UserDto, user);
+};

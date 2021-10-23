@@ -1,4 +1,4 @@
-import { OmitType, PartialType, PickType } from '@aboqasem/mapped-types';
+import { PartialType, PickType } from '@aboqasem/mapped-types';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -44,9 +44,16 @@ export class User {
   password!: string;
 }
 
-export class UserDto extends OmitType(User, ['password']) {}
+export class UserDto extends PickType(User, [
+  'id',
+  'email',
+  'username',
+  'fullName',
+  'role',
+  'isActive',
+]) {}
 
-export class CreateUserDto extends OmitType(User, ['id', 'isActive', 'password']) {
+export class CreateUserDto extends PickType(User, ['email', 'username', 'fullName', 'role']) {
   @IsPassword()
   @IsOptional()
   @Transform(({ value }) => (value === '' ? undefined : value))

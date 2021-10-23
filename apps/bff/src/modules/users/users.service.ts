@@ -5,7 +5,6 @@ import {
   CreateUserDto,
   CreateUsersDto,
   TPropsErrors,
-  User,
   UserCredentials,
   UserDto,
   UserRole,
@@ -15,11 +14,18 @@ import {
 } from '@pcs/shared-data-access';
 import { plainToClass } from 'class-transformer';
 import { config } from 'src/config/config';
+import { UserEntity } from 'src/db/entities/user.entity';
 import { UsersRepository } from 'src/db/repositories/user.repository';
 import { EmailType } from 'src/modules/email/email.types';
 import { generateRandomPassword } from 'src/shared/shared.utils';
 import { FindConditions } from 'typeorm';
 import { EmailService } from '../email/email.service';
+
+type TUserSelect = (keyof UserEntity)[] | undefined;
+
+type TGetUser<TSelect extends TUserSelect> =
+  | (TSelect extends (keyof UserEntity)[] ? Pick<UserEntity, TSelect[number]> : UserDto)
+  | undefined;
 
 @Injectable()
 export class UsersService {
@@ -30,7 +36,7 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  async getAllUsers(conditions?: FindConditions<User> | undefined): Promise<UserDto[]> {
+  async getAllUsers(conditions?: FindConditions<UserEntity> | undefined): Promise<UserDto[]> {
     return this.usersRepository.find(conditions);
   }
 
@@ -148,9 +154,3 @@ export class UsersService {
     this.logger.log('Admin user created.');
   }
 }
-
-type TUserSelect = (keyof User)[] | undefined;
-
-type TGetUser<TSelect extends TUserSelect> =
-  | (TSelect extends (keyof User)[] ? Pick<User, TSelect[number]> : UserDto)
-  | undefined;
