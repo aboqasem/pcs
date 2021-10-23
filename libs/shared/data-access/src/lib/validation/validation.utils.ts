@@ -1,12 +1,9 @@
 import { isNotEmptyObject, ValidationError } from 'class-validator';
 import { iterate } from 'iterare';
-import { Path } from 'react-hook-form';
 import { capitalize, firstWord, withoutFirstWord } from '../shared/string.utils';
 import { TPropsErrors } from '../validation/validation.types';
 
-export function validationErrorsToPropsErrors<T extends Record<string, any> = Record<string, any>>(
-  validationErrors: ValidationError[],
-): TPropsErrors<T> {
+export function validationErrorsToPropsErrors(validationErrors: ValidationError[]): TPropsErrors {
   return iterate(validationErrors)
     .map((error) => mapChildrenToValidationErrors(error))
     .flatten()
@@ -15,7 +12,7 @@ export function validationErrorsToPropsErrors<T extends Record<string, any> = Re
     .flatten()
     .toArray()
     .reduce((propsErrors, errorConstraint) => {
-      const property = firstWord(errorConstraint) as Path<T>;
+      const property = firstWord(errorConstraint);
       const constraint = capitalize(withoutFirstWord(errorConstraint));
       if (propsErrors[property]?.message) {
         propsErrors[property]!.message = `${propsErrors[property]!.message}\n${constraint}`;
@@ -23,7 +20,7 @@ export function validationErrorsToPropsErrors<T extends Record<string, any> = Re
         propsErrors[property] = { message: constraint };
       }
       return propsErrors;
-    }, {} as TPropsErrors<T>);
+    }, {} as TPropsErrors);
 }
 
 function mapChildrenToValidationErrors(

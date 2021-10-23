@@ -35,7 +35,7 @@ export class AuthController {
     const foundAndSent = await this.authService.sendOwnPassword(dto.email);
 
     if (!foundAndSent) {
-      throw new BadPayloadException<RetrievePasswordDto>({ email: { message: 'Does not exist' } });
+      throw new BadPayloadException({ email: { message: 'Does not exist' } });
     }
 
     return true;

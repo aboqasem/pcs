@@ -2,17 +2,15 @@ import { validate, validationErrorsToPropsErrors } from '@pcs/shared-data-access
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { isNotEmptyObject } from 'class-validator';
 import { useCallback } from 'react';
-import { ResolverError, ResolverResult } from 'react-hook-form';
+import { FieldErrors, ResolverResult } from 'react-hook-form';
 
-export function useValidationResolver<T extends { [K in keyof T]: T[K] }>(
-  schema: ClassConstructor<T>,
+export function useValidationResolver<TSchema extends { [K in keyof TSchema]: TSchema[K] }>(
+  schema: ClassConstructor<TSchema>,
 ) {
   return useCallback(
-    async (object: T): Promise<ResolverResult<T>> => {
+    async (object: TSchema): Promise<ResolverResult<TSchema>> => {
       const values = plainToClass(schema, object);
-      const errors = validationErrorsToPropsErrors<T>(
-        await validate(values),
-      ) as ResolverError<T>['errors'];
+      const errors = validationErrorsToPropsErrors(await validate(values)) as FieldErrors<TSchema>;
 
       if (isNotEmptyObject(errors)) {
         return {

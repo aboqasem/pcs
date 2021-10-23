@@ -1,8 +1,7 @@
 import { ValidationOptions } from 'class-validator';
-import { Path } from 'react-hook-form';
 
-export type TPropsErrors<TSchema extends Record<string, any> = Record<string, any>> = {
-  [K in Path<TSchema>]?: { message?: string };
+export type TPropsErrors = {
+  [k: string]: { message?: string } | undefined;
 };
 
 export type TConstraintEnabledFn<TTarget = any> = (

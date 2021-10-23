@@ -75,7 +75,7 @@ export class UsersService {
   }
 
   async usersAreUnique({ users }: CreateUsersDto): Promise<void> {
-    const usersErrors: TPropsErrors<CreateUsersDto> = {};
+    const usersErrors: TPropsErrors = {};
     const ERROR_MSG = 'Has already been taken';
 
     await Promise.all(
@@ -86,8 +86,8 @@ export class UsersService {
         ]);
 
         if (usernameError || emailError) {
-          usernameError && (usersErrors[`users.${i}.username` as any] = { message: usernameError });
-          emailError && (usersErrors[`users.${i}.email` as any] = { message: emailError });
+          usernameError && (usersErrors[`users.${i}.username`] = { message: usernameError });
+          emailError && (usersErrors[`users.${i}.email`] = { message: emailError });
 
           throw new ValidationException(usersErrors);
         }

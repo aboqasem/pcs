@@ -22,7 +22,7 @@ export const FormField = memo(function <TFieldValues extends FieldValues = Field
   const error = lodashGet(formErrors, name);
 
   const errors = useMemo(() => {
-    const errors = (error as TPropsErrors<TFieldValues>[typeof name])?.message?.split('\n');
+    const errors = (error as TPropsErrors[typeof name])?.message?.split('\n');
     return errors && errors.length > 0 ? errors : undefined;
   }, [error]);
 
