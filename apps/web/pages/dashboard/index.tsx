@@ -1,6 +1,6 @@
-import { Link, MainSidebarLayout } from '@/components';
+import { Link, SidebarLayout } from '@/components';
 import { DefaultQueryClient, redirectIf, redirectionPredicates, useProfileQuery } from '@/lib/api';
-import { dashboardActions, PagePath } from '@/lib/constants';
+import { dashboardActions, globalNavigation, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -21,7 +21,7 @@ export default function Dashboard() {
         <title>Dashboard</title>
       </Head>
 
-      <MainSidebarLayout>
+      <SidebarLayout navigationItems={globalNavigation[profile.role]}>
         <div className="flex flex-col px-4 m-6 mx-auto space-y-8 max-w-7xl sm:px-6 md:px-8">
           <div>
             <h1 className="text-3xl">Welcome, {profile.fullName}!</h1>
@@ -61,7 +61,7 @@ export default function Dashboard() {
             </ul>
           </div>
         </div>
-      </MainSidebarLayout>
+      </SidebarLayout>
     </>
   );
 }

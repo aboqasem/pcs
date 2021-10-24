@@ -3,28 +3,32 @@ import {
   DefaultQueryClient,
   redirectIf,
   redirectionPredicates,
-  useProfileQuery,
   useSignOutMutation,
 } from '@/lib/api';
-import { globalNavigation, PagePath } from '@/lib/constants';
+import { PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { Dialog, Transition } from '@headlessui/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Fragment, memo, PropsWithChildren, useCallback, useState } from 'react';
 import { HiMenuAlt2, HiX } from 'react-icons/hi';
+import { IconType } from 'react-icons/lib';
 import { dehydrate } from 'react-query';
 
-export interface IMainSidebarLayoutProps extends PropsWithChildren<Record<string, unknown>> {}
+export interface ISidebarLayoutProps extends PropsWithChildren<Record<string, unknown>> {
+  navigationItems?: {
+    name: string;
+    href: string;
+    icon: IconType;
+  }[];
+}
 
-export const MainSidebarLayout = memo(function MainSidebarLayout({
+export const SidebarLayout = memo(function MainSidebarLayout({
   children,
-}: IMainSidebarLayoutProps) {
+  navigationItems,
+}: ISidebarLayoutProps) {
   const { pathname } = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const profileQuery = useProfileQuery();
-  const { data: profile } = profileQuery;
 
   const signOutMutation = useSignOutMutation();
   const isSignOutDisabled = !signOutMutation.isIdle || signOutMutation.isLoading;
@@ -36,10 +40,6 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
 
   const closeSidebar = useCallback(() => setIsSidebarOpen(false), []);
   const openSidebar = useCallback(() => setIsSidebarOpen(true), []);
-
-  if (!profile) {
-    return null;
-  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
@@ -98,15 +98,17 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
 
               <div className="flex-1 h-0 mt-5 overflow-y-auto">
                 <nav className="px-2" aria-label="Sidebar">
-                  <div className="space-y-1">
-                    {globalNavigation[profile.role].map((item) => {
-                      const isCurrent = pathname.startsWith(item.href);
+                  {!!navigationItems?.length && (
+                    <>
+                      <div className="space-y-1">
+                        {navigationItems.map((item) => {
+                          const isCurrent = pathname.startsWith(item.href);
 
-                      return (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={`
+                          return (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className={`
                             ${
                               isCurrent
                                 ? 'bg-gray-900 text-white'
@@ -114,9 +116,9 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
                             }
                             group flex items-center px-2 py-2 text-base font-medium rounded-md
                           `}
-                        >
-                          <item.icon
-                            className={`
+                            >
+                              <item.icon
+                                className={`
                               ${
                                 isCurrent
                                   ? 'text-gray-300'
@@ -124,15 +126,17 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
                               }
                               mr-4 flex-shrink-0 h-6 w-6
                             `}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </Link>
-                      );
-                    })}
-                  </div>
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
 
-                  <hr className="my-5 -mx-2 border-t border-gray-700" aria-hidden="true" />
+                      <hr className="my-5 -mx-2 border-t border-gray-700" aria-hidden="true" />
+                    </>
+                  )}
 
                   <div className="space-y-1">
                     <div className="flex flex-col justify-stretch">
@@ -172,15 +176,17 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
 
             <div className="flex flex-col flex-1 overflow-y-auto bg-gray-800">
               <nav className="flex-1 px-2 py-4" aria-label="Sidebar">
-                <div className="space-y-1">
-                  {globalNavigation[profile.role].map((item) => {
-                    const isCurrent = pathname.startsWith(item.href);
+                {!!navigationItems?.length && (
+                  <>
+                    <div className="space-y-1">
+                      {navigationItems.map((item) => {
+                        const isCurrent = pathname.startsWith(item.href);
 
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={`
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className={`
                             ${
                               isCurrent
                                 ? 'bg-gray-900 text-white'
@@ -188,9 +194,9 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
                             }
                             group flex items-center px-2 py-2 text-sm font-medium rounded-md
                           `}
-                      >
-                        <item.icon
-                          className={`
+                          >
+                            <item.icon
+                              className={`
                               ${
                                 isCurrent
                                   ? 'text-gray-300'
@@ -198,15 +204,16 @@ export const MainSidebarLayout = memo(function MainSidebarLayout({
                               }
                               mr-3 flex-shrink-0 h-6 w-6
                             `}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </div>
-
-                <hr className="my-5 -mx-2 border-t border-gray-700" aria-hidden="true" />
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                    <hr className="my-5 -mx-2 border-t border-gray-700" aria-hidden="true" />
+                  </>
+                )}
 
                 <div className="space-y-1">
                   <div className="flex flex-col justify-stretch">
