@@ -16,15 +16,17 @@ export type TRetrievePasswordData = true;
 
 export class AuthService {
   static signIn = async (body: TSignInBody): Promise<TSignInData> => {
-    return bffAxios.post(BffPath.SignIn, body);
+    return bffAxios.post<TSignInData>(BffPath.SignIn, body).then(({ data }) => data);
   };
 
   static signOut = async (): Promise<TSignOutData> => {
-    return bffAxios.post(BffPath.SignOut);
+    return bffAxios.post<TSignOutData>(BffPath.SignOut).then(({ data }) => data);
   };
 
   static retrievePassword = async (body: TRetrievePasswordBody): Promise<TRetrievePasswordData> => {
-    return bffAxios.post(BffPath.RetrievePassword, body);
+    return bffAxios
+      .post<TRetrievePasswordData>(BffPath.RetrievePassword, body)
+      .then(({ data }) => data);
   };
 }
 

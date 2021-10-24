@@ -31,16 +31,16 @@ export type TCreateUsersData = CreatedUsersDto;
 export class UsersService {
   static getAllUsers = async (cookie?: string): Promise<TGetAllUsersData> => {
     const options = cookie ? { headers: { cookie } } : {};
-    return bffAxios.get(BffPath.Users, options);
+    return bffAxios.get<TGetAllUsersData>(BffPath.Users, options).then(({ data }) => data);
   };
 
   static getProfile = async (cookie?: string): Promise<TGetProfileData> => {
     const options = cookie ? { headers: { cookie } } : {};
-    return bffAxios.get(BffPath.Profile, options);
+    return bffAxios.get<TGetProfileData>(BffPath.Profile, options).then(({ data }) => data);
   };
 
   static createUsers = async (body: TCreateUsersBody): Promise<TCreateUsersData> => {
-    return bffAxios.post(BffPath.Users, body);
+    return bffAxios.post<TCreateUsersData>(BffPath.Users, body).then(({ data }) => data);
   };
 }
 

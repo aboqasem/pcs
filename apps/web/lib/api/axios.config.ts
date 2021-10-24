@@ -17,7 +17,10 @@ bffAxios.interceptors.request.use(undefined, (error: { request: XMLHttpRequest }
 
 bffAxios.interceptors.response.use(
   // unwrap received data
-  ({ data }: AxiosResponse<unknown>) => (data as TAsData<unknown>).data,
+  ({ data, ...rest }: AxiosResponse<unknown>) => ({
+    ...rest,
+    data: (data as TAsData<unknown>).data,
+  }),
   (error) => {
     const data = error.response?.data;
     const status = data?.statusCode || error.response?.status;
