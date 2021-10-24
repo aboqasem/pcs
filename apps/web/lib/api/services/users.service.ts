@@ -1,6 +1,12 @@
 import { bffAxios } from '@/lib/api';
 import { BffPath, PagePath } from '@/lib/constants';
-import { CreatedUsersDto, CreateUsersDto, HttpException, UserDto } from '@pcs/shared-data-access';
+import {
+  CreatedUsersDto,
+  CreateUsersDto,
+  HttpException,
+  UserDto,
+  UserRole,
+} from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import {
@@ -52,8 +58,13 @@ export function useAllUsersQuery<TData = TGetAllUsersData>(
   });
 }
 
-export function useProfileQuery<TData = TGetProfileData>(
-  options?: UseQueryOptions<TGetProfileData, HttpException, TData, TGetProfileQueryKey>,
+export function useProfileQuery<TRole extends UserRole = UserRole, TData = TGetProfileData>(
+  options?: UseQueryOptions<
+    TGetProfileData,
+    HttpException,
+    Omit<TData, 'role'> & { role: TRole },
+    TGetProfileQueryKey
+  >,
 ) {
   const queryCLient = useQueryClient();
   const { push } = useRouter();
