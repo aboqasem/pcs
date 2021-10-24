@@ -48,7 +48,6 @@ export function useAllUsersQuery<TData = TGetAllUsersData>(
   options?: UseQueryOptions<TGetAllUsersData, Error, TData, TGetAllUsersQueryKey>,
 ) {
   return useQuery(usersQueryKeys.getAllUsers(), () => UsersService.getAllUsers(), {
-    staleTime: 60 * 1000,
     ...options,
   });
 }
@@ -60,7 +59,6 @@ export function useProfileQuery<TData = TGetProfileData>(
   const { push } = useRouter();
 
   return useQuery(usersQueryKeys.getProfile(), () => UsersService.getProfile(), {
-    staleTime: 60 * 1000,
     onSettled: async (user, error) => {
       if (!user) {
         await push(PagePath.SignIn);
