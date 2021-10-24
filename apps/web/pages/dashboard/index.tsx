@@ -1,6 +1,5 @@
 import { Link, MainSidebarLayout } from '@/components';
-import { redirectIf, redirectionPredicates, useProfileQuery } from '@/lib/api';
-import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import { DefaultQueryClient, redirectIf, redirectionPredicates, useProfileQuery } from '@/lib/api';
 import { dashboardActions, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { GetServerSideProps } from 'next';

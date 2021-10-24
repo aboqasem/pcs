@@ -1,6 +1,11 @@
 import { Link } from '@/components';
-import { redirectIf, redirectionPredicates, useProfileQuery, useSignOutMutation } from '@/lib/api';
-import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import {
+  DefaultQueryClient,
+  redirectIf,
+  redirectionPredicates,
+  useProfileQuery,
+  useSignOutMutation,
+} from '@/lib/api';
 import { globalNavigation, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { Dialog, Transition } from '@headlessui/react';

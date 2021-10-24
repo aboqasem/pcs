@@ -1,5 +1,4 @@
-import { usersQueryKeys } from '@/lib/api';
-import { bffAxios } from '@/lib/api/axios.config';
+import { bffAxios, usersQueryKeys } from '@/lib/api';
 import { BffPath, PagePath } from '@/lib/constants';
 import { HttpException, RetrievePasswordDto, SignInDto, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';

@@ -1,4 +1,4 @@
-import { bffAxios } from '@/lib/api/axios.config';
+import { bffAxios } from '@/lib/api';
 import { BffPath, PagePath } from '@/lib/constants';
 import { CreatedUsersDto, CreateUsersDto, HttpException, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
