@@ -1,4 +1,5 @@
 import { Listbox, Transition } from '@headlessui/react';
+import { TReplace } from '@pcs/shared-data-access';
 import { Fragment, HTMLProps, memo, useCallback, useState } from 'react';
 import {
   Control,
@@ -11,13 +12,16 @@ import {
 import { HiCheck, HiSelector } from 'react-icons/hi';
 import { FormField } from './FormField';
 
-export type TSelectMenuProps<TFieldValues extends FieldValues = FieldValues> = Omit<
+export type TSelectMenuProps<TFieldValues extends FieldValues = FieldValues> = TReplace<
   HTMLProps<HTMLSelectElement>,
-  'name' | 'onBlur' | 'onChange' | 'label' | 'defaultValue'
+  {
+    name: string;
+    label: string;
+    defaultValue: string;
+    onBlur?: never;
+    onChange?: never;
+  }
 > & {
-  name: string;
-  label: string;
-  defaultValue: string;
   options: Map<string, string>;
   control: Control<TFieldValues>;
 };

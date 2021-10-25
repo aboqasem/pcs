@@ -46,8 +46,6 @@ export const CreateUsersForm = memo(function CreateUsersForm({
   const createUsersMutation = useCreateUsersMutation({
     onError: (error) => {
       if (error instanceof ValidationException) {
-        console.log(error.errors);
-
         return Object.entries(error.errors).forEach(([property, error]) => {
           setError(property as Path<CreateUsersDto>, { message: error?.message });
         });

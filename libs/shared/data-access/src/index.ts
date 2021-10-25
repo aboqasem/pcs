@@ -1,3 +1,4 @@
+export * from './lib/courses/courses.classes';
 export * from './lib/shared/shared.decorators';
 export * from './lib/shared/shared.exceptions';
 export * from './lib/shared/shared.types';

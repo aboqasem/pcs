@@ -18,6 +18,13 @@ export const dashboardActions = {
       iconColors: 'bg-blue-50 text-blue-700',
     },
   ],
-  [UserRole.Instructor]: [],
+  [UserRole.Instructor]: [
+    {
+      title: 'Manage courses',
+      href: PagePath.Courses,
+      icon: FaChalkboardTeacher,
+      iconColors: 'bg-yellow-50 text-yellow-700',
+    },
+  ],
   [UserRole.Student]: [],
 };
