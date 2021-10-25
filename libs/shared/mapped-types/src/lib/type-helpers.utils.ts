@@ -1,9 +1,9 @@
-import * as classTransformerStorage from 'class-transformer/cjs/storage';
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ClassConstructor } from 'class-transformer/types/interfaces';
-import * as classValidator from 'class-validator';
+import { getMetadataStorage, IsOptional } from 'class-validator';
 
 export function applyIsOptionalDecorator(targetClass: Function, propertyKey: string) {
-  const decoratorFactory = classValidator.IsOptional();
+  const decoratorFactory = IsOptional();
   decoratorFactory(targetClass.prototype, propertyKey);
 }
 
@@ -13,7 +13,7 @@ export function inheritValidationMetadata(
   isPropertyInherited?: (key: string) => boolean,
 ) {
   try {
-    const metadataStorage = classValidator.getMetadataStorage();
+    const metadataStorage = getMetadataStorage();
     const targetMetadata = metadataStorage.getTargetValidationMetadatas(
       parentClass,
       null!,
@@ -89,7 +89,15 @@ function inheritTransformerMetadata(
   targetClass: Function,
   isPropertyInherited?: (key: string) => boolean,
 ) {
-  const metadataStorage = classTransformerStorage.defaultMetadataStorage;
+  let metadataStorage: typeof import('class-transformer/types/storage').defaultMetadataStorage;
+  try {
+    metadataStorage =
+      typeof window === 'undefined'
+        ? require('class-transformer/cjs/storage').defaultMetadataStorage
+        : require('class-transformer/esm5/storage').defaultMetadataStorage;
+  } catch {
+    metadataStorage = require('class-transformer/cjs/storage').defaultMetadataStorage;
+  }
 
   while (parentClass && parentClass !== Object) {
     if (metadataStorage[key].has(parentClass)) {

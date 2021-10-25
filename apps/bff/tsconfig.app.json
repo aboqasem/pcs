@@ -8,6 +8,6 @@
     "target": "es2015",
     "strict": true
   },
-  "include": ["**/*.ts", "../../libs/shared/mapped-types/**/*.d.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts"]
 }

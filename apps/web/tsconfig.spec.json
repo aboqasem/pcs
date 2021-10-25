@@ -6,12 +6,5 @@
     "types": ["jest", "node"],
     "jsx": "react"
   },
-  "include": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.spec.js",
-    "**/*.spec.jsx",
-    "**/*.d.ts",
-    "../../libs/shared/mapped-types/**/*.d.ts"
-  ]
+  "include": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js", "**/*.spec.jsx", "**/*.d.ts"]
 }
