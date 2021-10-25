@@ -1,5 +1,6 @@
 import { User, UserRole } from '@pcs/shared-data-access';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CourseEntity } from './course.entity';
 
 @Entity('user')
 export class UserEntity extends User {
@@ -24,4 +25,9 @@ export class UserEntity extends User {
 
   @Column('text', { select: false })
   password!: string;
+
+  /* OTHER RELATIONS */
+
+  @OneToMany(() => CourseEntity, (course) => course.instructor, { nullable: true })
+  instructorCourses?: CourseEntity[] | null;
 }

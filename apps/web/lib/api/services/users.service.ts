@@ -4,6 +4,7 @@ import {
   CreatedUsersDto,
   CreateUsersDto,
   HttpException,
+  TReplace,
   UserDto,
   UserRole,
 } from '@pcs/shared-data-access';
@@ -62,7 +63,7 @@ export function useProfileQuery<TRole extends UserRole = UserRole, TData = TGetP
   options?: UseQueryOptions<
     TGetProfileData,
     HttpException,
-    Omit<TData, 'role'> & { role: TRole },
+    TReplace<TData, { role: TRole }>,
     TGetProfileQueryKey
   >,
 ) {

@@ -1,6 +1,7 @@
 import { INavigationItem } from '@/components';
 import { PagePath } from '@/lib/constants';
 import { UserRole } from '@pcs/shared-data-access';
+import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiHome, HiUsers } from 'react-icons/hi';
 
 export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
@@ -21,6 +22,11 @@ export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
       name: 'Dashboard',
       href: PagePath.Dashboard,
       icon: HiHome,
+    },
+    {
+      name: 'Courses',
+      href: PagePath.Courses,
+      icon: FaChalkboardTeacher,
     },
   ],
   [UserRole.Student]: [

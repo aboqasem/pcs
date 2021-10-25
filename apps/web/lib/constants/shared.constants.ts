@@ -7,11 +7,16 @@ export enum PagePath {
   Dashboard = '/dashboard',
 
   Users = '/users',
+
+  Courses = '/courses',
+  Course = '/courses/[id]',
 }
 
 export enum BffPath {
   Users = 'users',
   Profile = 'users/profile',
+
+  Courses = 'courses',
 
   SignIn = 'auth/sign-in',
   SignOut = 'auth/sign-out',

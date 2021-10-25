@@ -1,3 +1,4 @@
+import { TReplace } from '@pcs/shared-data-access';
 import { ForwardedRef, forwardRef, HTMLProps, memo, useState } from 'react';
 import { ChangeHandler, Control, FieldValues, Path } from 'react-hook-form';
 import { BiHide, BiShow } from 'react-icons/bi';
@@ -5,15 +6,14 @@ import { HiExclamationCircle } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
 import { FormField } from './FormField';
 
-export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Omit<
+export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = TReplace<
   HTMLProps<HTMLInputElement>,
-  'name' | 'onBlur' | 'onChange' | 'autoComplete' | 'placeholder'
-> & {
-  name: string;
-  onBlur: ChangeHandler;
-  onChange: ChangeHandler;
-  control: Control<TFieldValues>;
-} & (
+  {
+    name: string;
+    onBlur: ChangeHandler;
+    onChange: ChangeHandler;
+    control: Control<TFieldValues>;
+  } & (
     | {
         password: true;
         autoComplete?: 'new-password' | 'current-password';
@@ -23,18 +23,19 @@ export type TTextFieldProps<TFieldValues extends FieldValues = FieldValues> = Om
         autoComplete?: 'name' | 'given-name' | 'email' | 'username';
       }
   ) &
-  (
-    | {
-        label: string;
-        placeholder?: never;
-        placeholderIcon?: never;
-      }
-    | {
-        label?: never;
-        placeholder: string;
-        placeholderIcon?: IconType;
-      }
-  );
+    (
+      | {
+          label: string;
+          placeholder?: never;
+          placeholderIcon?: never;
+        }
+      | {
+          label?: never;
+          placeholder: string;
+          placeholderIcon?: IconType;
+        }
+    )
+>;
 
 export const TextField = memo(
   forwardRef(function <TFieldValues extends FieldValues = FieldValues>(

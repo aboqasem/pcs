@@ -9,6 +9,7 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
+import { CourseDto } from '../courses/courses.classes';
 import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
   IsUserEmail,
@@ -42,6 +43,11 @@ export class User {
 
   @IsUserPassword()
   password!: string;
+
+  /* OTHER RELATIONS */
+  @Type(() => CourseDto)
+  @IsOptional()
+  instructorCourses?: CourseDto[] | null;
 }
 
 export class UserDto extends PickType(User, [

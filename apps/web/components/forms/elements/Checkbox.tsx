@@ -1,15 +1,12 @@
+import { TReplace } from '@pcs/shared-data-access';
 import { ForwardedRef, forwardRef, HTMLProps, memo } from 'react';
 import { ChangeHandler, Control, FieldValues, Path } from 'react-hook-form';
 import { FormField } from './FormField';
 
-export type TCheckboxProps<TFieldValues extends FieldValues = FieldValues> = Omit<
+export type TCheckboxProps<TFieldValues extends FieldValues = FieldValues> = TReplace<
   HTMLProps<HTMLInputElement>,
-  'name' | 'onBlur' | 'onChange' | 'label'
+  { name: string; label: string; onBlur: ChangeHandler; onChange: ChangeHandler }
 > & {
-  name: string;
-  label: string;
-  onBlur: ChangeHandler;
-  onChange: ChangeHandler;
   control: Control<TFieldValues>;
 };
 

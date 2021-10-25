@@ -5,9 +5,10 @@ import { AuthModule } from './modules/auth/auth.module';
 import { EmailModule } from './modules/email/email.module';
 import { UsersModule } from './modules/users/users.module';
 import { LoggerMiddleware } from './shared/middlewares/logger.middleware';
+import { CoursesModule } from './modules/courses/courses.module';
 
 @Module({
-  imports: [EmailModule, TypeOrmModule.forRoot(ormConfig), UsersModule, AuthModule],
+  imports: [EmailModule, TypeOrmModule.forRoot(ormConfig), UsersModule, AuthModule, CoursesModule],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
