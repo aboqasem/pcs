@@ -1,8 +1,9 @@
+import { INavigationItem } from '@/components';
 import { PagePath } from '@/lib/constants';
 import { UserRole } from '@pcs/shared-data-access';
 import { HiHome, HiUsers } from 'react-icons/hi';
 
-export const globalNavigation = {
+export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
   [UserRole.Admin]: [
     {
       name: 'Dashboard',

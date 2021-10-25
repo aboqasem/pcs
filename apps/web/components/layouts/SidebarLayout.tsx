@@ -15,12 +15,14 @@ import { HiMenuAlt2, HiX } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
 import { dehydrate } from 'react-query';
 
+export interface INavigationItem {
+  name: string;
+  href: string;
+  icon: IconType;
+}
+
 export interface ISidebarLayoutProps extends PropsWithChildren<Record<string, unknown>> {
-  navigationItems?: {
-    name: string;
-    href: string;
-    icon: IconType;
-  }[];
+  navigationItems?: INavigationItem[];
 }
 
 export const SidebarLayout = memo(function MainSidebarLayout({

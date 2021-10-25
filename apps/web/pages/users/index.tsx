@@ -6,7 +6,7 @@ import {
   useAllUsersQuery,
   useProfileQuery,
 } from '@/lib/api';
-import { globalNavigation, PagePath } from '@/lib/constants';
+import { globalNavigationItems, PagePath } from '@/lib/constants';
 import { useQueryParam } from '@/lib/hooks';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { capitalize, UserRole } from '@pcs/shared-data-access';
@@ -54,7 +54,7 @@ export default function Users() {
         <title>{selectedUser ? selectedUser.fullName : 'Manage users'}</title>
       </Head>
 
-      <SidebarLayout navigationItems={globalNavigation[profile.role]}>
+      <SidebarLayout navigationItems={globalNavigationItems[profile.role]}>
         <div className="relative flex h-full overflow-hidden bg-white">
           <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
             {users.length ? (
