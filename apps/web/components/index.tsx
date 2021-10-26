@@ -1,3 +1,4 @@
+export * from './forms/CreateCourseForm';
 export * from './forms/elements/Checkbox';
 export * from './forms/elements/SelectMenu';
 export * from './forms/elements/TextField';

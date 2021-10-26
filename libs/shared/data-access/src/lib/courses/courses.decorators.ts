@@ -1,5 +1,6 @@
-import { Transform, Type } from 'class-transformer';
-import { IsDate, IsEmail, IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
+import { IsValidDate } from '../shared/shared.decorators';
+import { Transform } from 'class-transformer';
+import { IsEmail, IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
 import { Course } from '../courses/courses.classes';
 import {
   TCustomValidationArguments,
@@ -40,17 +41,13 @@ export function IsCourseDescription(): PropertyDecorator {
 
 export function IsCourseBeginDate(): PropertyDecorator {
   return function (target, propertyKey) {
-    Type(() => Date)(target, propertyKey);
-
-    IsDate({ message: '$property must be a valid date' })(target, propertyKey);
+    IsValidDate()(target, propertyKey);
   };
 }
 
 export function IsCourseEndDate(): PropertyDecorator {
   return function (target, propertyKey) {
-    Type(() => Date)(target, propertyKey);
-
-    IsDate({ message: '$property must be a valid date' })(target, propertyKey);
+    IsValidDate()(target, propertyKey);
 
     registerDecorator({
       name: 'isCourseEndDateBeforeCourseBeginDate',

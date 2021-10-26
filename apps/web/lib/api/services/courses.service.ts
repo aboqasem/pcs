@@ -48,7 +48,7 @@ export class CoursesService {
   };
 
   static createOwnCourse = async (body: TCreateOwnCourseBody): Promise<TCreateOwnCourseData> => {
-    return bffAxios.post(BffPath.Courses, body);
+    return bffAxios.post<TCreateOwnCourseData>(BffPath.Courses, body).then(({ data }) => data);
   };
 }
 

@@ -1,4 +1,5 @@
 import { Link, LoadingSpinner, SidebarLayout } from '@/components';
+import { CreateCourseForm } from '@/components/forms/CreateCourseForm';
 import {
   DefaultQueryClient,
   redirectIf,
@@ -17,7 +18,7 @@ import { HiPlus } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
 
 export default function Courses() {
-  const [_isCreateCourseFormShown, setIsCreateCourseFormShown] = useState(false);
+  const [isCreateCourseFormShown, setIsCreateCourseFormShown] = useState(false);
 
   const profileQuery = useProfileQuery();
   const { data: profile } = profileQuery;
@@ -36,6 +37,7 @@ export default function Courses() {
   );
 
   const openCreateCourseForm = useCallback(() => setIsCreateCourseFormShown(true), []);
+  const closeCreateCourseForm = useCallback(() => setIsCreateCourseFormShown(false), []);
 
   if (!profile) {
     return null;
@@ -127,6 +129,8 @@ export default function Courses() {
           </div>
         </div>
       </SidebarLayout>
+
+      <CreateCourseForm isShown={isCreateCourseFormShown} close={closeCreateCourseForm} />
     </>
   );
 }
