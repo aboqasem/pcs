@@ -1,3 +1,5 @@
+import { Transform } from 'class-transformer';
+import { IsDate } from 'class-validator';
 import { TCustomDecorator } from './shared.types';
 
 export const SetMetadata = <K = string, V = any>(
@@ -15,3 +17,18 @@ export const SetMetadata = <K = string, V = any>(
   decoratorFactory.KEY = metadataKey;
   return decoratorFactory;
 };
+
+export function IsValidDate(): PropertyDecorator {
+  return function (target, propertyKey) {
+    Transform(({ value }) => {
+      const date = new Date(value ?? '');
+
+      if (date.toString() === 'Invalid Date') {
+        return undefined;
+      }
+      return date;
+    })(target, propertyKey);
+
+    IsDate({ message: '$property must be a valid date' })(target, propertyKey);
+  };
+}
