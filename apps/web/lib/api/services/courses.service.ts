@@ -1,4 +1,3 @@
-import { bffAxios } from '@/lib/api';
 import { BffPath } from '@/lib/constants';
 import {
   CourseDto,
@@ -10,6 +9,7 @@ import {
 import { plainToClass } from 'class-transformer';
 import toast from 'react-hot-toast';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
+import { bffAxios } from '../axios.config';
 
 export const coursesQueryKeys = {
   all: ['courses'] as const,

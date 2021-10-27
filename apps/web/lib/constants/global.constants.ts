@@ -1,8 +1,8 @@
 import { INavigationItem } from '@/components';
-import { PagePath } from '@/lib/constants';
 import { UserRole } from '@pcs/shared-data-access';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiHome, HiUsers } from 'react-icons/hi';
+import { PagePath } from './shared.constants';
 
 export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
   [UserRole.Admin]: [

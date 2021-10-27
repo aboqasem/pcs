@@ -6,8 +6,7 @@ import {
   useOwnCourseQuery,
   useProfileQuery,
 } from '@/lib/api';
-import { PagePath } from '@/lib/constants';
-import { coursesNavigationItems } from '@/lib/constants/courses.constants';
+import { coursesNavigationItems, PagePath } from '@/lib/constants';
 import { useQueryParam } from '@/lib/hooks';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { UserRole } from '@pcs/shared-data-access';

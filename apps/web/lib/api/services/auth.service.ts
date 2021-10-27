@@ -1,9 +1,10 @@
-import { bffAxios, usersQueryKeys } from '@/lib/api';
 import { BffPath, PagePath } from '@/lib/constants';
 import { HttpException, RetrievePasswordDto, SignInDto, UserDto } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { useMutation, UseMutationOptions, useQueryClient } from 'react-query';
+import { bffAxios } from '../axios.config';
+import { usersQueryKeys } from './users.service';
 
 export type TSignInBody = SignInDto;
 export type TSignInData = UserDto;
