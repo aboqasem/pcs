@@ -1,19 +1,10 @@
 import { Link } from '@/components';
-import {
-  DefaultQueryClient,
-  redirectIf,
-  redirectionPredicates,
-  useSignOutMutation,
-} from '@/lib/api';
-import { PagePath } from '@/lib/constants';
-import { TPropsWithDehydratedState } from '@/lib/types';
+import { useSignOutMutation } from '@/lib/api';
 import { Dialog, Transition } from '@headlessui/react';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Fragment, memo, PropsWithChildren, useCallback, useState } from 'react';
 import { HiMenuAlt2, HiX } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
-import { dehydrate } from 'react-query';
 
 export interface INavigationItem {
   name: string;
@@ -252,23 +243,3 @@ export const SidebarLayout = memo(function MainSidebarLayout({
     </div>
   );
 });
-
-export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> = async (ctx) => {
-  const queryClient = new DefaultQueryClient();
-
-  const result = await redirectIf(
-    [{ destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated }],
-    ctx,
-    queryClient,
-  );
-
-  if (result.redirect) {
-    return { redirect: result.redirect };
-  }
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
