@@ -1,7 +1,7 @@
-import { PagePath } from '@/lib/constants';
 import { UserRole } from '@pcs/shared-data-access';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiUsers } from 'react-icons/hi';
+import { PagePath } from './shared.constants';
 
 export const dashboardActions = {
   [UserRole.Admin]: [

@@ -1,8 +1,8 @@
-import { fetchProfile } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
 import { UserDto, UserRole } from '@pcs/shared-data-access';
 import { GetServerSidePropsContext, NextPageContext, Redirect } from 'next';
 import { QueryClient } from 'react-query';
+import { fetchProfile } from '../services/users.service';
 
 type TRedirectionRule = { destination: string; predicate: (user?: UserDto) => boolean };
 

@@ -1,4 +1,3 @@
-import { bffAxios } from '@/lib/api';
 import { BffPath, PagePath } from '@/lib/constants';
 import {
   CreatedUsersDto,
@@ -19,6 +18,7 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from 'react-query';
+import { bffAxios } from '../axios.config';
 
 export const usersQueryKeys = {
   all: ['users'] as const,
