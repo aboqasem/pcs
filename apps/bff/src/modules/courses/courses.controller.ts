@@ -23,12 +23,12 @@ export class CoursesController {
     return this.coursesService.getCourses();
   }
 
-  @Get(':id')
+  @Get(':courseId')
   async getOwnCourse(
-    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('courseId', new ParseUUIDPipe()) courseId: string,
     @Req() req: Request,
   ): Promise<CourseDto> {
-    const course = await this.coursesService.getCourse(id, {
+    const course = await this.coursesService.getCourse(courseId, {
       where: { instructorId: req.user!.id },
     });
 

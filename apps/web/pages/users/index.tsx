@@ -18,7 +18,7 @@ import { dehydrate } from 'react-query';
 
 export default function Users() {
   const [isCreateUsersFormShown, setIsCreateUsersFormShown] = useState(false);
-  const userIdQueryParam = useQueryParam<string>('id');
+  const userIdQueryParam = useQueryParam<string>('userId');
   const selectedUserId = +(userIdQueryParam || NaN);
 
   const profileQuery = useProfileQuery<UserRole.Admin>();
@@ -202,7 +202,9 @@ export default function Users() {
                                   >
                                     <div className="flex-1 min-w-0">
                                       <Link
-                                        href={isCurrent ? '' : `?id=${u.id}`}
+                                        href={
+                                          isCurrent ? '' : `?userId=${encodeURIComponent(u.id)}`
+                                        }
                                         shallow
                                         className="focus:outline-none"
                                       >

@@ -18,7 +18,7 @@ import { HiChevronLeft } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
 
 export default function Course() {
-  const courseId = useQueryParam<string>('id')!;
+  const courseId = useQueryParam<string>('courseId')!;
 
   const profileQuery = useProfileQuery<UserRole.Instructor>();
   const { data: profile } = profileQuery;

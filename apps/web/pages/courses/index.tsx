@@ -31,8 +31,8 @@ export default function Courses() {
   const coursesHrefs = useMemo(
     () =>
       courses.reduce((map, { id }) => {
-        return map.set(id, { pathname: PagePath.Course, query: { id } });
-      }, new Map<string, { pathname: PagePath.Course; query: { id: string } }>()),
+        return map.set(id, { pathname: PagePath.Course, query: { courseId: id } });
+      }, new Map<string, { pathname: PagePath.Course; query: { courseId: string } }>()),
     [courses],
   );
 
