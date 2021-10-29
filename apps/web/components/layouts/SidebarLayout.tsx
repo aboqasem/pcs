@@ -33,7 +33,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
           // take only required query params like `id` in `/courses/[id]`
           query: Object.entries(query).reduce(
             (newQuery, [qName, qValue]) =>
-              pathname?.includes(`[${qName}]`) ? { ...newQuery, qName: qValue } : newQuery,
+              pathname?.includes(`[${qName}]`) ? { ...newQuery, [qName]: qValue } : newQuery,
             {} as ParsedUrlQuery,
           ),
         },

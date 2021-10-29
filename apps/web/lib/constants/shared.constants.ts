@@ -9,7 +9,7 @@ export enum PagePath {
   Users = '/users',
 
   Courses = '/courses',
-  Course = '/courses/[id]',
+  Course = '/courses/[courseId]',
 }
 
 export enum BffPath {

@@ -41,7 +41,11 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     resolver,
   });
 
-  const { fields, append, remove } = useFieldArray({ name: 'users', keyName: 'formId', control });
+  const { fields, append, remove } = useFieldArray({
+    name: 'users',
+    keyName: 'formFieldId',
+    control,
+  });
 
   const createUsersMutation = useCreateUsersMutation({
     onError: (error) => {
@@ -145,7 +149,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                     {/* Users fields */}
                     <div className="px-4 pb-6 space-y-8 divide-y divide-gray-200 sm:px-6">
                       {fields.map((user, i) => (
-                        <div key={user.formId} className="flex flex-col py-6">
+                        <div key={user.formFieldId} className="flex flex-col py-6">
                           {i > 0 && (
                             <button
                               type="button"
