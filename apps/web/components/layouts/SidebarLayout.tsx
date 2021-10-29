@@ -2,13 +2,14 @@ import { Link } from '@/components';
 import { useSignOutMutation } from '@/lib/api';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
-import { Fragment, memo, PropsWithChildren, useCallback, useState } from 'react';
+import { ParsedUrlQuery } from 'querystring';
+import { Fragment, memo, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import { HiMenuAlt2, HiX } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
 
 export interface INavigationItem {
   name: string;
-  href: string;
+  pathname?: string;
   icon: IconType;
 }
 
@@ -20,7 +21,30 @@ export const SidebarLayout = memo(function MainSidebarLayout({
   children,
   navigationItems,
 }: ISidebarLayoutProps) {
-  const { pathname } = useRouter();
+  const { pathname: currPathname, query } = useRouter();
+
+  const navItemsWithHref = useMemo(
+    () =>
+      navigationItems?.map(({ pathname, ...rest }) => ({
+        ...rest,
+        href: {
+          // no pathname means current pathname
+          pathname: pathname ?? currPathname,
+          // take only required query params like `id` in `/courses/[id]`
+          query: Object.entries(query).reduce(
+            (newQuery, [qName, qValue]) =>
+              pathname?.includes(`[${qName}]`) ? { ...newQuery, qName: qValue } : newQuery,
+            {} as ParsedUrlQuery,
+          ),
+        },
+      })),
+    [currPathname, navigationItems, query],
+  );
+  const currNavItem = useMemo(
+    () => navItemsWithHref?.find(({ href }) => currPathname.startsWith(href.pathname)),
+    [currPathname, navItemsWithHref],
+  );
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const signOutMutation = useSignOutMutation();
@@ -91,34 +115,34 @@ export const SidebarLayout = memo(function MainSidebarLayout({
 
               <div className="flex-1 h-0 mt-5 overflow-y-auto">
                 <nav className="px-2" aria-label="Sidebar">
-                  {!!navigationItems?.length && (
+                  {!!navItemsWithHref?.length && (
                     <>
                       <div className="space-y-1">
-                        {navigationItems.map((item) => {
-                          const isCurrent = pathname.startsWith(item.href);
+                        {navItemsWithHref.map((item) => {
+                          const isCurrent = item === currNavItem!;
 
                           return (
                             <Link
                               key={item.name}
                               href={item.href}
                               className={`
-                            ${
-                              isCurrent
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                            }
-                            group flex items-center px-2 py-2 text-base font-medium rounded-md
-                          `}
+                                ${
+                                  isCurrent
+                                    ? 'bg-gray-900 text-white'
+                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                }
+                                group flex items-center px-2 py-2 text-base font-medium rounded-md
+                              `}
                             >
                               <item.icon
                                 className={`
-                              ${
-                                isCurrent
-                                  ? 'text-gray-300'
-                                  : 'text-gray-400 group-hover:text-gray-300'
-                              }
-                              mr-4 flex-shrink-0 h-6 w-6
-                            `}
+                                  ${
+                                    isCurrent
+                                      ? 'text-gray-300'
+                                      : 'text-gray-400 group-hover:text-gray-300'
+                                  }
+                                  mr-4 flex-shrink-0 h-6 w-6
+                                `}
                                 aria-hidden="true"
                               />
                               {item.name}
@@ -169,34 +193,34 @@ export const SidebarLayout = memo(function MainSidebarLayout({
 
             <div className="flex flex-col flex-1 overflow-y-auto bg-gray-800">
               <nav className="flex-1 px-2 py-4" aria-label="Sidebar">
-                {!!navigationItems?.length && (
+                {!!navItemsWithHref?.length && (
                   <>
                     <div className="space-y-1">
-                      {navigationItems.map((item) => {
-                        const isCurrent = pathname.startsWith(item.href);
+                      {navItemsWithHref.map((item) => {
+                        const isCurrent = item === currNavItem!;
 
                         return (
                           <Link
                             key={item.name}
                             href={item.href}
                             className={`
-                            ${
-                              isCurrent
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                            }
-                            group flex items-center px-2 py-2 text-sm font-medium rounded-md
-                          `}
+                              ${
+                                isCurrent
+                                  ? 'bg-gray-900 text-white'
+                                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                              }
+                              group flex items-center px-2 py-2 text-sm font-medium rounded-md
+                            `}
                           >
                             <item.icon
                               className={`
-                              ${
-                                isCurrent
-                                  ? 'text-gray-300'
-                                  : 'text-gray-400 group-hover:text-gray-300'
-                              }
-                              mr-3 flex-shrink-0 h-6 w-6
-                            `}
+                                ${
+                                  isCurrent
+                                    ? 'text-gray-300'
+                                    : 'text-gray-400 group-hover:text-gray-300'
+                                }
+                                mr-3 flex-shrink-0 h-6 w-6
+                              `}
                               aria-hidden="true"
                             />
                             {item.name}

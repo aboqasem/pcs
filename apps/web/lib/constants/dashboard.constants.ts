@@ -7,13 +7,13 @@ export const dashboardActions = {
   [UserRole.Admin]: [
     {
       title: 'Manage instructors',
-      href: PagePath.Users,
+      pathname: PagePath.Users,
       icon: FaChalkboardTeacher,
       iconColors: 'bg-yellow-50 text-yellow-700',
     },
     {
       title: 'Manage students',
-      href: PagePath.Users,
+      pathname: PagePath.Users,
       icon: HiUsers,
       iconColors: 'bg-blue-50 text-blue-700',
     },
@@ -21,7 +21,7 @@ export const dashboardActions = {
   [UserRole.Instructor]: [
     {
       title: 'Manage courses',
-      href: PagePath.Courses,
+      pathname: PagePath.Courses,
       icon: FaChalkboardTeacher,
       iconColors: 'bg-yellow-50 text-yellow-700',
     },
