@@ -11,7 +11,8 @@
 # Env
 .env*
 !.env.example
-ormconfig.json
+ormconfig.*.json
+!ormconfig.example.json
 
 # dependencies
 **/node_modules
