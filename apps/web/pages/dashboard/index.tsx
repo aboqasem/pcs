@@ -42,7 +42,7 @@ export default function Dashboard() {
                     </span>
 
                     <h3 className="text-lg font-medium">
-                      <Link href={action.href} className="focus:outline-none">
+                      <Link href={action.pathname} className="focus:outline-none">
                         {/* Extend touch target to entire panel */}
                         <span className="absolute inset-0" aria-hidden="true" />
                         {action.title}

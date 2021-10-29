@@ -8,31 +8,31 @@ export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
   [UserRole.Admin]: [
     {
       name: 'Dashboard',
-      href: PagePath.Dashboard,
+      pathname: PagePath.Dashboard,
       icon: HiHome,
     },
     {
       name: 'Users',
-      href: PagePath.Users,
+      pathname: PagePath.Users,
       icon: HiUsers,
     },
   ],
   [UserRole.Instructor]: [
     {
       name: 'Dashboard',
-      href: PagePath.Dashboard,
+      pathname: PagePath.Dashboard,
       icon: HiHome,
     },
     {
       name: 'Courses',
-      href: PagePath.Courses,
+      pathname: PagePath.Courses,
       icon: FaChalkboardTeacher,
     },
   ],
   [UserRole.Student]: [
     {
       name: 'Dashboard',
-      href: PagePath.Dashboard,
+      pathname: PagePath.Dashboard,
       icon: HiHome,
     },
   ],
