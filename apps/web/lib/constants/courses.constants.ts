@@ -1,6 +1,11 @@
-import { INavigationItem } from '@/components';
+import { INavigationItem, ITab } from '@/components';
 import { UserRole } from '@pcs/shared-data-access';
+import { globalNavigationItems } from './global.constants';
 
-export const coursesNavigationItems: { [UserRole.Instructor]: INavigationItem[] } = {
-  [UserRole.Instructor]: [] as INavigationItem[],
+export const courseNavigationItems: { [UserRole.Instructor]: INavigationItem[] } = {
+  [UserRole.Instructor]: globalNavigationItems[UserRole.Instructor],
+};
+
+export const courseTabs: { [UserRole.Instructor]: ITab[] } = {
+  [UserRole.Instructor]: [],
 };
