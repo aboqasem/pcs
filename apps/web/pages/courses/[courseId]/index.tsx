@@ -7,7 +7,7 @@ import {
   useProfileQuery,
 } from '@/lib/api';
 import { courseNavigationItems, courseTabs, PagePath } from '@/lib/constants';
-import { useQueryParam } from '@/lib/hooks';
+import { useQueryParams } from '@/lib/hooks';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
@@ -17,7 +17,7 @@ import { FaChalkboardTeacher } from 'react-icons/fa';
 import { dehydrate } from 'react-query';
 
 export default function Course() {
-  const courseId = useQueryParam<string>('courseId')!;
+  const { courseId } = useQueryParams<{ courseId: string }>();
 
   const { data: profile } = useProfileQuery<UserRole.Instructor>();
 

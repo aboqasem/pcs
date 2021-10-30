@@ -1,3 +1,3 @@
 export * from './use-previously-rendered';
 export * from './use-validation-resolver';
-export * from './use-query-param';
+export * from './use-query-params';
