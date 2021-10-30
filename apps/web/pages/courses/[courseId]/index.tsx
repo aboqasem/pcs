@@ -19,8 +19,7 @@ import { dehydrate } from 'react-query';
 export default function Course() {
   const courseId = useQueryParam<string>('courseId')!;
 
-  const profileQuery = useProfileQuery<UserRole.Instructor>();
-  const { data: profile } = profileQuery;
+  const { data: profile } = useProfileQuery<UserRole.Instructor>();
 
   const courseQuery = useOwnCourseQuery(courseId);
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);

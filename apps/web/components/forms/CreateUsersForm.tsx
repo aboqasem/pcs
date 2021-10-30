@@ -28,7 +28,6 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     password: '',
   });
 
-  const resolver = useValidationResolver(CreateUsersDto);
   const {
     register,
     handleSubmit,
@@ -38,7 +37,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     formState: { isDirty },
   } = useForm<CreateUsersDto>({
     defaultValues: { users: [emptyUser.current] },
-    resolver,
+    resolver: useValidationResolver(CreateUsersDto),
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -66,7 +65,8 @@ export const CreateUsersForm = memo(function CreateUsersForm({
   });
 
   const isLoading = createUsersMutation.isLoading;
-  const isDisabled = !isDirty || isLoading || createUsersMutation.isSuccess;
+  const isSuccess = createUsersMutation.isSuccess;
+  const isDisabled = !isDirty || isLoading || isSuccess;
 
   const appendEmptyUser = useCallback(() => {
     append(emptyUser.current);
@@ -240,12 +240,10 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                     </div>
                   </div>
 
-                  {(isLoading || createUsersMutation.isSuccess) && (
+                  {(isLoading || isSuccess) && (
                     <Overlay className="sm:rounded-lg">
                       {isLoading && <LoadingSpinner className="w-10 h-10" />}
-                      {createUsersMutation.isSuccess && (
-                        <GoVerified className="w-10 h-10 text-blue-700" />
-                      )}
+                      {isSuccess && <GoVerified className="w-10 h-10 text-blue-700" />}
                     </Overlay>
                   )}
                 </form>

@@ -21,8 +21,7 @@ export default function Users() {
   const userIdQueryParam = useQueryParam<string>('userId');
   const selectedUserId = +(userIdQueryParam || NaN);
 
-  const profileQuery = useProfileQuery<UserRole.Admin>();
-  const { data: profile } = profileQuery;
+  const { data: profile } = useProfileQuery<UserRole.Admin>();
 
   const usersQuery = useAllUsersQuery({
     select: (users) => users.filter((u) => u.role !== UserRole.Admin),
