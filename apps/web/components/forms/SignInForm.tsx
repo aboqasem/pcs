@@ -16,7 +16,6 @@ export interface ISignInFormProps {
 
 export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignInFormProps) {
   const { query } = useRouter();
-  const resolver = useValidationResolver(SignInDto);
 
   const {
     register,
@@ -29,13 +28,14 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
       password: '',
       rememberMe: false,
     },
-    resolver,
+    resolver: useValidationResolver(SignInDto),
   });
 
   const signInMutation = useSignInMutation({ onSuccess });
 
   const isLoading = signInMutation.isLoading;
-  const isDisabled = !isDirty || isLoading || signInMutation.isSuccess;
+  const isSuccess = signInMutation.isSuccess;
+  const isDisabled = !isDirty || isLoading || isSuccess;
 
   const onSubmit = useMemo(
     () =>
@@ -106,10 +106,10 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
               </div>
             </form>
 
-            {(isLoading || signInMutation.isSuccess) && (
+            {(isLoading || isSuccess) && (
               <Overlay className="sm:rounded-lg">
                 {isLoading && <LoadingSpinner className="w-10 h-10" />}
-                {signInMutation.isSuccess &&
+                {isSuccess &&
                   (error ? (
                     <div className="flex flex-col items-center justify-center p-4 mx-8 sm:rounded-md bg-red-50">
                       <div className="flex">

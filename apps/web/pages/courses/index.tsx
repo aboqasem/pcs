@@ -16,12 +16,12 @@ import { useCallback, useMemo, useState } from 'react';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
+import type { UrlObject } from 'url';
 
 export default function Courses() {
   const [isCreateCourseFormShown, setIsCreateCourseFormShown] = useState(false);
 
-  const profileQuery = useProfileQuery();
-  const { data: profile } = profileQuery;
+  const { data: profile } = useProfileQuery();
 
   const coursesQuery = useOwnCoursesQuery();
   const courses = useMemo(() => coursesQuery.data ?? [], [coursesQuery.data]);
@@ -32,7 +32,7 @@ export default function Courses() {
     () =>
       courses.reduce((map, { id }) => {
         return map.set(id, { pathname: PagePath.Course, query: { courseId: id } });
-      }, new Map<string, { pathname: PagePath.Course; query: { courseId: string } }>()),
+      }, new Map<string, UrlObject>()),
     [courses],
   );
 

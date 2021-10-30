@@ -11,7 +11,6 @@ import { GoVerified } from 'react-icons/go';
 
 export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
   const { query } = useRouter();
-  const resolver = useValidationResolver(RetrievePasswordDto);
 
   const {
     register,
@@ -23,7 +22,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
     defaultValues: {
       email: '',
     },
-    resolver,
+    resolver: useValidationResolver(RetrievePasswordDto),
   });
 
   const retrievePasswordMutation = useRetrievePasswordMutation({
@@ -38,7 +37,8 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
   });
 
   const isLoading = retrievePasswordMutation.isLoading;
-  const isDisabled = !isDirty || isLoading || retrievePasswordMutation.isSuccess;
+  const isSuccess = retrievePasswordMutation.isSuccess;
+  const isDisabled = !isDirty || isLoading || isSuccess;
 
   const onSubmit = useMemo(
     () =>
@@ -96,12 +96,10 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
             </div>
           </form>
 
-          {(isLoading || retrievePasswordMutation.isSuccess) && (
+          {(isLoading || isSuccess) && (
             <Overlay className="sm:rounded-lg">
               {isLoading && <LoadingSpinner className="w-10 h-10" />}
-              {retrievePasswordMutation.isSuccess && (
-                <GoVerified className="w-10 h-10 text-blue-700" />
-              )}
+              {isSuccess && <GoVerified className="w-10 h-10 text-blue-700" />}
             </Overlay>
           )}
         </div>

@@ -8,8 +8,7 @@ import { BsArrowUpRight } from 'react-icons/bs';
 import { dehydrate } from 'react-query';
 
 export default function Dashboard() {
-  const profileQuery = useProfileQuery();
-  const { data: profile } = profileQuery;
+  const { data: profile } = useProfileQuery();
 
   if (!profile) {
     return null;

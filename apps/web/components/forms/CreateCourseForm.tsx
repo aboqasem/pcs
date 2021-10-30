@@ -21,7 +21,6 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 }: ICreateCourseFormProps) {
   const queryClient = useQueryClient();
 
-  const resolver = useValidationResolver(CreateCourseDto);
   const {
     register,
     handleSubmit,
@@ -30,8 +29,14 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
     reset,
     formState: { isDirty },
   } = useForm<CreateCourseDto>({
-    defaultValues: { title: '', description: '', beginDate: new Date(''), endDate: new Date('') },
-    resolver,
+    defaultValues: {
+      title: '',
+      description: '',
+      // both dates would be transformed to Date object by the resolver
+      beginDate: '' as unknown as Date,
+      endDate: '' as unknown as Date,
+    },
+    resolver: useValidationResolver(CreateCourseDto),
   });
 
   const createOwnCourseMutation = useCreateOwnCourseMutation({
@@ -43,7 +48,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
       }
       toast.error(error.message, { id: 'createCourseError' });
     },
-    onSuccess: (c) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(coursesQueryKeys.getOwnCourses());
       toast.success('Course has been created!', { duration: 5000 });
       close();
@@ -53,7 +58,8 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
   });
 
   const isLoading = createOwnCourseMutation.isLoading;
-  const isDisabled = !isDirty || isLoading || createOwnCourseMutation.isSuccess;
+  const isSuccess = createOwnCourseMutation.isSuccess;
+  const isDisabled = !isDirty || isLoading || isSuccess;
 
   const onSubmit = useMemo(
     () =>
@@ -130,7 +136,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
                     <TextField
                       type="date"
                       required
-                      {...register('beginDate', { valueAsDate: true })}
+                      {...register('beginDate')}
                       label="Begin date"
                       control={control}
                     />
@@ -138,7 +144,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
                     <TextField
                       type="date"
                       required
-                      {...register('endDate', { valueAsDate: true })}
+                      {...register('endDate')}
                       label="End date"
                       control={control}
                     />
@@ -168,12 +174,10 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
           </Transition.Child>
         </div>
 
-        {(isLoading || createOwnCourseMutation.isSuccess) && (
+        {(isLoading || isSuccess) && (
           <Overlay className="sm:rounded-lg">
             {isLoading && <LoadingSpinner className="w-10 h-10" />}
-            {createOwnCourseMutation.isSuccess && (
-              <GoVerified className="w-10 h-10 text-blue-700" />
-            )}
+            {isSuccess && <GoVerified className="w-10 h-10 text-blue-700" />}
           </Overlay>
         )}
       </Dialog>
