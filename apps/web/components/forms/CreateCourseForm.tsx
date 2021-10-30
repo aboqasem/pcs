@@ -3,7 +3,7 @@ import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api';
 import { useValidationResolver } from '@/lib/hooks';
 import { Dialog, Transition } from '@headlessui/react';
 import { CreateCourseDto, ValidationException } from '@pcs/shared-data-access';
-import { Fragment, memo, useCallback, useMemo } from 'react';
+import { Fragment, memo, Ref, useCallback, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
@@ -39,6 +39,9 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
     resolver: useValidationResolver(CreateCourseDto),
   });
 
+  const titleInputRef = useRef<HTMLInputElement | null>(null);
+  const { ref: titleInputRefCallback, ...titleInputRegistration } = register('title');
+
   const createOwnCourseMutation = useCreateOwnCourseMutation({
     onError: (error) => {
       if (error instanceof ValidationException) {
@@ -61,6 +64,14 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
   const isSuccess = createOwnCourseMutation.isSuccess;
   const isDisabled = !isDirty || isLoading || isSuccess;
 
+  const newInputRefCallback: Ref<HTMLInputElement> = useCallback(
+    (el) => {
+      titleInputRefCallback(el);
+      titleInputRef.current = el;
+    },
+    [titleInputRefCallback],
+  );
+
   const onSubmit = useMemo(
     () =>
       handleSubmit((values: CreateCourseDto) => {
@@ -76,7 +87,12 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 
   return (
     <Transition.Root show={isShown} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={close}>
+      <Dialog
+        as="div"
+        className="fixed inset-0 z-10 overflow-y-auto"
+        onClose={close}
+        initialFocus={titleInputRef}
+      >
         <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -124,8 +140,9 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 
                   <form id="create-course-form" className="space-y-4" onSubmit={onSubmit}>
                     <TextField
+                      ref={newInputRefCallback}
                       required
-                      {...register('title')}
+                      {...titleInputRegistration}
                       autoFocus
                       label="Title"
                       control={control}
