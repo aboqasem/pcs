@@ -7,7 +7,7 @@ import {
   useProfileQuery,
 } from '@/lib/api';
 import { globalNavigationItems, PagePath } from '@/lib/constants';
-import { useQueryParam } from '@/lib/hooks';
+import { useQueryParams } from '@/lib/hooks';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { capitalize, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
@@ -18,8 +18,9 @@ import { dehydrate } from 'react-query';
 
 export default function Users() {
   const [isCreateUsersFormShown, setIsCreateUsersFormShown] = useState(false);
-  const userIdQueryParam = useQueryParam<string>('userId');
-  const selectedUserId = +(userIdQueryParam || NaN);
+
+  const { userId } = useQueryParams<{ userId?: string }>();
+  const selectedUserId = +(userId || NaN);
 
   const { data: profile } = useProfileQuery<UserRole.Admin>();
 

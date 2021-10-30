@@ -1,16 +1,15 @@
 import { Link, LoadingSpinner, Overlay, TextField } from '@/components';
 import { useRetrievePasswordMutation } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
-import { useValidationResolver } from '@/lib/hooks';
+import { useQueryParams, useValidationResolver } from '@/lib/hooks';
 import { RetrievePasswordDto, ValidationException } from '@pcs/shared-data-access';
-import { useRouter } from 'next/router';
 import { memo, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
 
 export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
-  const { query } = useRouter();
+  const query = useQueryParams();
 
   const {
     register,

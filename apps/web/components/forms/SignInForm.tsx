@@ -1,9 +1,8 @@
 import { Checkbox, Link, LoadingSpinner, Overlay, TextField } from '@/components';
 import { useSignInMutation } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
-import { useValidationResolver } from '@/lib/hooks';
+import { useQueryParams, useValidationResolver } from '@/lib/hooks';
 import { SignInDto, UserDto } from '@pcs/shared-data-access';
-import { useRouter } from 'next/router';
 import { memo, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { GoVerified } from 'react-icons/go';
@@ -15,7 +14,7 @@ export interface ISignInFormProps {
 }
 
 export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignInFormProps) {
-  const { query } = useRouter();
+  const query = useQueryParams();
 
   const {
     register,
