@@ -14,10 +14,10 @@ export class CourseEntity extends Course {
   description?: string | null;
 
   @Column('timestamptz')
-  beginDate!: Date;
+  beginsAt!: Date;
 
   @Column('timestamptz')
-  endDate!: Date;
+  endsAt!: Date;
 
   /* JOINED RELATIONS */
 

@@ -82,12 +82,12 @@ export default function Courses() {
                                   <p className="text-sm font-medium text-gray-900">{c.title}</p>
 
                                   <p className="hidden text-sm text-gray-500 truncate sm:block">
-                                    Begins on {c.beginDate.toDateString()} - Ends on{' '}
-                                    {c.endDate.toDateString()}
+                                    Begins on {c.beginsAt.toDateString()} - Ends on{' '}
+                                    {c.endsAt.toDateString()}
                                   </p>
                                   <p className="text-sm text-gray-500 truncate sm:hidden">
-                                    {c.beginDate.toLocaleDateString('en-US')} -{' '}
-                                    {c.endDate.toLocaleDateString('en-US')}
+                                    {c.beginsAt.toLocaleDateString('en-US')} -{' '}
+                                    {c.endsAt.toLocaleDateString('en-US')}
                                   </p>
                                 </Link>
                               </div>
