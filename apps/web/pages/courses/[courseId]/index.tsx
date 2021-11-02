@@ -73,14 +73,14 @@ export default function Course() {
                               <div className="sm:col-span-1">
                                 <dt className="text-sm font-medium text-gray-500">Begin date</dt>
                                 <dd className="mt-1 text-sm text-gray-900">
-                                  {course.beginDate.toDateString()}
+                                  {course.beginsAt.toDateString()}
                                 </dd>
                               </div>
 
                               <div className="sm:col-span-1">
                                 <dt className="text-sm font-medium text-gray-500">End date</dt>
                                 <dd className="mt-1 text-sm text-gray-900">
-                                  {course.endDate.toDateString()}
+                                  {course.endsAt.toDateString()}
                                 </dd>
                               </div>
                             </dl>

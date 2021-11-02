@@ -33,8 +33,8 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
       title: '',
       description: '',
       // both dates would be transformed to Date object by the resolver
-      beginDate: '' as unknown as Date,
-      endDate: '' as unknown as Date,
+      beginsAt: '' as unknown as Date,
+      endsAt: '' as unknown as Date,
     },
     resolver: useValidationResolver(CreateCourseDto),
   });
@@ -153,7 +153,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
                     <TextField
                       type="date"
                       required
-                      {...register('beginDate')}
+                      {...register('beginsAt')}
                       label="Begin date"
                       control={control}
                     />
@@ -161,7 +161,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
                     <TextField
                       type="date"
                       required
-                      {...register('endDate')}
+                      {...register('endsAt')}
                       label="End date"
                       control={control}
                     />

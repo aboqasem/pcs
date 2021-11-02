@@ -3,9 +3,9 @@ import { Type } from 'class-transformer';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import {
-  IsCourseBeginDate,
+  IsCourseBeginsAt,
   IsCourseDescription,
-  IsCourseEndDate,
+  IsCourseEndsAt,
   IsCourseId,
   IsCourseTitle,
 } from './courses.decorators';
@@ -20,11 +20,11 @@ export class Course {
   @IsCourseDescription()
   description?: string | null;
 
-  @IsCourseBeginDate()
-  beginDate!: Date;
+  @IsCourseBeginsAt()
+  beginsAt!: Date;
 
-  @IsCourseEndDate()
-  endDate!: Date;
+  @IsCourseEndsAt()
+  endsAt!: Date;
 
   @IsUserId()
   instructorId!: number;
@@ -37,16 +37,16 @@ export class CourseDto extends PickType(Course, [
   'id',
   'title',
   'description',
-  'beginDate',
-  'endDate',
+  'beginsAt',
+  'endsAt',
   'instructorId',
 ]) {}
 
 export class CreateCourseDto extends PickType(Course, [
   'title',
   'description',
-  'beginDate',
-  'endDate',
+  'beginsAt',
+  'endsAt',
 ]) {}
 
 export class CreatedCourseDto extends PickType(Course, ['id']) {}
