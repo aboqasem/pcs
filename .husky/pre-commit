@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm nx -- affected:lint --base="$(git remote)/$(git branch --show-current)" --head="$(git branch --show-current)" --parallel
