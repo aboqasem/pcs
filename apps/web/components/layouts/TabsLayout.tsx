@@ -33,7 +33,12 @@ export const TabsLayout = memo(function TabsLayout({ children, tabs }: ITabsLayo
     [currPathname, query, tabs],
   );
   const currentTab = useMemo(
-    () => tabsWithHref?.find(({ href }) => currPathname.startsWith(href.pathname)),
+    () =>
+      tabsWithHref
+        // filter out tabs that don't match current pathname
+        ?.filter((tab) => currPathname.startsWith(tab.href.pathname))
+        // sort by pathname length (longest pathname first to get the most specific match) and take the most specific match
+        .sort((tabA, tabB) => tabB.href.pathname.length - tabA.href.pathname.length)[0],
     [currPathname, tabsWithHref],
   );
 
