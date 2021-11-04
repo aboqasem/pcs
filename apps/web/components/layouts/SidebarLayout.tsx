@@ -40,8 +40,14 @@ export const SidebarLayout = memo(function MainSidebarLayout({
       })),
     [currPathname, navigationItems, query],
   );
+
   const currNavItem = useMemo(
-    () => navItemsWithHref?.find(({ href }) => currPathname.startsWith(href.pathname)),
+    () =>
+      navItemsWithHref
+        // filter out nav items that don't match current pathname
+        ?.filter((nav) => currPathname.startsWith(nav.href.pathname))
+        // sort by pathname length (longest pathname first to get the most specific match) and take the most specific match
+        .sort((navA, navB) => navB.href.pathname.length - navA.href.pathname.length)[0],
     [currPathname, navItemsWithHref],
   );
 
