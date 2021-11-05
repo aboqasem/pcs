@@ -10,6 +10,9 @@ export enum PagePath {
 
   Courses = '/courses',
   Course = '/courses/[courseId]',
+  CoursePeople = '/courses/[courseId]/people',
+  CourseGrades = '/courses/[courseId]/grades',
+  CourseAbout = '/courses/[courseId]/about',
 }
 
 export enum BffPath {
