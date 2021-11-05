@@ -15,7 +15,7 @@ import Head from 'next/head';
 import { useMemo } from 'react';
 import { dehydrate } from 'react-query';
 
-export default function Course() {
+export default function People() {
   const { courseId } = useQueryParams<{ courseId: string }>();
 
   const { data: profile } = useProfileQuery<UserRole.Instructor>();
@@ -32,14 +32,18 @@ export default function Course() {
   return (
     <>
       <Head>
-        <title>{isCourseLoading ? 'Course' : course?.title ?? 'Course not found'}</title>
+        <title>
+          {isCourseLoading
+            ? 'People of course'
+            : (course?.title && `People of ${course.title}`) ?? 'Course not found'}
+        </title>
       </Head>
 
       <SidebarLayout navigationItems={courseNavigationItems[profile.role]}>
         <div className="relative flex flex-col h-full overflow-hidden bg-white">
           <TabsLayout tabs={courseTabs[profile.role]}>
             <div className="flex flex-col items-center justify-center flex-1 h-full min-w-0 overflow-hidden">
-              Course feed
+              Course people
             </div>
           </TabsLayout>
         </div>
