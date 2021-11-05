@@ -25,7 +25,13 @@ export class CoursesController {
 
   @Get(':courseId')
   async getOwnCourse(
-    @Param('courseId', new ParseUUIDPipe()) courseId: string,
+    @Param(
+      'courseId',
+      new ParseUUIDPipe({
+        exceptionFactory: () => new NotFoundException('Course not found'),
+      }),
+    )
+    courseId: string,
     @Req() req: Request,
   ): Promise<CourseDto> {
     const course = await this.coursesService.getCourse(courseId, {
