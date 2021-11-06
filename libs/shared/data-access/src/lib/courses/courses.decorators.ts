@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
+import { IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
 import { Course } from '../courses/courses.classes';
 import { IsValidDate } from '../shared/shared.decorators';
 import {
@@ -18,14 +18,6 @@ export function IsCourseTitle<Target = any>(
 ): PropertyDecorator {
   return function (target, propertyKey) {
     Length(5, 50, validationOptions)(target, propertyKey);
-  };
-}
-
-export function IsCourseEmail<Target = any>(
-  validationOptions?: TCustomValidationOptions<Target>,
-): PropertyDecorator {
-  return function (target, propertyKey) {
-    IsEmail({}, validationOptions)(target, propertyKey);
   };
 }
 
