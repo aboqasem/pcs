@@ -55,15 +55,21 @@ export default function Courses() {
             {courses.length ? (
               <div className="relative z-0 flex flex-1 overflow-hidden">
                 <aside className="flex-shrink-0 w-full border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
-                  <div className="px-6 pt-6 pb-4">
-                    <h2 className="text-lg font-medium text-gray-900">Courses</h2>
-                    <div className="flex flex-col justify-stretch">
+                  {/* Page title & actions */}
+                  <div className="px-5 py-4 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h1 className="text-lg font-medium leading-6 text-gray-900 sm:truncate">
+                        Courses
+                      </h1>
+                    </div>
+
+                    <div className="flex justify-end mt-4 sm:mt-0">
                       <button
                         type="button"
-                        className="inline-flex items-center justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
                         onClick={openCreateCourseForm}
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3"
                       >
-                        Create course
+                        Create
                       </button>
                     </div>
                   </div>
