@@ -62,6 +62,7 @@ export default function CourseAbout() {
                               </div>
                             </div>
                           </div>
+
                           {/* Description list */}
                           <div className="max-w-5xl px-4 mx-auto mt-6 sm:px-6 lg:px-8">
                             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
@@ -73,12 +74,14 @@ export default function CourseAbout() {
                                   </dd>
                                 </div>
                               )}
+
                               <div className="sm:col-span-1">
                                 <dt className="text-sm font-medium text-gray-500">Begin date</dt>
                                 <dd className="mt-1 text-sm text-gray-900">
                                   {course.beginsAt.toDateString()}
                                 </dd>
                               </div>
+
                               <div className="sm:col-span-1">
                                 <dt className="text-sm font-medium text-gray-500">End date</dt>
                                 <dd className="mt-1 text-sm text-gray-900">
