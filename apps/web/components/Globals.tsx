@@ -1,4 +1,5 @@
 import { LoadingSpinner } from '@/components';
+import { classNames } from '@/lib/utils';
 import { memo, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useIsFetching } from 'react-query';
@@ -10,10 +11,10 @@ export const Globals = memo(function Globals() {
   return (
     <>
       <LoadingSpinner
-        className={`
-          ${isFetching ? 'opacity-100' : 'opacity-0'}
-          z-50 fixed top-[0.5rem] right-[0.5rem] w-6 h-6 pointer-events-none transition ease-linear
-        `}
+        className={classNames(
+          'z-50 fixed top-[0.5rem] right-[0.5rem] w-6 h-6 pointer-events-none transition ease-linear',
+          isFetching ? 'opacity-100' : 'opacity-0',
+        )}
       />
 
       <Toaster toastOptions={toastOptions.current} />

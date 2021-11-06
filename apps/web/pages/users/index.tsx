@@ -9,6 +9,7 @@ import {
 import { globalNavigationItems, PagePath } from '@/lib/constants';
 import { useQueryParams } from '@/lib/hooks';
 import { TPropsWithDehydratedState } from '@/lib/types';
+import { classNames } from '@/lib/utils';
 import { capitalize, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -155,10 +156,10 @@ export default function Users() {
                 )}
 
                 <aside
-                  className={`
-                  ${selectedUser || isUserNotFound ? 'hidden' : ''}
-                  w-full flex-shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col xl:w-96
-                `}
+                  className={classNames(
+                    'w-full flex-shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col xl:w-96',
+                    (selectedUser || isUserNotFound) && 'hidden',
+                  )}
                 >
                   <div className="px-6 pt-6 pb-4">
                     <h2 className="text-lg font-medium text-gray-900">Users</h2>
@@ -195,10 +196,10 @@ export default function Users() {
                               return (
                                 <li key={u.id}>
                                   <div
-                                    className={`
-                                      ${isCurrent ? 'bg-gray-100' : 'hover:bg-gray-50'}
-                                      relative flex items-center px-6 py-5 space-x-3 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500
-                                    `}
+                                    className={classNames(
+                                      'relative flex items-center px-6 py-5 space-x-3 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500',
+                                      isCurrent ? 'bg-gray-100' : 'hover:bg-gray-50',
+                                    )}
                                   >
                                     <div className="flex-1 min-w-0">
                                       <Link
