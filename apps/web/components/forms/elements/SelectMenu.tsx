@@ -1,3 +1,4 @@
+import { classNames } from '@/lib/utils';
 import { Listbox, Transition } from '@headlessui/react';
 import { TReplace } from '@pcs/shared-data-access';
 import { Fragment, HTMLProps, memo, useCallback, useState } from 'react';
@@ -86,20 +87,20 @@ export const SelectMenu = memo(function <TFieldValues extends FieldValues = Fiel
                     {({ selected, active }) => (
                       <>
                         <span
-                          className={`
-                          ${selected ? 'font-semibold' : 'font-normal'}
-                          block truncate
-                        `}
+                          className={classNames(
+                            'block truncate',
+                            selected ? 'font-semibold' : 'font-normal',
+                          )}
                         >
                           {title}
                         </span>
 
                         {selected && (
                           <span
-                            className={`
-                            ${active ? 'text-white' : 'text-blue-600'}
-                            absolute inset-y-0 right-0 flex items-center pr-4
-                          `}
+                            className={classNames(
+                              'absolute inset-y-0 right-0 flex items-center pr-4',
+                              active ? 'text-white' : 'text-blue-600',
+                            )}
                           >
                             <HiCheck className="w-5 h-5" aria-hidden="true" />
                           </span>

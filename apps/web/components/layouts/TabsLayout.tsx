@@ -1,4 +1,5 @@
 import { Link } from '@/components';
+import { classNames } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { memo, PropsWithChildren, useMemo } from 'react';
@@ -56,14 +57,12 @@ export const TabsLayout = memo(function TabsLayout({ children, tabs }: ITabsLayo
                     <Link
                       key={tab.name}
                       href={tab.href}
-                      className={`
-                        ${
-                          isCurrent
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }
-                        w-full h-16 px-2 justify-center whitespace-nowrap border-b-2 font-medium text-sm flex items-center tracking-tight
-                      `}
+                      className={classNames(
+                        'w-full h-16 px-2 justify-center whitespace-nowrap border-b-2 font-medium text-sm flex items-center tracking-tight',
+                        isCurrent
+                          ? 'border-blue-500 text-blue-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                      )}
                       aria-current={isCurrent ? 'page' : undefined}
                     >
                       {tab.name}

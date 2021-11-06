@@ -2,6 +2,7 @@ import { Link, SidebarLayout } from '@/components';
 import { DefaultQueryClient, redirectIf, redirectionPredicates, useProfileQuery } from '@/lib/api';
 import { dashboardActions, globalNavigationItems, PagePath } from '@/lib/constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
+import { classNames } from '@/lib/utils';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { BsArrowUpRight } from 'react-icons/bs';
@@ -35,7 +36,10 @@ export default function Dashboard() {
                 >
                   <div className="flex items-center space-x-4">
                     <span
-                      className={`${action.iconColors} rounded-lg inline-flex p-3 ring-4 ring-white`}
+                      className={classNames(
+                        'rounded-lg inline-flex p-3 ring-4 ring-white',
+                        action.iconColors,
+                      )}
                     >
                       <action.icon className="w-6 h-6" aria-hidden="true" />
                     </span>

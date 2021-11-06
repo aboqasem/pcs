@@ -1,3 +1,4 @@
+import { classNames } from '@/lib/utils';
 import { memo } from 'react';
 import { ImSpinner2 } from 'react-icons/im';
 import { IconBaseProps } from 'react-icons/lib';
@@ -10,10 +11,7 @@ export const LoadingSpinner = memo(function LoadingSpinner({
 }: ILoadingSpinnerProps) {
   return (
     <ImSpinner2
-      className={`
-        animate-spin text-blue-700 align-middle
-        ${className}
-      `}
+      className={classNames('animate-spin text-blue-700 align-middle', className)}
       {...props}
     />
   );

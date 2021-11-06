@@ -1,3 +1,4 @@
+import { classNames } from '@/lib/utils';
 import { TReplace } from '@pcs/shared-data-access';
 import { ForwardedRef, forwardRef, HTMLProps, memo, useState } from 'react';
 import { ChangeHandler, Control, FieldValues, Path } from 'react-hook-form';
@@ -44,7 +45,6 @@ export const TextField = memo(
   ) {
     const name = props.name as Path<TFieldValues>;
     const id = props.id ?? name;
-    const PlaceholderIcon = props.placeholderIcon;
 
     const [inputType, setInputType] = useState(isPassword ? 'password' : props.type);
     const isPasswordVisible = inputType === 'text';
@@ -62,10 +62,10 @@ export const TextField = memo(
               <div>
                 <label
                   htmlFor={id}
-                  className={`
-                    block text-sm font-medium text-gray-700
-                    ${label ? '' : 'sr-only'}
-                  `}
+                  className={classNames(
+                    'block text-sm font-medium text-gray-700',
+                    label && 'sr-only',
+                  )}
                 >
                   {label ?? props.placeholder}
                 </label>
@@ -78,15 +78,10 @@ export const TextField = memo(
               )}
             </div>
 
-            <div
-              className={`
-                 relative
-                 ${label || !required ? 'mt-1' : ''}
-               `}
-            >
-              {PlaceholderIcon && (
+            <div className={classNames('relative', (label || !required) && 'mt-1')}>
+              {props.placeholderIcon && (
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <PlaceholderIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
+                  <props.placeholderIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
                 </div>
               )}
 
@@ -99,15 +94,13 @@ export const TextField = memo(
                 name={name}
                 type={inputType}
                 autoComplete={props.autoComplete || 'off'}
-                className={`
-                    ${
-                      errors
-                        ? 'px-3 py-2 pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500 caret-red-500'
-                        : 'px-3 py-2 placeholder-gray-400 border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                    }
-                    ${PlaceholderIcon ? 'pl-10' : ''}
-                    block w-full border rounded-md shadow-sm appearance-none focus:outline-none sm:text-sm
-                  `}
+                className={classNames(
+                  'block w-full border rounded-md shadow-sm appearance-none focus:outline-none sm:text-sm',
+                  errors
+                    ? 'px-3 py-2 pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500 caret-red-500'
+                    : 'px-3 py-2 placeholder-gray-400 border-gray-300 focus:ring-blue-500 focus:border-blue-500',
+                  props.placeholderIcon && 'pl-10',
+                )}
               />
 
               {/* Right side icon for errors or actions */}
@@ -127,10 +120,7 @@ export const TextField = memo(
                       onClick={togglePasswordVisibility}
                     >
                       <PasswordVisibilityIcon
-                        className={`
-                           ${errors ? 'text-red-600' : 'text-gray-900'}
-                           w-5 h-5
-                         `}
+                        className={classNames(errors ? 'text-red-600' : 'text-gray-900', 'w-5 h-5')}
                         aria-hidden="true"
                       />
                     </button>
