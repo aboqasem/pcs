@@ -64,7 +64,7 @@ export const TextField = memo(
                   htmlFor={id}
                   className={classNames(
                     'block text-sm font-medium text-gray-700',
-                    label && 'sr-only',
+                    !label && 'sr-only',
                   )}
                 >
                   {label ?? props.placeholder}
