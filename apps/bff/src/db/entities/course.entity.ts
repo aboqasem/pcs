@@ -7,10 +7,10 @@ export class CourseEntity extends Course {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'text' })
+  @Column('text')
   title!: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column('text', { nullable: true })
   description?: string | null;
 
   @Column('timestamptz')
@@ -21,7 +21,7 @@ export class CourseEntity extends Course {
 
   /* JOINED RELATIONS */
 
-  @Column({ type: 'integer' })
+  @Column('integer')
   instructorId!: number;
 
   @ManyToOne(() => UserEntity, (user) => user.instructorCourses)
