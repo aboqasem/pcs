@@ -2,7 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
+  IsPositive,
   IsString,
   Length,
   Matches,
@@ -13,7 +13,7 @@ import { UserRole } from './users.types';
 
 export function IsUserId(): PropertyDecorator {
   return function (target, propertyKey) {
-    IsNumber()(target, propertyKey);
+    IsPositive()(target, propertyKey);
   };
 }
 
