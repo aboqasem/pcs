@@ -2,7 +2,7 @@ import { Link, LoadingSpinner, Overlay, TextField } from '@/components';
 import { useRetrievePasswordMutation } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
 import { useQueryParams, useValidationResolver } from '@/lib/hooks';
-import { RetrievePasswordDto, ValidationException } from '@pcs/shared-data-access';
+import { AuthRetrievePasswordBody, ValidationException } from '@pcs/shared-data-access';
 import { memo, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -17,18 +17,18 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
     control,
     setError,
     formState: { isDirty },
-  } = useForm<RetrievePasswordDto>({
+  } = useForm<AuthRetrievePasswordBody>({
     defaultValues: {
       email: '',
     },
-    resolver: useValidationResolver(RetrievePasswordDto),
+    resolver: useValidationResolver(AuthRetrievePasswordBody),
   });
 
   const retrievePasswordMutation = useRetrievePasswordMutation({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<RetrievePasswordDto>, { message: error?.message });
+          setError(property as Path<AuthRetrievePasswordBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: 'retrievePasswordError' });
@@ -41,7 +41,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: RetrievePasswordDto) => {
+      handleSubmit((values: AuthRetrievePasswordBody) => {
         retrievePasswordMutation.mutate(values);
       }),
     [handleSubmit, retrievePasswordMutation],

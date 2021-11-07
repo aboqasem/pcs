@@ -91,13 +91,3 @@ export class UserCredentials extends PickType(User, ['password']) {
   @IsUserUsernameOrEmail()
   username!: string;
 }
-
-export class SignInDto extends UserCredentials {
-  @IsBoolean()
-  rememberMe = false;
-}
-
-export class RetrievePasswordDto {
-  @IsUserEmail()
-  email!: string;
-}

@@ -8,7 +8,13 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { CourseDto, CreateCourseDto, CreatedCourseDto, UserRole } from '@pcs/shared-data-access';
+import {
+  CoursesCreateOwnCourseBody,
+  CoursesCreateOwnCourseData,
+  CoursesGetOwnCourseData,
+  CoursesGetOwnCoursesData,
+  UserRole,
+} from '@pcs/shared-data-access';
 import { Request } from 'express';
 import { UserAuth } from 'src/modules/auth/decorators/user-auth.decorator';
 import { CoursesService } from './courses.service';
@@ -19,7 +25,7 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get()
-  async getOwnCourses(): Promise<CourseDto[]> {
+  async getOwnCourses(): Promise<CoursesGetOwnCoursesData> {
     return this.coursesService.getCourses();
   }
 
@@ -33,7 +39,7 @@ export class CoursesController {
     )
     courseId: string,
     @Req() req: Request,
-  ): Promise<CourseDto> {
+  ): Promise<CoursesGetOwnCourseData> {
     const course = await this.coursesService.getCourse(courseId, {
       where: { instructorId: req.user!.id },
     });
@@ -46,7 +52,10 @@ export class CoursesController {
   }
 
   @Post()
-  createOwnCourse(@Body() dto: CreateCourseDto, @Req() req: Request): Promise<CreatedCourseDto> {
+  createOwnCourse(
+    @Body() dto: CoursesCreateOwnCourseBody,
+    @Req() req: Request,
+  ): Promise<CoursesCreateOwnCourseData> {
     return this.coursesService.createCourse(dto, req.user!.id);
   }
 }

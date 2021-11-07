@@ -2,7 +2,7 @@ import { LoadingSpinner, Overlay, TextField } from '@/components';
 import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api';
 import { useValidationResolver } from '@/lib/hooks';
 import { Dialog, Transition } from '@headlessui/react';
-import { CreateCourseDto, ValidationException } from '@pcs/shared-data-access';
+import { CoursesCreateOwnCourseBody, ValidationException } from '@pcs/shared-data-access';
 import { Fragment, memo, Ref, useCallback, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -28,7 +28,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
     setError,
     reset,
     formState: { isDirty },
-  } = useForm<CreateCourseDto>({
+  } = useForm<CoursesCreateOwnCourseBody>({
     defaultValues: {
       title: '',
       description: '',
@@ -36,7 +36,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
       beginsAt: '' as unknown as Date,
       endsAt: '' as unknown as Date,
     },
-    resolver: useValidationResolver(CreateCourseDto),
+    resolver: useValidationResolver(CoursesCreateOwnCourseBody),
   });
 
   const titleInputRef = useRef<HTMLInputElement | null>(null);
@@ -46,7 +46,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<CreateCourseDto>, { message: error?.message });
+          setError(property as Path<CoursesCreateOwnCourseBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: 'createCourseError' });
@@ -74,7 +74,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: CreateCourseDto) => {
+      handleSubmit((values: CoursesCreateOwnCourseBody) => {
         createOwnCourseMutation.mutate(values);
       }),
     [handleSubmit, createOwnCourseMutation],

@@ -1,8 +1,10 @@
 import { BffPath } from '@/lib/constants';
 import {
   CourseDto,
-  CreateCourseDto,
-  CreatedCourseDto,
+  CoursesCreateOwnCourseBody,
+  CoursesCreateOwnCourseData,
+  CoursesGetOwnCourseData,
+  CoursesGetOwnCoursesData,
   HttpException,
   TReplace,
 } from '@pcs/shared-data-access';
@@ -17,17 +19,12 @@ export const coursesQueryKeys = {
   getOwnCourse: (courseId: string) => [...coursesQueryKeys.getOwnCourses(), courseId] as const,
 };
 
-export type TGetOwnCoursesData = CourseDto[];
 export type TGetOwnCoursesQueryKey = ReturnType<typeof coursesQueryKeys.getOwnCourses>;
 
-export type TGetOwnCourseData = CourseDto;
 export type TGetOwnCourseQueryKey = ReturnType<typeof coursesQueryKeys.getOwnCourse>;
 
-export type TCreateOwnCourseBody = CreateCourseDto;
-export type TCreateOwnCourseData = CreatedCourseDto;
-
 export class CoursesService {
-  static getOwnCourses = async (cookie?: string): Promise<TGetOwnCoursesData> => {
+  static getOwnCourses = async (cookie?: string): Promise<CoursesGetOwnCoursesData> => {
     const options = cookie ? { headers: { cookie } } : {};
 
     type ApiCoursesDto = TReplace<CourseDto, { beginsAt: string; endsAt: string }>[];
@@ -37,7 +34,10 @@ export class CoursesService {
       .then(({ data: courses }) => plainToClass(CourseDto, courses));
   };
 
-  static getOwnCourse = async (courseId: string, cookie?: string): Promise<TGetOwnCourseData> => {
+  static getOwnCourse = async (
+    courseId: string,
+    cookie?: string,
+  ): Promise<CoursesGetOwnCourseData> => {
     const options = cookie ? { headers: { cookie } } : {};
 
     type ApiCourseDto = TReplace<CourseDto, { beginsAt: string; endsAt: string }>;
@@ -47,13 +47,17 @@ export class CoursesService {
       .then(({ data: course }) => plainToClass(CourseDto, course));
   };
 
-  static createOwnCourse = async (body: TCreateOwnCourseBody): Promise<TCreateOwnCourseData> => {
-    return bffAxios.post<TCreateOwnCourseData>(BffPath.Courses, body).then(({ data }) => data);
+  static createOwnCourse = async (
+    body: CoursesCreateOwnCourseBody,
+  ): Promise<CoursesCreateOwnCourseData> => {
+    return bffAxios
+      .post<CoursesCreateOwnCourseData>(BffPath.Courses, body)
+      .then(({ data }) => data);
   };
 }
 
-export function useOwnCoursesQuery<TData = TGetOwnCoursesData>(
-  options?: UseQueryOptions<TGetOwnCoursesData, Error, TData, TGetOwnCoursesQueryKey>,
+export function useOwnCoursesQuery<TData = CoursesGetOwnCoursesData>(
+  options?: UseQueryOptions<CoursesGetOwnCoursesData, Error, TData, TGetOwnCoursesQueryKey>,
 ) {
   return useQuery(coursesQueryKeys.getOwnCourses(), () => CoursesService.getOwnCourses(), {
     onSettled: async (courses, error) => {
@@ -65,9 +69,9 @@ export function useOwnCoursesQuery<TData = TGetOwnCoursesData>(
   });
 }
 
-export function useOwnCourseQuery<TData = TGetOwnCourseData>(
+export function useOwnCourseQuery<TData = CoursesGetOwnCourseData>(
   courseId: string,
-  options?: UseQueryOptions<TGetOwnCourseData, HttpException, TData, TGetOwnCourseQueryKey>,
+  options?: UseQueryOptions<CoursesGetOwnCourseData, HttpException, TData, TGetOwnCourseQueryKey>,
 ) {
   return useQuery(
     coursesQueryKeys.getOwnCourse(courseId),
@@ -84,7 +88,11 @@ export function useOwnCourseQuery<TData = TGetOwnCourseData>(
 }
 
 export function useCreateOwnCourseMutation(
-  options?: UseMutationOptions<TCreateOwnCourseData, HttpException, TCreateOwnCourseBody>,
+  options?: UseMutationOptions<
+    CoursesCreateOwnCourseData,
+    HttpException,
+    CoursesCreateOwnCourseBody
+  >,
 ) {
   return useMutation(CoursesService.createOwnCourse, options);
 }

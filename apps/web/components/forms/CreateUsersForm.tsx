@@ -2,7 +2,12 @@ import { LoadingSpinner, Overlay, SelectMenu, TextField } from '@/components';
 import { useCreateUsersMutation, usersQueryKeys } from '@/lib/api';
 import { useValidationResolver } from '@/lib/hooks';
 import { Dialog, Transition } from '@headlessui/react';
-import { capitalize, CreateUsersDto, UserRole, ValidationException } from '@pcs/shared-data-access';
+import {
+  capitalize,
+  UserRole,
+  UsersCreateUsersBody,
+  ValidationException,
+} from '@pcs/shared-data-access';
 import { Fragment, memo, useCallback, useMemo, useRef } from 'react';
 import { Path, useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -35,9 +40,9 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     setError,
     reset,
     formState: { isDirty },
-  } = useForm<CreateUsersDto>({
+  } = useForm<UsersCreateUsersBody>({
     defaultValues: { users: [emptyUser.current] },
-    resolver: useValidationResolver(CreateUsersDto),
+    resolver: useValidationResolver(UsersCreateUsersBody),
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -50,7 +55,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<CreateUsersDto>, { message: error?.message });
+          setError(property as Path<UsersCreateUsersBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: 'createUsersError' });
@@ -74,7 +79,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: CreateUsersDto) => {
+      handleSubmit((values: UsersCreateUsersBody) => {
         createUsersMutation.mutate(values);
       }),
     [handleSubmit, createUsersMutation],
