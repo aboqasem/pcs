@@ -2,14 +2,18 @@ import { Checkbox, Link, LoadingSpinner, Overlay, TextField } from '@/components
 import { useSignInMutation } from '@/lib/api';
 import { PagePath } from '@/lib/constants';
 import { useQueryParams, useValidationResolver } from '@/lib/hooks';
-import { SignInDto, UserDto } from '@pcs/shared-data-access';
+import { AuthSignInBody, UserDto } from '@pcs/shared-data-access';
 import { memo, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { GoVerified } from 'react-icons/go';
 import { HiXCircle } from 'react-icons/hi';
 
 export interface ISignInFormProps {
-  onSuccess: (data: UserDto, variables: SignInDto, context: unknown) => void | Promise<unknown>;
+  onSuccess: (
+    data: UserDto,
+    variables: AuthSignInBody,
+    context: unknown,
+  ) => void | Promise<unknown>;
   error?: string;
 }
 
@@ -21,13 +25,13 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
     handleSubmit,
     control,
     formState: { isDirty },
-  } = useForm<SignInDto>({
+  } = useForm<AuthSignInBody>({
     defaultValues: {
       username: '',
       password: '',
       rememberMe: false,
     },
-    resolver: useValidationResolver(SignInDto),
+    resolver: useValidationResolver(AuthSignInBody),
   });
 
   const signInMutation = useSignInMutation({ onSuccess });
@@ -38,7 +42,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: SignInDto) => {
+      handleSubmit((values: AuthSignInBody) => {
         signInMutation.mutate(values);
       }),
     [handleSubmit, signInMutation],
