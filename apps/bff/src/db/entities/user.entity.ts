@@ -4,7 +4,7 @@ import { CourseEntity } from './course.entity';
 
 @Entity('user')
 export class UserEntity extends User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id!: number;
 
   @Column({ type: 'text', unique: true, collation: 'case_insensitive' })
