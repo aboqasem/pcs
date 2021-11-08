@@ -26,5 +26,5 @@ export class CourseEntity extends Course {
 
   @ManyToOne(() => UserEntity, (user) => user.instructorCourses)
   @JoinColumn({ name: 'instructorId', referencedColumnName: 'id' })
-  instructor!: UserEntity;
+  instructor?: UserEntity;
 }
