@@ -91,12 +91,6 @@ class Configurations {
   @Transform(({ value }) => value === 'true')
   readonly DATABASE_SECURE = isProduction;
 
-  /**
-   * synchronize entities
-   */
-  @Transform(({ value }) => value === 'true')
-  readonly DATABASE_SYNC = false;
-
   @Transform(({ value }) => value === 'true')
   readonly DATABASE_LOGGING = false;
 
