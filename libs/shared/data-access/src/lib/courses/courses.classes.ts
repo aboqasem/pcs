@@ -1,5 +1,6 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
 import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import {
@@ -30,7 +31,8 @@ export class Course {
   instructorId!: number;
 
   @Type(() => UserDto)
-  instructor!: UserDto;
+  @IsOptional()
+  instructor?: UserDto;
 }
 
 export class CourseDto extends PickType(Course, [
