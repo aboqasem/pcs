@@ -1,6 +1,8 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
 import { Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { MaterialDto } from '../materials/materials.classes';
+import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import {
@@ -27,12 +29,24 @@ export class Course {
   @IsCourseEndsAt()
   endsAt!: Date;
 
+  /* JOINED RELATIONS */
+
   @IsUserId()
   instructorId!: number;
 
   @Type(() => UserDto)
   @IsOptional()
   instructor?: UserDto;
+
+  /* OTHER RELATIONS */
+
+  @Type(() => MaterialDto)
+  @IsOptional()
+  materials?: MaterialDto[] | null;
+
+  @Type(() => StudentEnrollmentDto)
+  @IsOptional()
+  studentEnrollments?: StudentEnrollmentDto[] | null;
 }
 
 export class CourseDto extends PickType(Course, [

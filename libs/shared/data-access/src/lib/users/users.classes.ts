@@ -1,4 +1,5 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
+import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -10,6 +11,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CourseDto } from '../courses/courses.classes';
+import { MaterialDto } from '../materials/materials.classes';
 import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
   IsUserEmail,
@@ -45,9 +47,18 @@ export class User {
   password!: string;
 
   /* OTHER RELATIONS */
+
   @Type(() => CourseDto)
   @IsOptional()
   instructorCourses?: CourseDto[] | null;
+
+  @Type(() => CourseDto)
+  @IsOptional()
+  instructorCreatedMaterials?: MaterialDto[] | null;
+
+  @Type(() => StudentEnrollmentDto)
+  @IsOptional()
+  studentEnrollments?: StudentEnrollmentDto[] | null;
 }
 
 export class UserDto extends PickType(User, [
