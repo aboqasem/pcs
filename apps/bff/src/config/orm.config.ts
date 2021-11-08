@@ -8,7 +8,7 @@ export const ormConfig = {
   type: 'postgres',
   url: config.DATABASE_URL,
   entities: [UserEntity, CourseEntity],
-  synchronize: config.DATABASE_SYNC,
+  synchronize: false,
   ssl: config.DATABASE_SECURE && { rejectUnauthorized: false },
   logging: config.DATABASE_LOGGING,
 } as TypeOrmModuleOptions & PostgresConnectionOptions;
