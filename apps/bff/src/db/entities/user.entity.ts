@@ -1,4 +1,6 @@
 import { User, UserRole } from '@pcs/shared-data-access';
+import { MaterialEntity } from 'src/db/entities/material.entity';
+import { StudentEnrollmentEntity } from 'src/db/entities/student-enrollment.entity';
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CourseEntity } from './course.entity';
 
@@ -30,4 +32,12 @@ export class UserEntity extends User {
 
   @OneToMany(() => CourseEntity, (course) => course.instructor, { nullable: true })
   instructorCourses?: CourseEntity[] | null;
+
+  @OneToMany(() => MaterialEntity, (material) => material.creatorInstructor, { nullable: true })
+  instructorCreatedMaterials?: MaterialEntity[] | null;
+
+  @OneToMany(() => StudentEnrollmentEntity, (studentEnrollment) => studentEnrollment.student, {
+    nullable: true,
+  })
+  studentEnrollments?: StudentEnrollmentEntity[] | null;
 }

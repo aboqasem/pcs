@@ -1,11 +1,11 @@
 import { Transform } from 'class-transformer';
 import { IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
-import { Course } from '../courses/courses.classes';
 import { IsValidDate } from '../shared/shared.decorators';
 import {
   TCustomValidationArguments,
   TCustomValidationOptions,
 } from '../validation/validation.types';
+import { Course } from './courses.classes';
 
 export function IsCourseId(): PropertyDecorator {
   return function (target, propertyKey) {
