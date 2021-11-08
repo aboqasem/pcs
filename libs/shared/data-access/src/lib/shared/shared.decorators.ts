@@ -24,7 +24,7 @@ export function IsValidDate(): PropertyDecorator {
       const date = new Date(value ?? '');
 
       if (date.toString() === 'Invalid Date') {
-        return undefined;
+        return null;
       }
       return date;
     })(target, propertyKey);
