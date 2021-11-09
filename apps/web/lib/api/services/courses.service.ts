@@ -35,7 +35,7 @@ export class CoursesService {
   };
 
   static getOwnCourse = async (
-    courseId: string,
+    courseId: CourseDto['id'],
     cookie?: string,
   ): Promise<CoursesGetOwnCourseData> => {
     const options = cookie ? { headers: { cookie } } : {};
@@ -43,7 +43,7 @@ export class CoursesService {
     type ApiCourseDto = TReplace<CourseDto, { beginsAt: string; endsAt: string }>;
 
     return bffAxios
-      .get<ApiCourseDto>(`${BffPath.Courses}/${courseId}`, options)
+      .get<ApiCourseDto>(BffPath.Course.replace('[courseId]', courseId), options)
       .then(({ data: course }) => plainToClass(CourseDto, course));
   };
 
