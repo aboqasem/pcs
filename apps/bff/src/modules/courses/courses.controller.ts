@@ -25,8 +25,8 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get()
-  async getOwnCourses(): Promise<CoursesGetOwnCoursesData> {
-    return this.coursesService.getCourses();
+  async getOwnCourses(@Req() req: Request): Promise<CoursesGetOwnCoursesData> {
+    return this.coursesService.getCourses({ where: { instructorId: req.user!.id } });
   }
 
   @Get(':courseId')
