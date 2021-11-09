@@ -2,6 +2,7 @@ export * from './forms/CreateCourseForm';
 export * from './forms/CreateUsersForm';
 export * from './forms/elements/Checkbox';
 export * from './forms/elements/SelectMenu';
+export * from './forms/elements/TextArea';
 export * from './forms/elements/TextField';
 export * from './forms/RetrievePasswordForm';
 export * from './forms/SignInForm';

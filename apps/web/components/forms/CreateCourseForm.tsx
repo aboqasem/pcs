@@ -1,4 +1,4 @@
-import { LoadingSpinner, Overlay, TextField } from '@/components';
+import { LoadingSpinner, Overlay, TextArea, TextField } from '@/components';
 import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api';
 import { useValidationResolver } from '@/lib/hooks';
 import { Dialog, Transition } from '@headlessui/react';
@@ -148,7 +148,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
                       control={control}
                     />
 
-                    <TextField {...register('description')} label="Description" control={control} />
+                    <TextArea {...register('description')} label="Description" control={control} />
 
                     <TextField
                       type="date"
