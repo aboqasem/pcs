@@ -1,6 +1,9 @@
-import { LoadingSpinner, Overlay, TextArea, TextField } from '@/components';
-import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api';
-import { useValidationResolver } from '@/lib/hooks';
+import { TextArea } from '@/components/forms/elements/TextArea';
+import { TextField } from '@/components/forms/elements/TextField';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Overlay } from '@/components/Overlay';
+import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api/services/courses.service';
+import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
 import { CoursesCreateOwnCourseBody, ValidationException } from '@pcs/shared-data-access';
 import { Fragment, memo, Ref, useCallback, useMemo, useRef } from 'react';

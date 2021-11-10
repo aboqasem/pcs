@@ -1,5 +1,5 @@
-import { Link } from '@/components';
-import { classNames } from '@/lib/utils';
+import { Link } from '@/components/Link';
+import { classNames } from '@/lib/utils/style.utils';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { memo, PropsWithChildren, useMemo } from 'react';

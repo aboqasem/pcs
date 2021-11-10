@@ -1,13 +1,13 @@
-import { LoadingSpinner, SidebarLayout, TabsLayout } from '@/components';
-import {
-  DefaultQueryClient,
-  redirectIf,
-  redirectionPredicates,
-  useOwnCourseQuery,
-  useProfileQuery,
-} from '@/lib/api';
-import { courseNavigationItems, courseTabs, PagePath } from '@/lib/constants';
-import { useQueryParams } from '@/lib/hooks';
+import { SidebarLayout } from '@/components/layouts/SidebarLayout';
+import { TabsLayout } from '@/components/layouts/TabsLayout';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import { useOwnCourseQuery } from '@/lib/api/services/courses.service';
+import { useProfileQuery } from '@/lib/api/services/users.service';
+import { courseNavigationItems, courseTabs } from '@/lib/constants/courses.constants';
+import { PagePath } from '@/lib/constants/shared.constants';
+import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';

@@ -1,7 +1,7 @@
-import { SignInForm } from '@/components';
-import { redirectIf, redirectionPredicates } from '@/lib/api';
-import { PagePath } from '@/lib/constants';
-import { useQueryParams } from '@/lib/hooks';
+import { SignInForm } from '@/components/forms/SignInForm';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { PagePath } from '@/lib/constants/shared.constants';
+import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

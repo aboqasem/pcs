@@ -1,5 +1,5 @@
-import { LoadingSpinner } from '@/components';
-import { classNames } from '@/lib/utils';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { classNames } from '@/lib/utils/style.utils';
 import { memo, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useIsFetching } from 'react-query';

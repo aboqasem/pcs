@@ -1,7 +1,11 @@
-import { Link, LoadingSpinner, Overlay, TextField } from '@/components';
-import { useRetrievePasswordMutation } from '@/lib/api';
-import { PagePath } from '@/lib/constants';
-import { useQueryParams, useValidationResolver } from '@/lib/hooks';
+import { TextField } from '@/components/forms/elements/TextField';
+import { Link } from '@/components/Link';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Overlay } from '@/components/Overlay';
+import { useRetrievePasswordMutation } from '@/lib/api/services/auth.service';
+import { PagePath } from '@/lib/constants/shared.constants';
+import { useQueryParams } from '@/lib/hooks/use-query-params';
+import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { AuthRetrievePasswordBody, ValidationException } from '@pcs/shared-data-access';
 import { memo, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';

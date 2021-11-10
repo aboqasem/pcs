@@ -1,4 +1,4 @@
-import { PagePath } from '@/lib/constants';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { UserDto, UserRole } from '@pcs/shared-data-access';
 import { GetServerSidePropsContext, NextPageContext, Redirect } from 'next';
 import { QueryClient } from 'react-query';

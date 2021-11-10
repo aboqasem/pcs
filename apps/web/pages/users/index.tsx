@@ -1,15 +1,15 @@
-import { CreateUsersForm, Link, LoadingSpinner, SidebarLayout } from '@/components';
-import {
-  DefaultQueryClient,
-  redirectIf,
-  redirectionPredicates,
-  useAllUsersQuery,
-  useProfileQuery,
-} from '@/lib/api';
-import { globalNavigationItems, PagePath } from '@/lib/constants';
-import { useQueryParams } from '@/lib/hooks';
+import { CreateUsersForm } from '@/components/forms/CreateUsersForm';
+import { SidebarLayout } from '@/components/layouts/SidebarLayout';
+import { Link } from '@/components/Link';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import { useAllUsersQuery, useProfileQuery } from '@/lib/api/services/users.service';
+import { globalNavigationItems } from '@/lib/constants/global.constants';
+import { PagePath } from '@/lib/constants/shared.constants';
+import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { TPropsWithDehydratedState } from '@/lib/types';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib/utils/style.utils';
 import { capitalize, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';

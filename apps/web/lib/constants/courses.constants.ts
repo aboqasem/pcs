@@ -1,7 +1,8 @@
-import { INavigationItem, ITab } from '@/components';
-import { PagePath } from './shared.constants';
+import { INavigationItem } from '@/components/layouts/SidebarLayout';
+import { ITab } from '@/components/layouts/TabsLayout';
 import { UserRole } from '@pcs/shared-data-access';
 import { globalNavigationItems } from './global.constants';
+import { PagePath } from './shared.constants';
 
 export const courseNavigationItems: { [UserRole.Instructor]: INavigationItem[] } = {
   [UserRole.Instructor]: globalNavigationItems[UserRole.Instructor],

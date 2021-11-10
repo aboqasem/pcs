@@ -1,4 +1,4 @@
-import { BffPath } from '@/lib/constants';
+import { BffPath } from '@/lib/constants/shared.constants';
 import {
   CourseDto,
   CoursesCreateOwnCourseBody,

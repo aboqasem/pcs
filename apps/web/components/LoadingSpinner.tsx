@@ -1,4 +1,4 @@
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib/utils/style.utils';
 import { memo } from 'react';
 import { ImSpinner2 } from 'react-icons/im';
 import { IconBaseProps } from 'react-icons/lib';
