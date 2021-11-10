@@ -1,4 +1,4 @@
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib/utils/style.utils';
 import { Listbox, Transition } from '@headlessui/react';
 import { TReplace } from '@pcs/shared-data-access';
 import { Fragment, HTMLProps, memo, useCallback, useState } from 'react';

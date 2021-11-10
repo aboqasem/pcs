@@ -1,8 +1,13 @@
-import { Link, SidebarLayout } from '@/components';
-import { DefaultQueryClient, redirectIf, redirectionPredicates, useProfileQuery } from '@/lib/api';
-import { dashboardActions, globalNavigationItems, PagePath } from '@/lib/constants';
+import { SidebarLayout } from '@/components/layouts/SidebarLayout';
+import { Link } from '@/components/Link';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import { useProfileQuery } from '@/lib/api/services/users.service';
+import { dashboardActions } from '@/lib/constants/dashboard.constants';
+import { globalNavigationItems } from '@/lib/constants/global.constants';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib/utils/style.utils';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { BsArrowUpRight } from 'react-icons/bs';

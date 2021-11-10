@@ -1,6 +1,6 @@
-import { RetrievePasswordForm } from '@/components';
-import { redirectIf, redirectionPredicates } from '@/lib/api';
-import { PagePath } from '@/lib/constants';
+import { RetrievePasswordForm } from '@/components/forms/RetrievePasswordForm';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 

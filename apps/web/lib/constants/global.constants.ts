@@ -1,4 +1,4 @@
-import { INavigationItem } from '@/components';
+import { INavigationItem } from '@/components/layouts/SidebarLayout';
 import { UserRole } from '@pcs/shared-data-access';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiHome, HiUsers } from 'react-icons/hi';

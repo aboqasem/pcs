@@ -1,13 +1,13 @@
-import { Link, LoadingSpinner, SidebarLayout } from '@/components';
 import { CreateCourseForm } from '@/components/forms/CreateCourseForm';
-import {
-  DefaultQueryClient,
-  redirectIf,
-  redirectionPredicates,
-  useOwnCoursesQuery,
-  useProfileQuery,
-} from '@/lib/api';
-import { globalNavigationItems, PagePath } from '@/lib/constants';
+import { SidebarLayout } from '@/components/layouts/SidebarLayout';
+import { Link } from '@/components/Link';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
+import { useOwnCoursesQuery } from '@/lib/api/services/courses.service';
+import { useProfileQuery } from '@/lib/api/services/users.service';
+import { globalNavigationItems } from '@/lib/constants/global.constants';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { TPropsWithDehydratedState } from '@/lib/types';
 import { UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
@@ -16,7 +16,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { dehydrate } from 'react-query';
-import type { UrlObject } from 'url';
+import { UrlObject } from 'url';
 
 export default function Courses() {
   const [isCreateCourseFormShown, setIsCreateCourseFormShown] = useState(false);

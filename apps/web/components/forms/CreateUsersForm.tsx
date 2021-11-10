@@ -1,6 +1,9 @@
-import { LoadingSpinner, Overlay, SelectMenu, TextField } from '@/components';
-import { useCreateUsersMutation, usersQueryKeys } from '@/lib/api';
-import { useValidationResolver } from '@/lib/hooks';
+import { SelectMenu } from '@/components/forms/elements/SelectMenu';
+import { TextField } from '@/components/forms/elements/TextField';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Overlay } from '@/components/Overlay';
+import { useCreateUsersMutation, usersQueryKeys } from '@/lib/api/services/users.service';
+import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   capitalize,

@@ -1,4 +1,4 @@
-import { Link } from '@/components';
+import { Link } from '@/components/Link';
 import Void from '@/public/assets/void.svg';
 import Image from 'next/image';
 

@@ -1,4 +1,4 @@
-import { BffPath, PagePath } from '@/lib/constants';
+import { BffPath, PagePath } from '@/lib/constants/shared.constants';
 import {
   AuthRetrievePasswordBody,
   AuthRetrievePasswordData,

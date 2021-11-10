@@ -1,4 +1,4 @@
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib/utils/style.utils';
 import { TReplace } from '@pcs/shared-data-access';
 import { ForwardedRef, forwardRef, HTMLProps, memo, useState } from 'react';
 import { ChangeHandler, Control, FieldValues, Path } from 'react-hook-form';

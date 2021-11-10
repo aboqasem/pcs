@@ -1,5 +1,5 @@
-import { Globals } from '@/components';
-import { DefaultQueryClient } from '@/lib/api';
+import { Globals } from '@/components/Globals';
+import { DefaultQueryClient } from '@/lib/api/query-client.config';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';

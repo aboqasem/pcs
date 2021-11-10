@@ -1,5 +1,5 @@
-import { redirectIf, redirectionPredicates } from '@/lib/api';
-import { PagePath } from '@/lib/constants';
+import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { GetServerSideProps } from 'next';
 
 export default function Index() {

@@ -1,6 +1,6 @@
-import { Link } from '@/components';
-import { useSignOutMutation } from '@/lib/api';
-import { classNames } from '@/lib/utils';
+import { Link } from '@/components/Link';
+import { useSignOutMutation } from '@/lib/api/services/auth.service';
+import { classNames } from '@/lib/utils/style.utils';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
