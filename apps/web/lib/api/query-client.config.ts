@@ -1,13 +1,14 @@
+import { config as conf } from '@/lib/config';
 import { HttpException } from '@pcs/shared-data-access';
 import { QueryClient, setLogger } from 'react-query';
 
 type TQueryClientConfig = ConstructorParameters<typeof QueryClient>[0];
 
-const none = () => {
-  // no logging
+const noop = () => {
+  // noop
 };
 
-setLogger({ log: none, warn: none, error: none });
+setLogger({ log: noop, warn: noop, error: noop });
 
 export class DefaultQueryClient extends QueryClient {
   constructor(config?: TQueryClientConfig) {
@@ -16,7 +17,7 @@ export class DefaultQueryClient extends QueryClient {
       defaultOptions: {
         queries: {
           retry: (failureCount, error) => {
-            // if it is a client error, abort
+            // if it is a client error, do not retry
             if (
               error instanceof HttpException &&
               error.status &&
@@ -29,7 +30,8 @@ export class DefaultQueryClient extends QueryClient {
             // otherwise, retry 3 times
             return failureCount < 2;
           },
-          staleTime: 60 * 1000,
+          staleTime: conf.RQ_STALE_TIME,
+          cacheTime: conf.RQ_CACHE_TIME,
           ...config?.defaultOptions?.queries,
         },
         ...config?.defaultOptions,
