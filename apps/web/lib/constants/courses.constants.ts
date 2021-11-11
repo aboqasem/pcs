@@ -10,7 +10,7 @@ export const courseNavigationItems: { [UserRole.Instructor]: INavigationItem[] }
 
 export const courseTabs: { [UserRole.Instructor]: ITab[] } = {
   [UserRole.Instructor]: [
-    { name: 'Feed', pathname: PagePath.Course },
+    { name: 'Content', pathname: PagePath.Course },
     { name: 'People', pathname: PagePath.CoursePeople },
     { name: 'Grades', pathname: PagePath.CourseGrades },
     { name: 'About', pathname: PagePath.CourseAbout },
