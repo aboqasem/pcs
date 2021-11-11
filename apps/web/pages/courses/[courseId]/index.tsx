@@ -1,35 +1,66 @@
+import { CreateMaterialForm, Link } from '@/components';
+import { Dropdown, IDropdownItem } from '@/components/Dropdown';
 import { SidebarLayout } from '@/components/layouts/SidebarLayout';
 import { TabsLayout } from '@/components/layouts/TabsLayout';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { useOwnCourseQuery } from '@/lib/api/services/courses.service';
+import { useOwnCourseMaterialsQuery, useOwnCourseQuery } from '@/lib/api/services/courses.service';
 import { useProfileQuery } from '@/lib/api/services/users.service';
 import { courseNavigationItems, courseTabs } from '@/lib/constants/courses.constants';
 import { PagePath } from '@/lib/constants/shared.constants';
 import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { TPropsWithDehydratedState } from '@/lib/types';
-import { classNames } from '@/lib/utils/style.utils';
-import { Menu, Transition } from '@headlessui/react';
-import { UserRole } from '@pcs/shared-data-access';
+import { capitalize, MaterialType, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Fragment, useMemo } from 'react';
-import { HiChevronDown } from 'react-icons/hi';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { dehydrate } from 'react-query';
+import { UrlObject } from 'url';
 
 export default function Course() {
   const { push } = useRouter();
-
   const { courseId } = useQueryParams<{ courseId: string }>();
+
+  const [materialFormState, setMaterialFormState] = useState({
+    type: MaterialType.Tutorial as MaterialType,
+    isShown: false,
+  });
 
   const { data: profile } = useProfileQuery<UserRole.Instructor>();
 
   const courseQuery = useOwnCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);
 
+  const materialsQuery = useOwnCourseMaterialsQuery(courseId, { enabled: !!course });
+  const materials = useMemo(() => materialsQuery.data ?? [], [materialsQuery.data]);
+
   const isCourseLoading = courseQuery.isLoading;
+  const areMaterialsLoading = materialsQuery.isLoading;
+
+  const materialsHrefs = useMemo(
+    () =>
+      materials.reduce((map, { id }) => {
+        return map.set(id, {
+          pathname: PagePath.CourseMaterial,
+          query: { courseId, materialId: id },
+        });
+      }, new Map<string, UrlObject>()),
+    [courseId, materials],
+  );
+
+  const { current: dropdownItems } = useRef<IDropdownItem[]>(
+    Object.values(MaterialType).map((type) => ({
+      label: capitalize(type),
+      onClick: () => setMaterialFormState({ type, isShown: true }),
+    })),
+  );
+
+  const closeCreateMaterialForm = useCallback(
+    () => setMaterialFormState((prev) => ({ ...prev, isShown: false })),
+    [],
+  );
 
   if (!profile) {
     return null;
@@ -53,7 +84,7 @@ export default function Course() {
                 <TabsLayout tabs={courseTabs[profile.role]}>
                   <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
                     <div className="relative z-0 flex flex-1 overflow-hidden">
-                      <div className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
+                      <div className="relative z-0 flex flex-col flex-1 overflow-y-auto focus:outline-none xl:order-last">
                         {/* Page title & actions */}
                         <div className="px-6 py-4 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
                           <div className="flex-1 min-w-0">
@@ -63,75 +94,44 @@ export default function Course() {
                           </div>
 
                           <div className="flex justify-end mt-4 sm:mt-0">
-                            <Menu as="div" className="relative inline-block text-left">
-                              <div>
-                                <Menu.Button className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3">
-                                  Create
-                                  <HiChevronDown
-                                    className="w-5 h-5 ml-2 -mr-1"
-                                    aria-hidden="true"
-                                  />
-                                </Menu.Button>
-                              </div>
-
-                              <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-100"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-75"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                              >
-                                <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                  <div className="py-1">
-                                    <Menu.Item>
-                                      {({ active }) => (
-                                        <button
-                                          onChange={undefined}
-                                          className={classNames(
-                                            'block px-4 py-2 text-sm w-full text-left',
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                          )}
-                                        >
-                                          Tutorial
-                                        </button>
-                                      )}
-                                    </Menu.Item>
-
-                                    <Menu.Item>
-                                      {({ active }) => (
-                                        <button
-                                          onChange={undefined}
-                                          className={classNames(
-                                            'block px-4 py-2 text-sm w-full text-left',
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                          )}
-                                        >
-                                          Assignment
-                                        </button>
-                                      )}
-                                    </Menu.Item>
-
-                                    <Menu.Item>
-                                      {({ active }) => (
-                                        <button
-                                          onChange={undefined}
-                                          className={classNames(
-                                            'block px-4 py-2 text-sm w-full text-left',
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                          )}
-                                        >
-                                          Quiz
-                                        </button>
-                                      )}
-                                    </Menu.Item>
-                                  </div>
-                                </Menu.Items>
-                              </Transition>
-                            </Menu>
+                            <Dropdown title="Create" items={dropdownItems} />
                           </div>
                         </div>
+
+                        {/* Materials list */}
+                        <nav
+                          className="flex flex-col flex-1 min-h-0 overflow-y-auto"
+                          aria-label="Materials"
+                        >
+                          {areMaterialsLoading ? (
+                            <div className="flex items-center justify-center flex-1 text-center">
+                              <LoadingSpinner className="w-16 h-16" />
+                            </div>
+                          ) : (
+                            <ul role="list" className="relative z-0 divide-y divide-gray-200">
+                              {materials.map((m) => {
+                                return (
+                                  <li key={m.id}>
+                                    <div className="relative flex items-center px-6 py-5 space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
+                                      <div className="flex-1 max-w-sm min-w-0">
+                                        <Link
+                                          href={materialsHrefs.get(m.id)!}
+                                          className="focus:outline-none"
+                                        >
+                                          {/* Extend touch target to entire panel */}
+                                          <span className="absolute inset-0" aria-hidden="true" />
+                                          <p className="text-sm font-medium text-gray-900">
+                                            {m.title}
+                                          </p>
+                                        </Link>
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          )}
+                        </nav>
                       </div>
                     </div>
                   </div>
@@ -141,6 +141,8 @@ export default function Course() {
           )}
         </div>
       </SidebarLayout>
+
+      <CreateMaterialForm {...materialFormState} close={closeCreateMaterialForm} />
     </>
   );
 }

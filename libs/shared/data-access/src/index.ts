@@ -1,6 +1,7 @@
 export * from './lib/auth/auth.api';
 export * from './lib/courses/courses.api';
 export * from './lib/courses/courses.classes';
+export * from './lib/materials/materials.api';
 export * from './lib/materials/materials.classes';
 export * from './lib/materials/materials.types';
 export * from './lib/shared/shared.decorators';
