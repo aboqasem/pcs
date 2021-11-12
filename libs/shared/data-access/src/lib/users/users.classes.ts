@@ -1,5 +1,4 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
-import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -11,6 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CourseDto } from '../courses/courses.classes';
+import { EnrolledStudentDto } from '../enrolled-students/enrolled-students.classes';
 import { MaterialDto } from '../materials/materials.classes';
 import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
@@ -56,9 +56,9 @@ export class User {
   @IsOptional()
   instructorCreatedMaterials?: MaterialDto[] | null;
 
-  @Type(() => StudentEnrollmentDto)
+  @Type(() => EnrolledStudentDto)
   @IsOptional()
-  studentEnrollments?: StudentEnrollmentDto[] | null;
+  enrolledStudents?: EnrolledStudentDto[] | null;
 }
 
 export class UserDto extends PickType(User, [
