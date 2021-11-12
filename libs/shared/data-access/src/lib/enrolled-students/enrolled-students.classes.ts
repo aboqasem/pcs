@@ -5,14 +5,14 @@ import { CourseDto } from '../courses/courses.classes';
 import { IsCourseId } from '../courses/courses.decorators';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
-import { IsStudentEnrollmentId, IsStudentEnrollmentStatus } from './student-enrollments.decorators';
-import { EnrolledStudentStatus } from './student-enrollments.types';
+import { IsEnrolledStudentId, IsEnrolledStudentStatus } from './enrolled-students.decorators';
+import { EnrolledStudentStatus } from './enrolled-students.types';
 
-export class StudentEnrollment {
-  @IsStudentEnrollmentId()
+export class EnrolledStudent {
+  @IsEnrolledStudentId()
   id!: number;
 
-  @IsStudentEnrollmentStatus()
+  @IsEnrolledStudentStatus()
   status = EnrolledStudentStatus.Enrolled;
 
   /* JOINED RELATIONS */
@@ -31,19 +31,19 @@ export class StudentEnrollment {
   enrolledInCourse?: CourseDto;
 }
 
-export class StudentEnrollmentDto extends PickType(StudentEnrollment, [
+export class EnrolledStudentDto extends PickType(EnrolledStudent, [
   'id',
   'status',
   'studentId',
   'enrolledInCourseId',
 ]) {}
 
-export class CreateStudentEnrollmentDto extends PickType(StudentEnrollment, [
+export class CreateEnrolledStudentDto extends PickType(EnrolledStudent, [
   'id',
   'studentId',
   'enrolledInCourse',
 ]) {}
 
-export class CreatedStudentEnrollmentDto extends PickType(StudentEnrollment, ['id']) {}
+export class CreatedEnrolledStudentDto extends PickType(EnrolledStudent, ['id']) {}
 
-export class UpdateStudentEnrollmentDto extends PartialType(CreateStudentEnrollmentDto) {}
+export class UpdateEnrolledStudentDto extends PartialType(CreateEnrolledStudentDto) {}
