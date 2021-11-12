@@ -105,7 +105,7 @@ export default function Course() {
                         >
                           {areMaterialsLoading ? (
                             <div className="flex items-center justify-center flex-1 text-center">
-                              <LoadingSpinner className="w-16 h-16" />
+                              <LoadingSpinner className="w-12 h-12" />
                             </div>
                           ) : (
                             <ul role="list" className="relative z-0 divide-y divide-gray-200">
