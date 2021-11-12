@@ -36,6 +36,17 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
   const queryClient = useQueryClient();
   const { courseId } = useQueryParams<{ courseId: string }>();
 
+  const { current: defaultValues } = useRef<MaterialsCreateOwnMaterialBody>({
+    title: '',
+    description: '',
+    // all will be transformed by resolver
+    beginsAt: '' as unknown as Date,
+    endsAt: '' as unknown as Date,
+    totalDuration: '' as unknown as number,
+    totalMark: '' as unknown as number,
+    type,
+  });
+
   const {
     register,
     handleSubmit,
@@ -44,16 +55,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
     reset,
     formState: { isDirty },
   } = useForm<MaterialsCreateOwnMaterialBody>({
-    defaultValues: {
-      title: '',
-      description: '',
-      // all will be transformed by resolver
-      beginsAt: '' as unknown as Date,
-      endsAt: '' as unknown as Date,
-      totalDuration: '' as unknown as number,
-      totalMark: '' as unknown as number,
-      type,
-    },
+    defaultValues,
     resolver: useValidationResolver(MaterialsCreateOwnMaterialBody),
   });
 
@@ -84,8 +86,11 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
 
   useEffect(() => {
     // clear the form when type is changed, needed to set the latest type in the form
-    reset({ type });
-  }, [reset, type]);
+    reset({
+      ...defaultValues,
+      type,
+    });
+  }, [defaultValues, reset, type]);
 
   const newInputRefCallback: Ref<HTMLInputElement> = useCallback(
     (el) => {
