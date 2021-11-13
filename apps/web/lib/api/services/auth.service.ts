@@ -1,11 +1,11 @@
 import { BffPath, PagePath } from '@/lib/constants/shared.constants';
 import {
   AuthRetrievePasswordBody,
-  AuthRetrievePasswordData,
   AuthSignInBody,
-  AuthSignInData,
-  AuthSignOutData,
   HttpException,
+  TAuthRetrievePasswordData,
+  TAuthSignInData,
+  TAuthSignOutData,
 } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
@@ -14,25 +14,25 @@ import { bffAxios } from '../axios.config';
 import { usersQueryKeys } from './users.service';
 
 export class AuthService {
-  static signIn = async (body: AuthSignInBody): Promise<AuthSignInData> => {
-    return bffAxios.post<AuthSignInData>(BffPath.SignIn, body).then(({ data }) => data);
+  static signIn = async (body: AuthSignInBody): Promise<TAuthSignInData> => {
+    return bffAxios.post<TAuthSignInData>(BffPath.SignIn, body).then(({ data }) => data);
   };
 
-  static signOut = async (): Promise<AuthSignOutData> => {
-    return bffAxios.post<AuthSignOutData>(BffPath.SignOut).then(({ data }) => data);
+  static signOut = async (): Promise<TAuthSignOutData> => {
+    return bffAxios.post<TAuthSignOutData>(BffPath.SignOut).then(({ data }) => data);
   };
 
   static retrievePassword = async (
     body: AuthRetrievePasswordBody,
-  ): Promise<AuthRetrievePasswordData> => {
+  ): Promise<TAuthRetrievePasswordData> => {
     return bffAxios
-      .post<AuthRetrievePasswordData>(BffPath.RetrievePassword, body)
+      .post<TAuthRetrievePasswordData>(BffPath.RetrievePassword, body)
       .then(({ data }) => data);
   };
 }
 
 export function useSignInMutation(
-  options?: UseMutationOptions<AuthSignInData, HttpException, AuthSignInBody>,
+  options?: UseMutationOptions<TAuthSignInData, HttpException, AuthSignInBody>,
 ) {
   const queryCLient = useQueryClient();
 
@@ -49,7 +49,7 @@ export function useSignInMutation(
   });
 }
 
-export function useSignOutMutation(options?: UseMutationOptions<AuthSignOutData, HttpException>) {
+export function useSignOutMutation(options?: UseMutationOptions<TAuthSignOutData, HttpException>) {
   const queryClient = useQueryClient();
   const { push } = useRouter();
 
@@ -63,7 +63,7 @@ export function useSignOutMutation(options?: UseMutationOptions<AuthSignOutData,
 }
 
 export function useRetrievePasswordMutation(
-  options?: UseMutationOptions<AuthRetrievePasswordData, HttpException, AuthRetrievePasswordBody>,
+  options?: UseMutationOptions<TAuthRetrievePasswordData, HttpException, AuthRetrievePasswordBody>,
 ) {
   const { push, query } = useRouter();
 

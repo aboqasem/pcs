@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import {
   AuthRetrievePasswordBody,
-  AuthRetrievePasswordData,
   AuthSignInBody,
-  AuthSignInData,
-  AuthSignOutData,
+  TAuthRetrievePasswordData,
+  TAuthSignInData,
+  TAuthSignOutData,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
 import { config } from 'src/config/config';
@@ -18,7 +18,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('sign-in')
   @UseGuards(LocalSignInGuard)
-  async signIn(@Body() dto: AuthSignInBody, @Req() req: Request): Promise<AuthSignInData> {
+  async signIn(@Body() dto: AuthSignInBody, @Req() req: Request): Promise<TAuthSignInData> {
     if (dto.rememberMe) {
       req.session.cookie.maxAge = config.LONG_COOKIE_MAX_AGE;
     } else {
@@ -30,14 +30,16 @@ export class AuthController {
 
   @Post('sign-out')
   @UserAuth()
-  async signOut(@Req() req: Request): Promise<AuthSignOutData> {
+  async signOut(@Req() req: Request): Promise<TAuthSignOutData> {
     req.logOut();
 
     return true;
   }
 
   @Post('retrieve-password')
-  async retrievePassword(@Body() dto: AuthRetrievePasswordBody): Promise<AuthRetrievePasswordData> {
+  async retrievePassword(
+    @Body() dto: AuthRetrievePasswordBody,
+  ): Promise<TAuthRetrievePasswordData> {
     const foundAndSent = await this.authService.sendOwnPassword(dto.email);
 
     if (!foundAndSent) {

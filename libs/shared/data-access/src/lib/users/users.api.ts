@@ -1,8 +1,8 @@
 import { CreatedUsersDto, CreateUsersDto, UserDto } from './users.classes';
 
-export type UsersGetAllUsersData = UserDto[];
+export type TUsersGetAllUsersData = UserDto[];
 
-export type UsersGetProfileData = UserDto;
+export type TUsersGetProfileData = UserDto;
 
 export class UsersCreateUsersBody extends CreateUsersDto {}
-export type UsersCreateUsersData = CreatedUsersDto;
+export type TUsersCreateUsersData = CreatedUsersDto;

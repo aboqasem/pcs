@@ -4,9 +4,9 @@ import {
   TReplace,
   UserRole,
   UsersCreateUsersBody,
-  UsersCreateUsersData,
-  UsersGetAllUsersData,
-  UsersGetProfileData,
+  TUsersCreateUsersData,
+  TUsersGetAllUsersData,
+  TUsersGetProfileData,
 } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
@@ -32,32 +32,32 @@ export type TGetAllUsersQueryKey = ReturnType<typeof usersQueryKeys.getAllUsers>
 export type TGetProfileQueryKey = ReturnType<typeof usersQueryKeys.getProfile>;
 
 export class UsersService {
-  static getAllUsers = async (cookie?: string): Promise<UsersGetAllUsersData> => {
+  static getAllUsers = async (cookie?: string): Promise<TUsersGetAllUsersData> => {
     const options = cookie ? { headers: { cookie } } : {};
-    return bffAxios.get<UsersGetAllUsersData>(BffPath.Users, options).then(({ data }) => data);
+    return bffAxios.get<TUsersGetAllUsersData>(BffPath.Users, options).then(({ data }) => data);
   };
 
-  static getProfile = async (cookie?: string): Promise<UsersGetProfileData> => {
+  static getProfile = async (cookie?: string): Promise<TUsersGetProfileData> => {
     const options = cookie ? { headers: { cookie } } : {};
-    return bffAxios.get<UsersGetProfileData>(BffPath.Profile, options).then(({ data }) => data);
+    return bffAxios.get<TUsersGetProfileData>(BffPath.Profile, options).then(({ data }) => data);
   };
 
-  static createUsers = async (body: UsersCreateUsersBody): Promise<UsersCreateUsersData> => {
-    return bffAxios.post<UsersCreateUsersData>(BffPath.Users, body).then(({ data }) => data);
+  static createUsers = async (body: UsersCreateUsersBody): Promise<TUsersCreateUsersData> => {
+    return bffAxios.post<TUsersCreateUsersData>(BffPath.Users, body).then(({ data }) => data);
   };
 }
 
-export function useAllUsersQuery<TData = UsersGetAllUsersData>(
-  options?: UseQueryOptions<UsersGetAllUsersData, Error, TData, TGetAllUsersQueryKey>,
+export function useAllUsersQuery<TData = TUsersGetAllUsersData>(
+  options?: UseQueryOptions<TUsersGetAllUsersData, Error, TData, TGetAllUsersQueryKey>,
 ) {
   return useQuery(usersQueryKeys.getAllUsers(), () => UsersService.getAllUsers(), {
     ...options,
   });
 }
 
-export function useProfileQuery<TRole extends UserRole = UserRole, TData = UsersGetProfileData>(
+export function useProfileQuery<TRole extends UserRole = UserRole, TData = TUsersGetProfileData>(
   options?: UseQueryOptions<
-    UsersGetProfileData,
+    TUsersGetProfileData,
     HttpException,
     TReplace<TData, { role: TRole }>,
     TGetProfileQueryKey
@@ -82,10 +82,10 @@ export function useProfileQuery<TRole extends UserRole = UserRole, TData = Users
   });
 }
 
-export function fetchProfile<TData = UsersGetProfileData>(
+export function fetchProfile<TData = TUsersGetProfileData>(
   cookie?: string,
   queryClient?: QueryClient,
-  options?: FetchQueryOptions<UsersGetProfileData, HttpException, TData, TGetProfileQueryKey>,
+  options?: FetchQueryOptions<TUsersGetProfileData, HttpException, TData, TGetProfileQueryKey>,
 ) {
   if (queryClient) {
     return queryClient.fetchQuery(
@@ -98,7 +98,7 @@ export function fetchProfile<TData = UsersGetProfileData>(
 }
 
 export function useCreateUsersMutation(
-  options?: UseMutationOptions<UsersCreateUsersData, HttpException, UsersCreateUsersBody>,
+  options?: UseMutationOptions<TUsersCreateUsersData, HttpException, UsersCreateUsersBody>,
 ) {
   return useMutation(UsersService.createUsers, options);
 }
