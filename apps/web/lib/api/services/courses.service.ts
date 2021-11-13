@@ -15,7 +15,13 @@ import {
 } from '@pcs/shared-data-access';
 import { plainToClass } from 'class-transformer';
 import toast from 'react-hot-toast';
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from 'react-query';
 import { bffAxios } from '../axios.config';
 
 export const coursesQueryKeys = {
@@ -131,6 +137,9 @@ export function useOwnCourseQuery<TData = TCoursesGetOwnCourseData>(
   courseId: string,
   options?: UseQueryOptions<TCoursesGetOwnCourseData, HttpException, TData, TGetOwnCourseQueryKey>,
 ) {
+  const queryClient = useQueryClient();
+  console.log();
+
   return useQuery(
     coursesQueryKeys.getOwnCourse(courseId),
     () => CoursesService.getOwnCourse(courseId),
@@ -140,6 +149,11 @@ export function useOwnCourseQuery<TData = TCoursesGetOwnCourseData>(
           toast.error(error.message, { id: `courseError-${courseId}` });
         }
       },
+      initialData: queryClient
+        .getQueryData<TCoursesGetOwnCoursesData>(coursesQueryKeys.getOwnCourses())
+        ?.find((course) => course.id === courseId),
+      initialDataUpdatedAt: queryClient.getQueryState(coursesQueryKeys.getOwnCourses())
+        ?.dataUpdatedAt,
       ...options,
     },
   );
@@ -183,6 +197,9 @@ export function useOwnCourseMaterialQuery<TData = TMaterialsGetOwnMaterialData>(
     TGetOwnMaterialQueryKey
   >,
 ) {
+  const queryClient = useQueryClient();
+  const courseMaterialsQueryKey = coursesQueryKeys.getOwnCourseMaterials(courseId);
+
   return useQuery(
     coursesQueryKeys.getOwnCourseMaterial(courseId, materialId),
     () => CoursesService.getOwnCourseMaterial(courseId, materialId),
@@ -192,6 +209,10 @@ export function useOwnCourseMaterialQuery<TData = TMaterialsGetOwnMaterialData>(
           toast.error(error.message, { id: `materialError-${materialId}` });
         }
       },
+      initialData: queryClient
+        .getQueryData<TMaterialsGetOwnMaterialsData>(courseMaterialsQueryKey)
+        ?.find((material) => material.id === materialId),
+      initialDataUpdatedAt: queryClient.getQueryState(courseMaterialsQueryKey)?.dataUpdatedAt,
       ...options,
     },
   );
