@@ -6,12 +6,12 @@ export class AuthSignInBody extends UserCredentials {
   @IsBoolean()
   rememberMe = false;
 }
-export type AuthSignInData = UserDto;
+export type TAuthSignInData = UserDto;
 
-export type AuthSignOutData = true;
+export type TAuthSignOutData = true;
 
 export class AuthRetrievePasswordBody {
   @IsUserEmail()
   email!: string;
 }
-export type AuthRetrievePasswordData = true;
+export type TAuthRetrievePasswordData = true;
