@@ -2,15 +2,15 @@ import { BffPath } from '@/lib/constants/shared.constants';
 import {
   CourseDto,
   CoursesCreateCourseBody,
+  CoursesCreateMaterialBody,
   HttpException,
   MaterialDto,
-  MaterialsCreateMaterialBody,
   TCoursesCreateCourseData,
+  TCoursesCreateMaterialData,
   TCoursesGetCourseData,
   TCoursesGetCoursesData,
-  TMaterialsCreateMaterialData,
-  TMaterialsGetMaterialData,
-  TMaterialsGetMaterialsData,
+  TCoursesGetMaterialData,
+  TCoursesGetMaterialsData,
   TReplace,
 } from '@pcs/shared-data-access';
 import { plainToClass } from 'class-transformer';
@@ -75,7 +75,7 @@ export class CoursesService {
   static getCourseMaterials = async (
     courseId: CourseDto['id'],
     cookie?: string,
-  ): Promise<TMaterialsGetMaterialsData> => {
+  ): Promise<TCoursesGetMaterialsData> => {
     const options = cookie ? { headers: { cookie } } : {};
 
     type ApiMaterialsDto = TReplace<MaterialDto, { beginsAt: string; endsAt: string }>[];
@@ -89,7 +89,7 @@ export class CoursesService {
     courseId: CourseDto['id'],
     materialId: MaterialDto['id'],
     cookie?: string,
-  ): Promise<TMaterialsGetMaterialData> => {
+  ): Promise<TCoursesGetMaterialData> => {
     const options = cookie ? { headers: { cookie } } : {};
 
     type ApiMaterialDto = TReplace<MaterialDto, { beginsAt: string; endsAt: string }>;
@@ -107,10 +107,10 @@ export class CoursesService {
     body,
   }: {
     courseId: CourseDto['id'];
-    body: MaterialsCreateMaterialBody;
-  }): Promise<TMaterialsCreateMaterialData> => {
+    body: CoursesCreateMaterialBody;
+  }): Promise<TCoursesCreateMaterialData> => {
     return bffAxios
-      .post<TMaterialsCreateMaterialData>(
+      .post<TCoursesCreateMaterialData>(
         BffPath.CourseMaterials.replace('[courseId]', courseId),
         body,
       )
@@ -158,9 +158,9 @@ export function useCreateCourseMutation(
   return useMutation(CoursesService.createCourse, options);
 }
 
-export function useCourseMaterialsQuery<TData = TMaterialsGetMaterialsData>(
+export function useCourseMaterialsQuery<TData = TCoursesGetMaterialsData>(
   courseId: CourseDto['id'],
-  options?: UseQueryOptions<TMaterialsGetMaterialsData, Error, TData, TGetMaterialsQueryKey>,
+  options?: UseQueryOptions<TCoursesGetMaterialsData, Error, TData, TGetMaterialsQueryKey>,
 ) {
   return useQuery(
     coursesQueryKeys.getCourseMaterials(courseId),
@@ -176,10 +176,10 @@ export function useCourseMaterialsQuery<TData = TMaterialsGetMaterialsData>(
   );
 }
 
-export function useCourseMaterialQuery<TData = TMaterialsGetMaterialData>(
+export function useCourseMaterialQuery<TData = TCoursesGetMaterialData>(
   courseId: CourseDto['id'],
   materialId: MaterialDto['id'],
-  options?: UseQueryOptions<TMaterialsGetMaterialData, HttpException, TData, TGetMaterialQueryKey>,
+  options?: UseQueryOptions<TCoursesGetMaterialData, HttpException, TData, TGetMaterialQueryKey>,
 ) {
   const queryClient = useQueryClient();
   const courseMaterialsQueryKey = coursesQueryKeys.getCourseMaterials(courseId);
@@ -194,7 +194,7 @@ export function useCourseMaterialQuery<TData = TMaterialsGetMaterialData>(
         }
       },
       initialData: queryClient
-        .getQueryData<TMaterialsGetMaterialsData>(courseMaterialsQueryKey)
+        .getQueryData<TCoursesGetMaterialsData>(courseMaterialsQueryKey)
         ?.find((material) => material.id === materialId),
       initialDataUpdatedAt: queryClient.getQueryState(courseMaterialsQueryKey)?.dataUpdatedAt,
       ...options,
@@ -204,11 +204,11 @@ export function useCourseMaterialQuery<TData = TMaterialsGetMaterialData>(
 
 export function useCreateCourseMaterialMutation(
   options?: UseMutationOptions<
-    TMaterialsCreateMaterialData,
+    TCoursesCreateMaterialData,
     HttpException,
     {
       courseId: CourseDto['id'];
-      body: MaterialsCreateMaterialBody;
+      body: CoursesCreateMaterialBody;
     }
   >,
 ) {
