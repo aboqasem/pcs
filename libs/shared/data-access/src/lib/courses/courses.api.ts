@@ -1,8 +1,8 @@
 import { CourseDto, CreateCourseDto, CreatedCourseDto } from './courses.classes';
 
-export type TCoursesGetOwnCoursesData = CourseDto[];
+export type TCoursesGetCoursesData = CourseDto[];
 
-export type TCoursesGetOwnCourseData = CourseDto;
+export type TCoursesGetCourseData = CourseDto;
 
-export class CoursesCreateOwnCourseBody extends CreateCourseDto {}
-export type TCoursesCreateOwnCourseData = CreatedCourseDto;
+export class CoursesCreateCourseBody extends CreateCourseDto {}
+export type TCoursesCreateCourseData = CreatedCourseDto;

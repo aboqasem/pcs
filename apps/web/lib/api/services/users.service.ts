@@ -2,11 +2,11 @@ import { BffPath, PagePath } from '@/lib/constants/shared.constants';
 import {
   HttpException,
   TReplace,
+  TUsersCreateUsersData,
+  TUsersGetProfileData,
+  TUsersGetUsersData,
   UserRole,
   UsersCreateUsersBody,
-  TUsersCreateUsersData,
-  TUsersGetAllUsersData,
-  TUsersGetProfileData,
 } from '@pcs/shared-data-access';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
@@ -23,18 +23,18 @@ import { bffAxios } from '../axios.config';
 
 export const usersQueryKeys = {
   all: ['users'] as const,
-  getAllUsers: () => [...usersQueryKeys.all, 'get', 'all'] as const,
+  getUsers: () => [...usersQueryKeys.all, 'get'] as const,
   getProfile: () => [...usersQueryKeys.all, 'profile', 'get'] as const,
 };
 
-export type TGetAllUsersQueryKey = ReturnType<typeof usersQueryKeys.getAllUsers>;
+export type TGetUsersQueryKey = ReturnType<typeof usersQueryKeys.getUsers>;
 
 export type TGetProfileQueryKey = ReturnType<typeof usersQueryKeys.getProfile>;
 
 export class UsersService {
-  static getAllUsers = async (cookie?: string): Promise<TUsersGetAllUsersData> => {
+  static getUsers = async (cookie?: string): Promise<TUsersGetUsersData> => {
     const options = cookie ? { headers: { cookie } } : {};
-    return bffAxios.get<TUsersGetAllUsersData>(BffPath.Users, options).then(({ data }) => data);
+    return bffAxios.get<TUsersGetUsersData>(BffPath.Users, options).then(({ data }) => data);
   };
 
   static getProfile = async (cookie?: string): Promise<TUsersGetProfileData> => {
@@ -47,10 +47,10 @@ export class UsersService {
   };
 }
 
-export function useAllUsersQuery<TData = TUsersGetAllUsersData>(
-  options?: UseQueryOptions<TUsersGetAllUsersData, Error, TData, TGetAllUsersQueryKey>,
+export function useUsersQuery<TData = TUsersGetUsersData>(
+  options?: UseQueryOptions<TUsersGetUsersData, Error, TData, TGetUsersQueryKey>,
 ) {
-  return useQuery(usersQueryKeys.getAllUsers(), () => UsersService.getAllUsers(), {
+  return useQuery(usersQueryKeys.getUsers(), () => UsersService.getUsers(), {
     ...options,
   });
 }

@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import {
+  TUsersCreateUsersData,
+  TUsersGetProfileData,
+  TUsersGetUsersData,
   UserRole,
   UsersCreateUsersBody,
-  TUsersCreateUsersData,
-  TUsersGetAllUsersData,
-  TUsersGetProfileData,
   ValidationException,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
@@ -18,8 +18,8 @@ export class UsersController {
 
   @Get()
   @UserAuth({ roles: [UserRole.Admin] })
-  async getAllUsers(): Promise<TUsersGetAllUsersData> {
-    return this.usersService.getAllUsers();
+  async getUsers(): Promise<TUsersGetUsersData> {
+    return this.usersService.getUsers();
   }
 
   @Get('profile')

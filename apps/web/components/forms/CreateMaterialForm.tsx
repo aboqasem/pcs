@@ -4,14 +4,14 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Overlay } from '@/components/Overlay';
 import {
   coursesQueryKeys,
-  useCreateOwnCourseMaterialMutation,
+  useCreateCourseMaterialMutation,
 } from '@/lib/api/services/courses.service';
 import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   capitalize,
-  MaterialsCreateOwnMaterialBody,
+  MaterialsCreateMaterialBody,
   MaterialType,
   ValidationException,
 } from '@pcs/shared-data-access';
@@ -36,7 +36,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
   const queryClient = useQueryClient();
   const { courseId } = useQueryParams<{ courseId: string }>();
 
-  const { current: defaultValues } = useRef<MaterialsCreateOwnMaterialBody>({
+  const { current: defaultValues } = useRef<MaterialsCreateMaterialBody>({
     title: '',
     description: '',
     // all will be transformed by resolver
@@ -54,34 +54,34 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
     setError,
     reset,
     formState: { isDirty },
-  } = useForm<MaterialsCreateOwnMaterialBody>({
+  } = useForm<MaterialsCreateMaterialBody>({
     defaultValues,
-    resolver: useValidationResolver(MaterialsCreateOwnMaterialBody),
+    resolver: useValidationResolver(MaterialsCreateMaterialBody),
   });
 
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const { ref: titleInputRefCallback, ...titleInputRegistration } = register('title');
 
-  const createOwnMaterialMutation = useCreateOwnCourseMaterialMutation({
+  const createMaterialMutation = useCreateCourseMaterialMutation({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<MaterialsCreateOwnMaterialBody>, { message: error?.message });
+          setError(property as Path<MaterialsCreateMaterialBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: `create${type}Error` });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(coursesQueryKeys.getOwnCourseMaterials(courseId));
+      queryClient.invalidateQueries(coursesQueryKeys.getCourseMaterials(courseId));
       toast.success(`${capitalize(type)} has been created!`, { duration: 5000 });
       close();
       reset();
-      createOwnMaterialMutation.reset();
+      createMaterialMutation.reset();
     },
   });
 
-  const isLoading = createOwnMaterialMutation.isLoading;
-  const isSuccess = createOwnMaterialMutation.isSuccess;
+  const isLoading = createMaterialMutation.isLoading;
+  const isSuccess = createMaterialMutation.isSuccess;
   const isDisabled = !isDirty || isLoading || isSuccess;
 
   useEffect(() => {
@@ -102,10 +102,10 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: MaterialsCreateOwnMaterialBody) => {
-        createOwnMaterialMutation.mutate({ courseId, body: values });
+      handleSubmit((values: MaterialsCreateMaterialBody) => {
+        createMaterialMutation.mutate({ courseId, body: values });
       }),
-    [handleSubmit, createOwnMaterialMutation, courseId],
+    [handleSubmit, createMaterialMutation, courseId],
   );
 
   const onCancel = useCallback(() => {

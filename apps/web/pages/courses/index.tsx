@@ -4,7 +4,7 @@ import { Link } from '@/components/Link';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { useOwnCoursesQuery } from '@/lib/api/services/courses.service';
+import { useCoursesQuery } from '@/lib/api/services/courses.service';
 import { useProfileQuery } from '@/lib/api/services/users.service';
 import { globalNavigationItems } from '@/lib/constants/global.constants';
 import { PagePath } from '@/lib/constants/shared.constants';
@@ -23,7 +23,7 @@ export default function Courses() {
 
   const { data: profile } = useProfileQuery();
 
-  const coursesQuery = useOwnCoursesQuery();
+  const coursesQuery = useCoursesQuery();
   const courses = useMemo(() => coursesQuery.data ?? [], [coursesQuery.data]);
 
   const areCoursesLoading = coursesQuery.isLoading;

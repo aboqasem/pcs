@@ -1,8 +1,8 @@
 import { CreatedMaterialDto, CreateMaterialDto, MaterialDto } from './materials.classes';
 
-export type TMaterialsGetOwnMaterialsData = MaterialDto[];
+export type TMaterialsGetMaterialsData = MaterialDto[];
 
-export type TMaterialsGetOwnMaterialData = MaterialDto;
+export type TMaterialsGetMaterialData = MaterialDto;
 
-export class MaterialsCreateOwnMaterialBody extends CreateMaterialDto {}
-export type TMaterialsCreateOwnMaterialData = CreatedMaterialDto;
+export class MaterialsCreateMaterialBody extends CreateMaterialDto {}
+export type TMaterialsCreateMaterialData = CreatedMaterialDto;

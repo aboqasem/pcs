@@ -64,7 +64,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
       toast.error(error.message, { id: 'createUsersError' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(usersQueryKeys.getAllUsers());
+      queryClient.invalidateQueries(usersQueryKeys.getUsers());
       toast.success('Users have been created and they will be informed!', { duration: 5000 });
       close();
       reset();
