@@ -11,7 +11,7 @@ import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   capitalize,
-  MaterialsCreateMaterialBody,
+  CoursesCreateMaterialBody,
   MaterialType,
   ValidationException,
 } from '@pcs/shared-data-access';
@@ -36,7 +36,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
   const queryClient = useQueryClient();
   const { courseId } = useQueryParams<{ courseId: string }>();
 
-  const { current: defaultValues } = useRef<MaterialsCreateMaterialBody>({
+  const { current: defaultValues } = useRef<CoursesCreateMaterialBody>({
     title: '',
     description: '',
     // all will be transformed by resolver
@@ -54,9 +54,9 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
     setError,
     reset,
     formState: { isDirty },
-  } = useForm<MaterialsCreateMaterialBody>({
+  } = useForm<CoursesCreateMaterialBody>({
     defaultValues,
-    resolver: useValidationResolver(MaterialsCreateMaterialBody),
+    resolver: useValidationResolver(CoursesCreateMaterialBody),
   });
 
   const titleInputRef = useRef<HTMLInputElement | null>(null);
@@ -66,7 +66,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<MaterialsCreateMaterialBody>, { message: error?.message });
+          setError(property as Path<CoursesCreateMaterialBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: `create${type}Error` });
@@ -102,7 +102,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: MaterialsCreateMaterialBody) => {
+      handleSubmit((values: CoursesCreateMaterialBody) => {
         createMaterialMutation.mutate({ courseId, body: values });
       }),
     [handleSubmit, createMaterialMutation, courseId],
