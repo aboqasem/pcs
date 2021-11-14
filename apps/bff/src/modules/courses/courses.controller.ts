@@ -9,14 +9,14 @@ import {
   Req,
 } from '@nestjs/common';
 import {
-  CoursesCreateOwnCourseBody,
-  MaterialsCreateOwnMaterialBody,
-  TCoursesCreateOwnCourseData,
-  TCoursesGetOwnCourseData,
-  TCoursesGetOwnCoursesData,
-  TMaterialsCreateOwnMaterialData,
-  TMaterialsGetOwnMaterialData,
-  TMaterialsGetOwnMaterialsData,
+  CoursesCreateCourseBody,
+  MaterialsCreateMaterialBody,
+  TCoursesCreateCourseData,
+  TCoursesGetCourseData,
+  TCoursesGetCoursesData,
+  TMaterialsCreateMaterialData,
+  TMaterialsGetMaterialData,
+  TMaterialsGetMaterialsData,
   UserRole,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
@@ -42,15 +42,15 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get()
-  async getOwnCourses(@Req() req: Request): Promise<TCoursesGetOwnCoursesData> {
+  async getCourses(@Req() req: Request): Promise<TCoursesGetCoursesData> {
     return this.coursesService.getCourses({ where: { instructorId: req.user!.id } });
   }
 
   @Get(':courseId')
-  async getOwnCourse(
+  async getCourse(
     @CourseIdParam courseId: string,
     @Req() req: Request,
-  ): Promise<TCoursesGetOwnCourseData> {
+  ): Promise<TCoursesGetCourseData> {
     const course = await this.coursesService.getCourse(courseId, {
       where: { instructorId: req.user!.id },
     });
@@ -63,29 +63,29 @@ export class CoursesController {
   }
 
   @Post()
-  createOwnCourse(
-    @Body() dto: CoursesCreateOwnCourseBody,
+  createCourse(
+    @Body() dto: CoursesCreateCourseBody,
     @Req() req: Request,
-  ): Promise<TCoursesCreateOwnCourseData> {
+  ): Promise<TCoursesCreateCourseData> {
     return this.coursesService.createCourse(dto, req.user!.id);
   }
 
   @Get(':courseId/materials')
-  async getOwnCourseMaterials(
+  async getCourseMaterials(
     @CourseIdParam courseId: string,
     @Req() req: Request,
-  ): Promise<TMaterialsGetOwnMaterialsData> {
+  ): Promise<TMaterialsGetMaterialsData> {
     return this.coursesService.getCourseMaterials(courseId, {
       where: { creatorInstructorId: req.user!.id },
     });
   }
 
   @Get(':courseId/materials/:materialId')
-  async getOwnCourseMaterial(
+  async getCourseMaterial(
     @CourseIdParam courseId: string,
     @MaterialIdParam materialId: string,
     @Req() req: Request,
-  ): Promise<TMaterialsGetOwnMaterialData> {
+  ): Promise<TMaterialsGetMaterialData> {
     const material = await this.coursesService.getCourseMaterial(courseId, materialId, {
       where: { creatorInstructorId: req.user!.id },
     });
@@ -98,11 +98,11 @@ export class CoursesController {
   }
 
   @Post(':courseId/materials')
-  createOwnCourseMaterial(
+  createCourseMaterial(
     @CourseIdParam courseId: string,
-    @Body() dto: MaterialsCreateOwnMaterialBody,
+    @Body() dto: MaterialsCreateMaterialBody,
     @Req() req: Request,
-  ): Promise<TMaterialsCreateOwnMaterialData> {
+  ): Promise<TMaterialsCreateMaterialData> {
     return this.coursesService.createCourseMaterial(dto, courseId, req.user!.id);
   }
 }

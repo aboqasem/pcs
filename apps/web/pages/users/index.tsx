@@ -4,7 +4,7 @@ import { Link } from '@/components/Link';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { useAllUsersQuery, useProfileQuery } from '@/lib/api/services/users.service';
+import { useProfileQuery, useUsersQuery } from '@/lib/api/services/users.service';
 import { globalNavigationItems } from '@/lib/constants/global.constants';
 import { PagePath } from '@/lib/constants/shared.constants';
 import { useQueryParams } from '@/lib/hooks/use-query-params';
@@ -25,7 +25,7 @@ export default function Users() {
 
   const { data: profile } = useProfileQuery<UserRole.Admin>();
 
-  const usersQuery = useAllUsersQuery({
+  const usersQuery = useUsersQuery({
     select: (users) => users.filter((u) => u.role !== UserRole.Admin),
   });
   const areUsersLoading = usersQuery.isLoading;

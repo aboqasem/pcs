@@ -2,10 +2,10 @@ import { TextArea } from '@/components/forms/elements/TextArea';
 import { TextField } from '@/components/forms/elements/TextField';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { Overlay } from '@/components/Overlay';
-import { coursesQueryKeys, useCreateOwnCourseMutation } from '@/lib/api/services/courses.service';
+import { coursesQueryKeys, useCreateCourseMutation } from '@/lib/api/services/courses.service';
 import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
-import { CoursesCreateOwnCourseBody, ValidationException } from '@pcs/shared-data-access';
+import { CoursesCreateCourseBody, ValidationException } from '@pcs/shared-data-access';
 import { Fragment, memo, Ref, useCallback, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -31,7 +31,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
     setError,
     reset,
     formState: { isDirty },
-  } = useForm<CoursesCreateOwnCourseBody>({
+  } = useForm<CoursesCreateCourseBody>({
     defaultValues: {
       title: '',
       description: '',
@@ -39,32 +39,32 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
       beginsAt: '' as unknown as Date,
       endsAt: '' as unknown as Date,
     },
-    resolver: useValidationResolver(CoursesCreateOwnCourseBody),
+    resolver: useValidationResolver(CoursesCreateCourseBody),
   });
 
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const { ref: titleInputRefCallback, ...titleInputRegistration } = register('title');
 
-  const createOwnCourseMutation = useCreateOwnCourseMutation({
+  const createCourseMutation = useCreateCourseMutation({
     onError: (error) => {
       if (error instanceof ValidationException) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<CoursesCreateOwnCourseBody>, { message: error?.message });
+          setError(property as Path<CoursesCreateCourseBody>, { message: error?.message });
         });
       }
       toast.error(error.message, { id: 'createCourseError' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(coursesQueryKeys.getOwnCourses());
+      queryClient.invalidateQueries(coursesQueryKeys.getCourses());
       toast.success('Course has been created!', { duration: 5000 });
       close();
       reset();
-      createOwnCourseMutation.reset();
+      createCourseMutation.reset();
     },
   });
 
-  const isLoading = createOwnCourseMutation.isLoading;
-  const isSuccess = createOwnCourseMutation.isSuccess;
+  const isLoading = createCourseMutation.isLoading;
+  const isSuccess = createCourseMutation.isSuccess;
   const isDisabled = !isDirty || isLoading || isSuccess;
 
   const newInputRefCallback: Ref<HTMLInputElement> = useCallback(
@@ -77,10 +77,10 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit((values: CoursesCreateOwnCourseBody) => {
-        createOwnCourseMutation.mutate(values);
+      handleSubmit((values: CoursesCreateCourseBody) => {
+        createCourseMutation.mutate(values);
       }),
-    [handleSubmit, createOwnCourseMutation],
+    [handleSubmit, createCourseMutation],
   );
 
   const onCancel = useCallback(() => {

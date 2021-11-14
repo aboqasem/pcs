@@ -3,7 +3,7 @@ import { SidebarLayout } from '@/components/layouts/SidebarLayout';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { useOwnCourseMaterialQuery } from '@/lib/api/services/courses.service';
+import { useCourseMaterialQuery } from '@/lib/api/services/courses.service';
 import { useProfileQuery } from '@/lib/api/services/users.service';
 import { courseNavigationItems } from '@/lib/constants/courses.constants';
 import { PagePath } from '@/lib/constants/shared.constants';
@@ -27,7 +27,7 @@ export default function Material() {
 
   const { data: profile } = useProfileQuery<UserRole.Instructor>();
 
-  const materialQuery = useOwnCourseMaterialQuery(courseId, materialId, {
+  const materialQuery = useCourseMaterialQuery(courseId, materialId, {
     onError: () => push(courseHref),
   });
   const material = useMemo(() => materialQuery.data, [materialQuery.data]);

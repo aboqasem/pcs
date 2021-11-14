@@ -36,7 +36,7 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  async getAllUsers(conditions?: FindConditions<UserEntity> | undefined): Promise<UserDto[]> {
+  async getUsers(conditions?: FindConditions<UserEntity> | undefined): Promise<UserDto[]> {
     return this.usersRepository.find(conditions);
   }
 

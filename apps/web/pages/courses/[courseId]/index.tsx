@@ -5,7 +5,7 @@ import { TabsLayout } from '@/components/layouts/TabsLayout';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
-import { useOwnCourseMaterialsQuery, useOwnCourseQuery } from '@/lib/api/services/courses.service';
+import { useCourseMaterialsQuery, useCourseQuery } from '@/lib/api/services/courses.service';
 import { useProfileQuery } from '@/lib/api/services/users.service';
 import { courseNavigationItems, courseTabs } from '@/lib/constants/courses.constants';
 import { PagePath } from '@/lib/constants/shared.constants';
@@ -30,10 +30,10 @@ export default function Course() {
 
   const { data: profile } = useProfileQuery<UserRole.Instructor>();
 
-  const courseQuery = useOwnCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
+  const courseQuery = useCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);
 
-  const materialsQuery = useOwnCourseMaterialsQuery(courseId, { enabled: !!course });
+  const materialsQuery = useCourseMaterialsQuery(courseId, { enabled: !!course });
   const materials = useMemo(() => materialsQuery.data ?? [], [materialsQuery.data]);
 
   const isCourseLoading = courseQuery.isLoading;
