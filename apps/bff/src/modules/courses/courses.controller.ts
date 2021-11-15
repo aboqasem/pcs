@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import {
   CoursesCreateCourseBody,
   CoursesCreateMaterialBody,
@@ -35,13 +35,7 @@ export class CoursesController {
     @CourseIdParam() courseId: string,
     @Req() req: Request,
   ): Promise<TCoursesGetCourseData> {
-    const course = await this.coursesService.getInstructorCourse(req.user!.id, courseId);
-
-    if (!course) {
-      throw new NotFoundException('Course not found');
-    }
-
-    return course;
+    return this.coursesService.getInstructorCourse(req.user!.id, courseId);
   }
 
   @Post()
@@ -61,22 +55,12 @@ export class CoursesController {
   }
 
   @Get(':courseId/materials/:materialId')
-  async getCourseMaterial(
+  getCourseMaterial(
     @CourseIdParam() courseId: string,
     @MaterialIdParam() materialId: string,
     @Req() req: Request,
   ): Promise<TCoursesGetMaterialData> {
-    const material = await this.materialsService.getInstructorCourseMaterial(
-      req.user!.id,
-      courseId,
-      materialId,
-    );
-
-    if (!material) {
-      throw new NotFoundException('Material not found');
-    }
-
-    return material;
+    return this.materialsService.getInstructorCourseMaterial(req.user!.id, courseId, materialId);
   }
 
   @Post(':courseId/materials')
