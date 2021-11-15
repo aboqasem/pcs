@@ -44,7 +44,8 @@ export class User {
   isActive = true;
 
   @IsUserPassword()
-  password!: string;
+  // not selected by default
+  password?: string;
 
   /* OTHER RELATIONS */
 
@@ -101,7 +102,10 @@ export class CreatedUsersDto {
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
 @FilterDisabledConstraints()
-export class UserCredentials extends PickType(User, ['password']) {
+export class UserCredentials {
   @IsUserUsernameOrEmail()
   username!: string;
+
+  @IsUserPassword()
+  password!: string;
 }

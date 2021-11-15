@@ -26,7 +26,8 @@ export class UserEntity extends User {
   isActive = true;
 
   @Column('text', { select: false })
-  password!: string;
+  // not selected by default
+  password?: string;
 
   /* OTHER RELATIONS */
 

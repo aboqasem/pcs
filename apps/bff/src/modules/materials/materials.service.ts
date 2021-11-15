@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreatedMaterialDto, CreateMaterialDto, MaterialDto } from '@pcs/shared-data-access';
+import { CreatedMaterialDto, CreateMaterialDto } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { MaterialEntity } from 'src/db/entities/material.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { MaterialsRepository } from 'src/db/repositories/material.repository';
-import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class MaterialsService {
@@ -13,12 +12,13 @@ export class MaterialsService {
   getInstructorCourseMaterials(
     creatorInstructorId: UserEntity['id'],
     createdForCourseId: CourseEntity['id'],
-    options?: FindManyOptions<MaterialEntity>,
-  ): Promise<MaterialDto[]> {
+    select?: (keyof MaterialEntity)[],
+    relations?: (keyof MaterialEntity)[],
+  ): Promise<MaterialEntity[]> {
     return this.materialsRepository.find({
-      ...options,
+      select,
+      relations,
       where: {
-        ...(typeof options?.where === 'object' ? options.where : undefined),
         createdForCourseId,
         creatorInstructorId,
       },
@@ -29,11 +29,12 @@ export class MaterialsService {
     creatorInstructorId: UserEntity['id'],
     createdForCourseId: CourseEntity['id'],
     materialId: MaterialEntity['id'],
-    options?: FindManyOptions<MaterialEntity>,
-  ): Promise<MaterialDto | undefined> {
+    select?: (keyof MaterialEntity)[],
+    relations?: (keyof MaterialEntity)[],
+  ): Promise<MaterialEntity | undefined> {
     return this.materialsRepository.findOne(
       { id: materialId, createdForCourseId, creatorInstructorId },
-      options,
+      { select, relations },
     );
   }
 
