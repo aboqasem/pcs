@@ -68,6 +68,9 @@ export class UserDto extends PickType(User, [
   'fullName',
   'role',
   'isActive',
+  'instructorCourses',
+  'instructorCreatedMaterials',
+  'enrolledStudents',
 ]) {}
 
 export class CreateUserDto extends PickType(User, ['email', 'username', 'fullName', 'role']) {

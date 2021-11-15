@@ -56,6 +56,9 @@ export class CourseDto extends PickType(Course, [
   'beginsAt',
   'endsAt',
   'instructorId',
+  'instructor',
+  'materials',
+  'enrolledStudents',
 ]) {}
 
 export class CreateCourseDto extends PickType(Course, [
