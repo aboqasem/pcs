@@ -247,18 +247,18 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                       </button>
                     </div>
                   </div>
-
-                  {(isLoading || isSuccess) && (
-                    <Overlay className="sm:rounded-lg">
-                      {isLoading && <LoadingSpinner className="w-10 h-10" />}
-                      {isSuccess && <GoVerified className="w-10 h-10 text-blue-700" />}
-                    </Overlay>
-                  )}
                 </form>
               </div>
             </Transition.Child>
           </div>
         </div>
+
+        {(isLoading || isSuccess) && (
+          <Overlay className="sm:rounded-lg">
+            {isLoading && <LoadingSpinner className="w-10 h-10" />}
+            {isSuccess && <GoVerified className="w-10 h-10 text-blue-700" />}
+          </Overlay>
+        )}
       </Dialog>
     </Transition.Root>
   );
