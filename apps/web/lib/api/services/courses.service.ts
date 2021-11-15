@@ -3,7 +3,7 @@ import {
   CourseDto,
   CoursesCreateCourseBody,
   CoursesCreateMaterialBody,
-  HttpException,
+  HttpError,
   MaterialDto,
   TCoursesCreateCourseData,
   TCoursesCreateMaterialData,
@@ -133,7 +133,7 @@ export function useCoursesQuery<TData = TCoursesGetCoursesData>(
 
 export function useCourseQuery<TData = TCoursesGetCourseData>(
   courseId: string,
-  options?: UseQueryOptions<TCoursesGetCourseData, HttpException, TData, TGetCourseQueryKey>,
+  options?: UseQueryOptions<TCoursesGetCourseData, HttpError, TData, TGetCourseQueryKey>,
 ) {
   const queryClient = useQueryClient();
   console.log();
@@ -153,7 +153,7 @@ export function useCourseQuery<TData = TCoursesGetCourseData>(
 }
 
 export function useCreateCourseMutation(
-  options?: UseMutationOptions<TCoursesCreateCourseData, HttpException, CoursesCreateCourseBody>,
+  options?: UseMutationOptions<TCoursesCreateCourseData, HttpError, CoursesCreateCourseBody>,
 ) {
   return useMutation(CoursesService.createCourse, options);
 }
@@ -179,7 +179,7 @@ export function useCourseMaterialsQuery<TData = TCoursesGetMaterialsData>(
 export function useCourseMaterialQuery<TData = TCoursesGetMaterialData>(
   courseId: CourseDto['id'],
   materialId: MaterialDto['id'],
-  options?: UseQueryOptions<TCoursesGetMaterialData, HttpException, TData, TGetMaterialQueryKey>,
+  options?: UseQueryOptions<TCoursesGetMaterialData, HttpError, TData, TGetMaterialQueryKey>,
 ) {
   const queryClient = useQueryClient();
   const courseMaterialsQueryKey = coursesQueryKeys.getCourseMaterials(courseId);
@@ -205,7 +205,7 @@ export function useCourseMaterialQuery<TData = TCoursesGetMaterialData>(
 export function useCreateCourseMaterialMutation(
   options?: UseMutationOptions<
     TCoursesCreateMaterialData,
-    HttpException,
+    HttpError,
     {
       courseId: CourseDto['id'];
       body: CoursesCreateMaterialBody;

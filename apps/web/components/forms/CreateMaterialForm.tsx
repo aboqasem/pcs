@@ -13,7 +13,7 @@ import {
   capitalize,
   CoursesCreateMaterialBody,
   MaterialType,
-  ValidationException,
+  ValidationError,
 } from '@pcs/shared-data-access';
 import { Fragment, memo, Ref, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
@@ -64,7 +64,7 @@ export const CreateMaterialForm = memo(function CreateMaterialsForm({
 
   const createMaterialMutation = useCreateCourseMaterialMutation({
     onError: (error) => {
-      if (error instanceof ValidationException) {
+      if (error instanceof ValidationError) {
         return Object.entries(error.errors).forEach(([property, error]) => {
           setError(property as Path<CoursesCreateMaterialBody>, { message: error?.message });
         });

@@ -9,7 +9,7 @@ import {
   capitalize,
   UserRole,
   UsersCreateUsersBody,
-  ValidationException,
+  ValidationError,
 } from '@pcs/shared-data-access';
 import { Fragment, memo, useCallback, useMemo, useRef } from 'react';
 import { Path, useFieldArray, useForm } from 'react-hook-form';
@@ -56,7 +56,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
 
   const createUsersMutation = useCreateUsersMutation({
     onError: (error) => {
-      if (error instanceof ValidationException) {
+      if (error instanceof ValidationError) {
         return Object.entries(error.errors).forEach(([property, error]) => {
           setError(property as Path<UsersCreateUsersBody>, { message: error?.message });
         });

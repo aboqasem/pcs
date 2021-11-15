@@ -6,7 +6,7 @@ import { useRetrievePasswordMutation } from '@/lib/api/services/auth.service';
 import { PagePath } from '@/lib/constants/shared.constants';
 import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
-import { AuthRetrievePasswordBody, ValidationException } from '@pcs/shared-data-access';
+import { AuthRetrievePasswordBody, ValidationError } from '@pcs/shared-data-access';
 import { memo, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -30,7 +30,7 @@ export const RetrievePasswordForm = memo(function RetrievePasswordForm() {
 
   const retrievePasswordMutation = useRetrievePasswordMutation({
     onError: (error) => {
-      if (error instanceof ValidationException) {
+      if (error instanceof ValidationError) {
         return Object.entries(error.errors).forEach(([property, error]) => {
           setError(property as Path<AuthRetrievePasswordBody>, { message: error?.message });
         });

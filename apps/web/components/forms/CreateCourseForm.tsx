@@ -5,7 +5,7 @@ import { Overlay } from '@/components/Overlay';
 import { coursesQueryKeys, useCreateCourseMutation } from '@/lib/api/services/courses.service';
 import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
-import { CoursesCreateCourseBody, ValidationException } from '@pcs/shared-data-access';
+import { CoursesCreateCourseBody, ValidationError } from '@pcs/shared-data-access';
 import { Fragment, memo, Ref, useCallback, useMemo, useRef } from 'react';
 import { Path, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -47,7 +47,7 @@ export const CreateCourseForm = memo(function CreateCoursesForm({
 
   const createCourseMutation = useCreateCourseMutation({
     onError: (error) => {
-      if (error instanceof ValidationException) {
+      if (error instanceof ValidationError) {
         return Object.entries(error.errors).forEach(([property, error]) => {
           setError(property as Path<CoursesCreateCourseBody>, { message: error?.message });
         });

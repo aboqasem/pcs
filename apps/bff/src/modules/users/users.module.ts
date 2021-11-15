@@ -1,7 +1,7 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ValidationError } from '@pcs/shared-data-access';
 import { UsersRepository } from 'src/db/repositories/user.repository';
-import { ValidationException } from '@pcs/shared-data-access';
 import { EmailModule } from '../email/email.module';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
@@ -22,7 +22,7 @@ export class UsersModule implements OnModuleInit {
       console.error(
         'Failed to create an admin user, please provide ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_FULL_NAME, and ADMIN_PASSWORD environment variables. Failing reason:',
       );
-      if (e instanceof ValidationException) {
+      if (e instanceof ValidationError) {
         console.error(e.errors);
       } else {
         console.error(e);

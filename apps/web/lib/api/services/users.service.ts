@@ -1,6 +1,6 @@
 import { BffPath, PagePath } from '@/lib/constants/shared.constants';
 import {
-  HttpException,
+  HttpError,
   TReplace,
   TUsersCreateUsersData,
   TUsersGetProfileData,
@@ -58,7 +58,7 @@ export function useUsersQuery<TData = TUsersGetUsersData>(
 export function useProfileQuery<TRole extends UserRole = UserRole, TData = TUsersGetProfileData>(
   options?: UseQueryOptions<
     TUsersGetProfileData,
-    HttpException,
+    HttpError,
     TReplace<TData, { role: TRole }>,
     TGetProfileQueryKey
   >,
@@ -85,7 +85,7 @@ export function useProfileQuery<TRole extends UserRole = UserRole, TData = TUser
 export function fetchProfile<TData = TUsersGetProfileData>(
   cookie?: string,
   queryClient?: QueryClient,
-  options?: FetchQueryOptions<TUsersGetProfileData, HttpException, TData, TGetProfileQueryKey>,
+  options?: FetchQueryOptions<TUsersGetProfileData, HttpError, TData, TGetProfileQueryKey>,
 ) {
   if (queryClient) {
     return queryClient.fetchQuery(
@@ -98,7 +98,7 @@ export function fetchProfile<TData = TUsersGetProfileData>(
 }
 
 export function useCreateUsersMutation(
-  options?: UseMutationOptions<TUsersCreateUsersData, HttpException, UsersCreateUsersBody>,
+  options?: UseMutationOptions<TUsersCreateUsersData, HttpError, UsersCreateUsersBody>,
 ) {
   return useMutation(UsersService.createUsers, options);
 }
