@@ -73,8 +73,10 @@ export class MaterialDto extends PickType(Material, [
   'status',
   'totalMark',
   'totalDuration',
-  'creatorInstructorId',
   'createdForCourseId',
+  'createdForCourse',
+  'creatorInstructorId',
+  'creatorInstructor',
 ]) {}
 
 export class CreateMaterialDto extends PickType(Material, [
