@@ -31,7 +31,10 @@ export class UsersService {
   ) {}
 
   async getUsers(select?: (keyof UserEntity)[], relations?: string[]): Promise<UserDto[]> {
-    return this.usersRepository.find({ select, relations });
+    return this.usersRepository.find({
+      ...(select ? { select } : {}),
+      ...(relations ? { relations } : {}),
+    });
   }
 
   async getActiveUserById(
