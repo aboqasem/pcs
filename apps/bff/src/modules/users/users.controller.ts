@@ -5,7 +5,7 @@ import {
   TUsersGetUsersData,
   UserRole,
   UsersCreateUsersBody,
-  ValidationException,
+  ValidationError,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
 import { BadPayloadException } from 'src/shared/exceptions/bad-payload.exception';
@@ -34,7 +34,7 @@ export class UsersController {
     try {
       return await this.usersService.createAndInformUsers(dto);
     } catch (e) {
-      if (e instanceof ValidationException) {
+      if (e instanceof ValidationError) {
         throw new BadPayloadException(e.errors);
       }
       throw e;

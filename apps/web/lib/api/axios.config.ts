@@ -1,5 +1,5 @@
 import { config } from '@/lib/config';
-import { HttpException, TAsData, ValidationException } from '@pcs/shared-data-access';
+import { HttpError, TAsData, ValidationError } from '@pcs/shared-data-access';
 import axios, { AxiosResponse } from 'axios';
 
 export const bffAxios = axios.create({
@@ -11,7 +11,7 @@ bffAxios.interceptors.request.use(undefined, (error: { request: XMLHttpRequest }
   console.warn(error.request.statusText);
 
   return Promise.reject(
-    new HttpException('Something went wrong, please try again later', error.request.status),
+    new HttpError('Something went wrong, please try again later', error.request.status),
   );
 });
 
@@ -29,7 +29,7 @@ bffAxios.interceptors.response.use(
 
     if (status == 500) {
       return Promise.reject(
-        new HttpException(
+        new HttpError(
           'Something went wrong while trying to reach our servers, please try again later',
           status,
         ),
@@ -38,9 +38,9 @@ bffAxios.interceptors.response.use(
 
     // it is a props error (object) from the validation process, we wrap it to determine its type
     if (typeof message === 'object') {
-      return Promise.reject(new ValidationException(message, status));
+      return Promise.reject(new ValidationError(message, status));
     }
 
-    return Promise.reject(new HttpException(message, status));
+    return Promise.reject(new HttpError(message, status));
   },
 );

@@ -2,7 +2,7 @@ import { BffPath, PagePath } from '@/lib/constants/shared.constants';
 import {
   AuthRetrievePasswordBody,
   AuthSignInBody,
-  HttpException,
+  HttpError,
   TAuthRetrievePasswordData,
   TAuthSignInData,
   TAuthSignOutData,
@@ -32,7 +32,7 @@ export class AuthService {
 }
 
 export function useSignInMutation(
-  options?: UseMutationOptions<TAuthSignInData, HttpException, AuthSignInBody>,
+  options?: UseMutationOptions<TAuthSignInData, HttpError, AuthSignInBody>,
 ) {
   const queryCLient = useQueryClient();
 
@@ -49,7 +49,7 @@ export function useSignInMutation(
   });
 }
 
-export function useSignOutMutation(options?: UseMutationOptions<TAuthSignOutData, HttpException>) {
+export function useSignOutMutation(options?: UseMutationOptions<TAuthSignOutData, HttpError>) {
   const queryClient = useQueryClient();
   const { push } = useRouter();
 
@@ -63,7 +63,7 @@ export function useSignOutMutation(options?: UseMutationOptions<TAuthSignOutData
 }
 
 export function useRetrievePasswordMutation(
-  options?: UseMutationOptions<TAuthRetrievePasswordData, HttpException, AuthRetrievePasswordBody>,
+  options?: UseMutationOptions<TAuthRetrievePasswordData, HttpError, AuthRetrievePasswordBody>,
 ) {
   const { push, query } = useRouter();
 

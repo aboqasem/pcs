@@ -10,7 +10,7 @@ import {
   UserRole,
   userToUserDto,
   validateSync,
-  ValidationException,
+  ValidationError,
 } from '@pcs/shared-data-access';
 import { plainToClass } from 'class-transformer';
 import { config } from 'src/config/config';
@@ -95,7 +95,7 @@ export class UsersService {
           usernameError && (usersErrors[`users.${i}.username`] = { message: usernameError });
           emailError && (usersErrors[`users.${i}.email`] = { message: emailError });
 
-          throw new ValidationException(usersErrors);
+          throw new ValidationError(usersErrors);
         }
       }),
     );
@@ -147,7 +147,7 @@ export class UsersService {
 
     const errors = validateSync(plainToClass(CreateUserDto, user));
     if (errors.length) {
-      throw new ValidationException(errors);
+      throw new ValidationError(errors);
     }
 
     await this.createAndInformUsers({ users: [user] });

@@ -1,5 +1,5 @@
 import { config as conf } from '@/lib/config';
-import { HttpException } from '@pcs/shared-data-access';
+import { HttpError } from '@pcs/shared-data-access';
 import { QueryClient, setLogger } from 'react-query';
 
 type TQueryClientConfig = ConstructorParameters<typeof QueryClient>[0];
@@ -19,7 +19,7 @@ export class DefaultQueryClient extends QueryClient {
           retry: (failureCount, error) => {
             // if it is a client error, do not retry
             if (
-              error instanceof HttpException &&
+              error instanceof HttpError &&
               error.status &&
               error.status >= 400 &&
               error.status < 500

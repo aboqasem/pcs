@@ -1,4 +1,4 @@
-import { NodeEnv, ValidationException } from '@pcs/shared-data-access';
+import { NodeEnv, ValidationError } from '@pcs/shared-data-access';
 import { plainToClass, Transform } from 'class-transformer';
 import {
   IsArray,
@@ -126,7 +126,7 @@ export const config = ((): Configurations => {
   });
 
   if (errors.length !== 0) {
-    throw new ValidationException(errors);
+    throw new ValidationError(errors);
   }
 
   return validatedConfig;
