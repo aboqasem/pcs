@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CourseDto, CreateCourseDto, CreatedCourseDto } from '@pcs/shared-data-access';
+import { CreateCourseDto, CreatedCourseDto } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { CoursesRepository } from 'src/db/repositories/course.repository';
-import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class CoursesService {
@@ -11,12 +10,13 @@ export class CoursesService {
 
   getInstructorCourses(
     instructorId: UserEntity['id'],
-    options?: FindManyOptions<CourseEntity>,
-  ): Promise<CourseDto[]> {
+    select?: (keyof CourseEntity)[],
+    relations?: (keyof CourseEntity)[],
+  ): Promise<CourseEntity[]> {
     return this.coursesRepository.find({
-      ...options,
+      select,
+      relations,
       where: {
-        ...(typeof options?.where === 'object' ? options.where : undefined),
         instructorId,
       },
     });
@@ -25,12 +25,13 @@ export class CoursesService {
   getInstructorCourse(
     instructorId: UserEntity['id'],
     courseId: CourseEntity['id'],
-    options?: FindManyOptions<CourseEntity>,
-  ): Promise<CourseDto | undefined> {
+    select?: (keyof CourseEntity)[],
+    relations?: (keyof CourseEntity)[],
+  ): Promise<CourseEntity | undefined> {
     return this.coursesRepository.findOne({
-      ...options,
+      select,
+      relations,
       where: {
-        ...(typeof options?.where === 'object' ? options.where : undefined),
         id: courseId,
         instructorId,
       },

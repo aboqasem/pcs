@@ -18,14 +18,7 @@ import { UserEntity } from 'src/db/entities/user.entity';
 import { UsersRepository } from 'src/db/repositories/user.repository';
 import { EmailType } from 'src/modules/email/email.types';
 import { generateRandomPassword } from 'src/shared/shared.utils';
-import { FindConditions } from 'typeorm';
 import { EmailService } from '../email/email.service';
-
-type TUserSelect = (keyof UserEntity)[] | undefined;
-
-type TGetUser<TSelect extends TUserSelect> =
-  | (TSelect extends (keyof UserEntity)[] ? Pick<UserEntity, TSelect[number]> : UserDto)
-  | undefined;
 
 @Injectable()
 export class UsersService {
@@ -36,29 +29,32 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  async getUsers(conditions?: FindConditions<UserEntity> | undefined): Promise<UserDto[]> {
-    return this.usersRepository.find(conditions);
+  async getUsers(select?: (keyof UserEntity)[], relations?: string[]): Promise<UserDto[]> {
+    return this.usersRepository.find({ select, relations });
   }
 
-  async getActiveUserById<TSelect extends TUserSelect>(
+  async getActiveUserById(
     id: number,
-    select?: TSelect,
-  ): Promise<TGetUser<TSelect>> {
-    return this.usersRepository.findOne({ id, isActive: true }, { select });
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity | undefined> {
+    return this.usersRepository.findOne({ id, isActive: true }, { select, relations });
   }
 
-  async getActiveUserByEmail<TSelect extends TUserSelect>(
+  async getActiveUserByEmail(
     email: string,
-    select?: TSelect,
-  ): Promise<TGetUser<TSelect>> {
-    return this.usersRepository.findOne({ email, isActive: true }, { select });
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity | undefined> {
+    return this.usersRepository.findOne({ email, isActive: true }, { select, relations });
   }
 
-  async getActiveUserByCredentials<TSelect extends TUserSelect>(
+  async getActiveUserByCredentials(
     credentials: UserCredentials,
-    select?: TSelect,
-  ): Promise<TGetUser<TSelect>> {
-    select = select ?? (['id', 'email', 'username', 'fullName', 'role', 'isActive'] as TSelect);
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity | undefined> {
+    select = select ?? ['id', 'email', 'username', 'fullName', 'role', 'isActive'];
 
     const user = await this.usersRepository.findByUsernameOrEmail(
       credentials.username,
@@ -67,14 +63,14 @@ export class UsersService {
       },
       // because we want the password for comparison, we have to select all those fields in UserDto as well as password
       // since the password not selected by default
-      { select: [...select!, 'password'] },
+      { select: [...select, 'password'], relations },
     );
 
     if (user?.password === credentials.password) {
-      if (select!.includes('password')) {
+      if (select.includes('password')) {
         return user;
       }
-      return userToUserDto(user) as TGetUser<TSelect>;
+      return userToUserDto(user);
     }
 
     return undefined;
@@ -121,7 +117,7 @@ export class UsersService {
       data: {
         fullName: user.fullName,
         username: user.username,
-        password: user.password,
+        password: user.password!,
         role: user.role,
         signInUrl: config.APP_SIGN_IN_URL,
       },

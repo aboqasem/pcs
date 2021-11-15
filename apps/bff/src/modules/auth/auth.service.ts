@@ -23,7 +23,7 @@ export class AuthService {
       type: EmailType.PasswordRetrieval,
       data: {
         fullName: user.fullName,
-        password: user.password,
+        password: user.password!,
         signInUrl: config.APP_SIGN_IN_URL,
       },
     });
