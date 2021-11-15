@@ -5,10 +5,8 @@ import {
   TUsersGetUsersData,
   UserRole,
   UsersCreateUsersBody,
-  ValidationError,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
-import { BadPayloadException } from 'src/shared/exceptions/bad-payload.exception';
 import { UserAuth } from '../auth/decorators/user-auth.decorator';
 import { UsersService } from './users.service';
 
@@ -30,14 +28,7 @@ export class UsersController {
 
   @Post()
   @UserAuth({ roles: [UserRole.Admin] })
-  async createUsers(@Body() dto: UsersCreateUsersBody): Promise<TUsersCreateUsersData> {
-    try {
-      return await this.usersService.createAndInformUsers(dto);
-    } catch (e) {
-      if (e instanceof ValidationError) {
-        throw new BadPayloadException(e.errors);
-      }
-      throw e;
-    }
+  createUsers(@Body() dto: UsersCreateUsersBody): Promise<TUsersCreateUsersData> {
+    return this.usersService.createAndInformUsers(dto);
   }
 }
