@@ -1,8 +1,8 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
 import { Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { EnrolledStudentDto } from '../enrolled-students/enrolled-students.classes';
 import { MaterialDto } from '../materials/materials.classes';
+import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import {
@@ -44,9 +44,9 @@ export class Course {
   @IsOptional()
   materials?: MaterialDto[] | null;
 
-  @Type(() => EnrolledStudentDto)
+  @Type(() => StudentEnrollmentDto)
   @IsOptional()
-  enrolledStudents?: EnrolledStudentDto[] | null;
+  studentEnrollments?: StudentEnrollmentDto[] | null;
 }
 
 export class CourseDto extends PickType(Course, [
@@ -58,7 +58,7 @@ export class CourseDto extends PickType(Course, [
   'instructorId',
   'instructor',
   'materials',
-  'enrolledStudents',
+  'studentEnrollments',
 ]) {}
 
 export class CreateCourseDto extends PickType(Course, [

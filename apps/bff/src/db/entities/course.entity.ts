@@ -1,6 +1,6 @@
 import { Course } from '@pcs/shared-data-access';
-import { EnrolledStudentEntity } from 'src/db/entities/enrolled-student.entity';
 import { MaterialEntity } from 'src/db/entities/material.entity';
+import { StudentEnrollmentEntity } from 'src/db/entities/student-enrollment.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -35,8 +35,12 @@ export class CourseEntity extends Course {
   @OneToMany(() => MaterialEntity, (material) => material.createdForCourse, { nullable: true })
   materials?: MaterialEntity[] | null;
 
-  @OneToMany(() => EnrolledStudentEntity, (enrolledStudent) => enrolledStudent.enrolledInCourse, {
-    nullable: true,
-  })
-  enrolledStudents?: EnrolledStudentEntity[] | null;
+  @OneToMany(
+    () => StudentEnrollmentEntity,
+    (studentEnrollment) => studentEnrollment.enrolledInCourse,
+    {
+      nullable: true,
+    },
+  )
+  studentEnrollments?: StudentEnrollmentEntity[] | null;
 }
