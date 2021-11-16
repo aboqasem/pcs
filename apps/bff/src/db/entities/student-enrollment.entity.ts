@@ -1,10 +1,10 @@
-import { EnrolledStudent, EnrolledStudentStatus } from '@pcs/shared-data-access';
+import { StudentEnrollment, EnrolledStudentStatus } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('enrolled_student')
-export class EnrolledStudentEntity extends EnrolledStudent {
+@Entity('student_enrollment')
+export class StudentEnrollmentEntity extends StudentEnrollment {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
@@ -20,14 +20,14 @@ export class EnrolledStudentEntity extends EnrolledStudent {
   @Column('integer')
   studentId!: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.enrolledStudents)
+  @ManyToOne(() => UserEntity, (user) => user.studentEnrollments)
   @JoinColumn({ name: 'studentId', referencedColumnName: 'id' })
-  student!: UserEntity;
+  student?: UserEntity;
 
   @Column('integer')
   enrolledInCourseId!: string;
 
-  @ManyToOne(() => CourseEntity, (course) => course.enrolledStudents)
+  @ManyToOne(() => CourseEntity, (course) => course.studentEnrollments)
   @JoinColumn({ name: 'enrolledInCourseId', referencedColumnName: 'id' })
   enrolledInCourse?: CourseEntity;
 }

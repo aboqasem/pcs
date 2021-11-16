@@ -1,13 +1,13 @@
 import { IsEnum, IsPositive } from 'class-validator';
-import { EnrolledStudentStatus } from './enrolled-students.types';
+import { EnrolledStudentStatus } from './student-enrollments.types';
 
-export function IsEnrolledStudentId(): PropertyDecorator {
+export function IsStudentEnrollmentId(): PropertyDecorator {
   return function (target, propertyKey) {
     IsPositive()(target, propertyKey);
   };
 }
 
-export function IsEnrolledStudentStatus(): PropertyDecorator {
+export function IsStudentEnrollmentStatus(): PropertyDecorator {
   return function (target, propertyKey) {
     IsEnum(EnrolledStudentStatus)(target, propertyKey);
   };
