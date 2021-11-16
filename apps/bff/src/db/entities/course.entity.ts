@@ -35,12 +35,8 @@ export class CourseEntity extends Course {
   @OneToMany(() => MaterialEntity, (material) => material.createdForCourse, { nullable: true })
   materials?: MaterialEntity[] | null;
 
-  @OneToMany(
-    () => StudentEnrollmentEntity,
-    (studentEnrollment) => studentEnrollment.enrolledInCourse,
-    {
-      nullable: true,
-    },
-  )
+  @OneToMany(() => StudentEnrollmentEntity, (studentEnrollment) => studentEnrollment.course, {
+    nullable: true,
+  })
   studentEnrollments?: StudentEnrollmentEntity[] | null;
 }

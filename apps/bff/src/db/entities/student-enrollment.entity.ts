@@ -1,4 +1,4 @@
-import { StudentEnrollment, EnrolledStudentStatus } from '@pcs/shared-data-access';
+import { StudentEnrollment, StudentEnrollmentStatus } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -9,11 +9,11 @@ export class StudentEnrollmentEntity extends StudentEnrollment {
   id!: number;
 
   @Column('enum', {
-    enum: EnrolledStudentStatus,
-    enumName: 'enrolled_student_status',
-    default: EnrolledStudentStatus.Enrolled,
+    enum: StudentEnrollmentStatus,
+    enumName: 'student_enrollment_status',
+    default: StudentEnrollmentStatus.Enrolled,
   })
-  status = EnrolledStudentStatus.Enrolled;
+  status = StudentEnrollmentStatus.Enrolled;
 
   /* JOINED RELATIONS */
 
@@ -25,9 +25,9 @@ export class StudentEnrollmentEntity extends StudentEnrollment {
   student?: UserEntity;
 
   @Column('integer')
-  enrolledInCourseId!: string;
+  courseId!: string;
 
   @ManyToOne(() => CourseEntity, (course) => course.studentEnrollments)
-  @JoinColumn({ name: 'enrolledInCourseId', referencedColumnName: 'id' })
-  enrolledInCourse?: CourseEntity;
+  @JoinColumn({ name: 'courseId', referencedColumnName: 'id' })
+  course?: CourseEntity;
 }

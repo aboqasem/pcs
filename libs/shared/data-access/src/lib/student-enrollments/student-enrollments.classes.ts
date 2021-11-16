@@ -6,14 +6,14 @@ import { IsCourseId } from '../courses/courses.decorators';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import { IsStudentEnrollmentId, IsStudentEnrollmentStatus } from './student-enrollments.decorators';
-import { EnrolledStudentStatus } from './student-enrollments.types';
+import { StudentEnrollmentStatus } from './student-enrollments.types';
 
 export class StudentEnrollment {
   @IsStudentEnrollmentId()
   id!: number;
 
   @IsStudentEnrollmentStatus()
-  status = EnrolledStudentStatus.Enrolled;
+  status = StudentEnrollmentStatus.Enrolled;
 
   /* JOINED RELATIONS */
 
@@ -25,11 +25,11 @@ export class StudentEnrollment {
   student?: UserDto;
 
   @IsCourseId()
-  enrolledInCourseId!: string;
+  courseId!: string;
 
   @Type(() => CourseDto)
   @IsOptional()
-  enrolledInCourse?: CourseDto;
+  course?: CourseDto;
 }
 
 export class StudentEnrollmentDto extends PickType(StudentEnrollment, [
@@ -37,14 +37,14 @@ export class StudentEnrollmentDto extends PickType(StudentEnrollment, [
   'status',
   'studentId',
   'student',
-  'enrolledInCourseId',
-  'enrolledInCourse',
+  'courseId',
+  'course',
 ]) {}
 
 export class CreateStudentEnrollmentDto extends PickType(StudentEnrollment, [
   'id',
   'studentId',
-  'enrolledInCourseId',
+  'courseId',
 ]) {}
 
 export class CreatedStudentEnrollmentDto extends PickType(StudentEnrollment, ['id']) {}
