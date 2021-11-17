@@ -1,13 +1,16 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import {
+  CoursesAddStudentBody,
   CoursesCreateCourseBody,
   CoursesCreateMaterialBody,
+  TCoursesAddStudentData,
   TCoursesCreateCourseData,
   TCoursesCreateMaterialData,
   TCoursesGetCourseData,
   TCoursesGetCoursesData,
   TCoursesGetMaterialData,
   TCoursesGetMaterialsData,
+  TCoursesGetPeopleData,
   UserRole,
 } from '@pcs/shared-data-access';
 import { Request } from 'express';
@@ -15,6 +18,7 @@ import { UserAuth } from 'src/modules/auth/decorators/user-auth.decorator';
 import { CourseIdParam } from 'src/modules/courses/decorators/course-id-param.decorator';
 import { MaterialIdParam } from 'src/modules/materials/decorators/material-id-param.decorator';
 import { MaterialsService } from 'src/modules/materials/materials.service';
+import { StudentEnrollmentsService } from 'src/modules/student-enrollments/student-enrollments.service';
 import { CoursesService } from './courses.service';
 
 @Controller('courses')
@@ -23,6 +27,7 @@ export class CoursesController {
   constructor(
     private readonly coursesService: CoursesService,
     private readonly materialsService: MaterialsService,
+    private readonly studentsService: StudentEnrollmentsService,
   ) {}
 
   @Get()
@@ -70,5 +75,19 @@ export class CoursesController {
     @Req() req: Request,
   ): Promise<TCoursesCreateMaterialData> {
     return this.materialsService.createInstructorCourseMaterial(req.user!.id, courseId, dto);
+  }
+
+  @Get(':courseId/people')
+  async getCoursePeople(@CourseIdParam() courseId: string): Promise<TCoursesGetPeopleData> {
+    return this.coursesService.getCoursePeople(courseId);
+  }
+
+  @Post(':courseId/students')
+  addCourseStudent(
+    @CourseIdParam() courseId: string,
+    @Body() dto: CoursesAddStudentBody,
+    @Req() req: Request,
+  ): Promise<TCoursesAddStudentData> {
+    return this.studentsService.addAndInformInstructorCourseStudent(req.user!.id, courseId, dto);
   }
 }

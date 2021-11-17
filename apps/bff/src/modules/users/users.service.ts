@@ -6,7 +6,6 @@ import {
   CreateUsersDto,
   TPropsErrors,
   UserCredentials,
-  UserDto,
   UserRole,
   userToUserDto,
   validateSync,
@@ -30,11 +29,35 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  async getUsers(select?: (keyof UserEntity)[], relations?: string[]): Promise<UserDto[]> {
+  async getUser(
+    where?: Partial<UserEntity>,
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity | undefined> {
+    return this.usersRepository.findOne(where, { select, relations });
+  }
+
+  async getActiveUser(
+    where?: Partial<UserEntity>,
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity | undefined> {
+    return this.usersRepository.findOne({ ...where, isActive: true }, { select, relations });
+  }
+
+  async getUsers(select?: (keyof UserEntity)[], relations?: string[]): Promise<UserEntity[]> {
     return this.usersRepository.find({
       ...(select ? { select } : {}),
       ...(relations ? { relations } : {}),
     });
+  }
+
+  getActiveUsers(
+    where?: Partial<UserEntity>,
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity[]> {
+    return this.usersRepository.find({ where: { ...where, isActive: true }, select, relations });
   }
 
   async getActiveUserById(

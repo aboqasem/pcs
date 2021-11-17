@@ -1,6 +1,7 @@
 export enum EmailType {
   NewUser = 'd-2d2027af9f7549ba9d1cb66def9343b9',
   PasswordRetrieval = 'd-88290cd177ca49f79b08c71e886c2240',
+  CourseEnrollment = 'd-aa3c84608d814eb2a51d446c0ff3ba0e',
 }
 
 export type TEmail<T extends EmailType> = {
@@ -32,5 +33,10 @@ type TEmailData = {
     fullName: string;
     password: string;
     signInUrl: string;
+  };
+  [EmailType.CourseEnrollment]: {
+    fullName: string;
+    courseTitle: string;
+    courseUrl: string;
   };
 };
