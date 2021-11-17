@@ -114,6 +114,9 @@ class Configurations {
 
   @IsUrl({ require_tld: isProduction })
   readonly APP_SIGN_IN_URL!: string;
+
+  @IsUrl({ require_tld: isProduction })
+  readonly APP_COURSE_URL!: string;
 }
 
 export const config = ((): Configurations => {

@@ -41,11 +41,7 @@ export class StudentEnrollmentDto extends PickType(StudentEnrollment, [
   'course',
 ]) {}
 
-export class CreateStudentEnrollmentDto extends PickType(StudentEnrollment, [
-  'id',
-  'studentId',
-  'courseId',
-]) {}
+export class CreateStudentEnrollmentDto extends PickType(StudentEnrollment, ['studentId']) {}
 
 export class CreatedStudentEnrollmentDto extends PickType(StudentEnrollment, ['id']) {}
 
