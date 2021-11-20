@@ -100,7 +100,7 @@ export class CoursesService {
         courseId,
       })
       .orWhere(
-        `"user"."id" = (SELECT "studentId" FROM "student_enrollment" WHERE "courseId" = :courseId)`,
+        `"user"."id" IN (SELECT "studentId" FROM "student_enrollment" WHERE "courseId" = :courseId)`,
         {
           courseId,
         },
