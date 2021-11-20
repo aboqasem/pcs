@@ -1,16 +1,19 @@
 import { BffPath } from '@/lib/constants/shared.constants';
 import {
   CourseDto,
+  CoursesAddStudentBody,
   CoursesCreateCourseBody,
   CoursesCreateMaterialBody,
   HttpError,
   MaterialDto,
+  TCoursesAddStudentData,
   TCoursesCreateCourseData,
   TCoursesCreateMaterialData,
   TCoursesGetCourseData,
   TCoursesGetCoursesData,
   TCoursesGetMaterialData,
   TCoursesGetMaterialsData,
+  TCoursesGetPeopleData,
   TReplace,
 } from '@pcs/shared-data-access';
 import { plainToClass } from 'class-transformer';
@@ -32,6 +35,8 @@ export const coursesQueryKeys = {
     [...coursesQueryKeys.getCourse(courseId), 'materials'] as const,
   getCourseMaterial: (courseId: string, materialId: string) =>
     [...coursesQueryKeys.getCourseMaterials(courseId), materialId] as const,
+  getCoursePeople: (courseId: string) =>
+    [...coursesQueryKeys.getCourse(courseId), 'people'] as const,
 };
 
 export type TGetCoursesQueryKey = ReturnType<typeof coursesQueryKeys.getCourses>;
@@ -41,6 +46,8 @@ export type TGetCourseQueryKey = ReturnType<typeof coursesQueryKeys.getCourse>;
 export type TGetMaterialsQueryKey = ReturnType<typeof coursesQueryKeys.getCourseMaterials>;
 
 export type TGetMaterialQueryKey = ReturnType<typeof coursesQueryKeys.getCourseMaterial>;
+
+export type TGetPeopleQueryKey = ReturnType<typeof coursesQueryKeys.getCoursePeople>;
 
 export class CoursesService {
   static getCourses = async (cookie?: string): Promise<TCoursesGetCoursesData> => {
@@ -114,6 +121,29 @@ export class CoursesService {
         BffPath.CourseMaterials.replace('[courseId]', courseId),
         body,
       )
+      .then(({ data }) => data);
+  };
+
+  static getCoursePeople = async (
+    courseId: CourseDto['id'],
+    cookie?: string,
+  ): Promise<TCoursesGetPeopleData> => {
+    const options = cookie ? { headers: { cookie } } : {};
+
+    return bffAxios
+      .get(BffPath.CoursePeople.replace('[courseId]', courseId), options)
+      .then(({ data }) => data);
+  };
+
+  static addCourseStudent = async ({
+    courseId,
+    body,
+  }: {
+    courseId: CourseDto['id'];
+    body: CoursesAddStudentBody;
+  }): Promise<TCoursesAddStudentData> => {
+    return bffAxios
+      .post<TCoursesAddStudentData>(BffPath.CourseStudents.replace('[courseId]', courseId), body)
       .then(({ data }) => data);
   };
 }
@@ -213,4 +243,35 @@ export function useCreateCourseMaterialMutation(
   >,
 ) {
   return useMutation(CoursesService.createCourseMaterial, options);
+}
+
+export function useCoursePeopleQuery<TData = TCoursesGetPeopleData>(
+  courseId: CourseDto['id'],
+  options?: UseQueryOptions<TCoursesGetPeopleData, Error, TData, TGetPeopleQueryKey>,
+) {
+  return useQuery(
+    coursesQueryKeys.getCoursePeople(courseId),
+    () => CoursesService.getCoursePeople(courseId),
+    {
+      onSettled: async (people, error) => {
+        if (error) {
+          return toast.error(error.message, { id: 'peopleError' });
+        }
+      },
+      ...options,
+    },
+  );
+}
+
+export function useAddCourseStudentMutation(
+  options?: UseMutationOptions<
+    TCoursesAddStudentData,
+    HttpError,
+    {
+      courseId: CourseDto['id'];
+      body: CoursesAddStudentBody;
+    }
+  >,
+) {
+  return useMutation(CoursesService.addCourseStudent, options);
 }

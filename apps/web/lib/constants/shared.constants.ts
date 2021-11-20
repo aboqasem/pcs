@@ -25,8 +25,13 @@ export enum BffPath {
   Courses = 'courses',
 
   Course = 'courses/[courseId]',
+
   CourseMaterials = 'courses/[courseId]/materials',
   CourseMaterial = 'courses/[courseId]/materials/[materialId]',
+
+  CoursePeople = 'courses/[courseId]/people',
+
+  CourseStudents = 'courses/[courseId]/students',
 
   SignIn = 'auth/sign-in',
   SignOut = 'auth/sign-out',

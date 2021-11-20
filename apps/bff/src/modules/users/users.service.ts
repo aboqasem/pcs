@@ -45,8 +45,13 @@ export class UsersService {
     return this.usersRepository.findOne({ ...where, isActive: true }, { select, relations });
   }
 
-  async getUsers(select?: (keyof UserEntity)[], relations?: string[]): Promise<UserEntity[]> {
+  async getUsers(
+    where?: Partial<UserEntity>,
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity[]> {
     return this.usersRepository.find({
+      ...(where ? { where } : {}),
       ...(select ? { select } : {}),
       ...(relations ? { relations } : {}),
     });
@@ -57,7 +62,19 @@ export class UsersService {
     select?: (keyof UserEntity)[],
     relations?: (keyof UserEntity)[],
   ): Promise<UserEntity[]> {
-    return this.usersRepository.find({ where: { ...where, isActive: true }, select, relations });
+    return this.getUsers({ ...where, isActive: true }, select, relations);
+  }
+
+  getActiveStudents(
+    where?: Partial<UserEntity>,
+    select?: (keyof UserEntity)[],
+    relations?: (keyof UserEntity)[],
+  ): Promise<UserEntity[]> {
+    return this.getActiveUsers(
+      { ...where, role: UserRole.Student, isActive: true },
+      select,
+      relations,
+    );
   }
 
   async getActiveUserById(
