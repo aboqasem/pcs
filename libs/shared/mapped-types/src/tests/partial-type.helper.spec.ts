@@ -1,4 +1,4 @@
-import { classToClass, Expose, Transform, Type } from 'class-transformer';
+import { Expose, instanceToInstance, Transform, Type } from 'class-transformer';
 import { IsString, validate } from 'class-validator';
 import { PartialType } from '../lib';
 import { getValidationMetadataByTarget } from './type-helpers.test-utils';
@@ -27,12 +27,7 @@ describe('PartialType', () => {
       const validationKeys = getValidationMetadataByTarget(UpdateUserDto).map(
         (item) => item.propertyName,
       );
-      expect(validationKeys).toEqual([
-        'password',
-        'parentProperty',
-        'password',
-        'parentProperty',
-      ]);
+      expect(validationKeys).toEqual(['password', 'parentProperty', 'password', 'parentProperty']);
     });
     describe('when object does not fulfil validation rules', () => {
       it('"validate" should return validation errors', async () => {
@@ -67,11 +62,9 @@ describe('PartialType', () => {
       updateDto.password = password;
       updateDto.parentProperty = parentProperty;
 
-      const transformedDto = classToClass(updateDto);
+      const transformedDto = instanceToInstance(updateDto);
       expect(transformedDto.password).toEqual(password + '_transformed');
-      expect(transformedDto.parentProperty).toEqual(
-        parentProperty + '_transformed',
-      );
+      expect(transformedDto.parentProperty).toEqual(parentProperty + '_transformed');
     });
   });
 

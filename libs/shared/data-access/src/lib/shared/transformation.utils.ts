@@ -1,11 +1,11 @@
-import { ClassConstructor, plainToClass } from 'class-transformer';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate, validateSync } from '../validation/class-validator';
 
 export function transformToOtherSync<T extends { [K in keyof T]: T[K] }, V>(
   cls: ClassConstructor<T>,
   plain: V,
 ): T {
-  const transformed = plainToClass(cls, plain);
+  const transformed = plainToInstance(cls, plain);
 
   validateSync(transformed, { whitelist: true });
 
@@ -16,7 +16,7 @@ export async function transformToOther<T extends { [K in keyof T]: T[K] }, V>(
   cls: ClassConstructor<T>,
   plain: V,
 ): Promise<T> {
-  const transformed = plainToClass(cls, plain);
+  const transformed = plainToInstance(cls, plain);
 
   await validate(transformed, { whitelist: true });
 
