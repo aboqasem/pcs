@@ -15,9 +15,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @UserAuth({ roles: [UserRole.Admin] })
-  async getUsers(): Promise<TUsersGetUsersData> {
-    return this.usersService.getUsers();
+  @UserAuth({ roles: [UserRole.Admin, UserRole.Instructor] })
+  async getUsers(@Req() req: Request): Promise<TUsersGetUsersData> {
+    if (req.user!.role === UserRole.Admin) {
+      return this.usersService.getUsers();
+    }
+
+    return this.usersService.getActiveStudents();
   }
 
   @Get('profile')
