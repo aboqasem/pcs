@@ -16,7 +16,7 @@ import {
   TCoursesGetPeopleData,
   TReplace,
 } from '@pcs/shared-data-access';
-import { plainToInstance } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import toast from 'react-hot-toast';
 import {
   useMutation,
@@ -57,7 +57,7 @@ export class CoursesService {
 
     return bffAxios
       .get<ApiCoursesDto>(BffPath.Courses, options)
-      .then(({ data: courses }) => plainToInstance(CourseDto, courses));
+      .then(({ data: courses }) => plainToClass(CourseDto, courses));
   };
 
   static getCourse = async (
@@ -70,7 +70,7 @@ export class CoursesService {
 
     return bffAxios
       .get<ApiCourseDto>(BffPath.Course.replace('[courseId]', courseId), options)
-      .then(({ data: course }) => plainToInstance(CourseDto, course));
+      .then(({ data: course }) => plainToClass(CourseDto, course));
   };
 
   static createCourse = async (
@@ -89,7 +89,7 @@ export class CoursesService {
 
     return bffAxios
       .get<ApiMaterialsDto>(BffPath.CourseMaterials.replace('[courseId]', courseId), options)
-      .then(({ data: materials }) => plainToInstance(MaterialDto, materials));
+      .then(({ data: materials }) => plainToClass(MaterialDto, materials));
   };
 
   static getCourseMaterial = async (
@@ -106,7 +106,7 @@ export class CoursesService {
         BffPath.CourseMaterial.replace('[courseId]', courseId).replace('[materialId]', materialId),
         options,
       )
-      .then(({ data: material }) => plainToInstance(MaterialDto, material));
+      .then(({ data: material }) => plainToClass(MaterialDto, material));
   };
 
   static createCourseMaterial = async ({
