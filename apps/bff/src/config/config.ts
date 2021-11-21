@@ -1,5 +1,5 @@
 import { NodeEnv, ValidationError } from '@pcs/shared-data-access';
-import { plainToInstance, Transform } from 'class-transformer';
+import { plainToClass, Transform } from 'class-transformer';
 import {
   IsArray,
   IsEmail,
@@ -120,7 +120,7 @@ class Configurations {
 }
 
 export const config = ((): Configurations => {
-  const validatedConfig = plainToInstance(Configurations, process.env, {
+  const validatedConfig = plainToClass(Configurations, process.env, {
     exposeDefaultValues: true,
   });
 

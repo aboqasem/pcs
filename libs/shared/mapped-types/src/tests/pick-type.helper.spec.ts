@@ -1,4 +1,4 @@
-import { instanceToInstance, Transform } from 'class-transformer';
+import { classToClass, Transform } from 'class-transformer';
 import { MinLength, validate } from 'class-validator';
 import { PickType } from '../lib';
 import { getValidationMetadataByTarget } from './type-helpers.test-utils';
@@ -52,7 +52,7 @@ describe('PickType', () => {
       const updateDto = new UpdateUserDto();
       updateDto.login = login;
 
-      const transformedDto = instanceToInstance(updateDto);
+      const transformedDto = classToClass(updateDto);
       expect(transformedDto.login).toEqual(login + '_transformed');
     });
   });
