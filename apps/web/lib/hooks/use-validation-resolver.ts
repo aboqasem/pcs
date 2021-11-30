@@ -2,7 +2,14 @@ import { validate, validationErrorsToPropsErrors } from '@pcs/shared-data-access
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { isNotEmptyObject } from 'class-validator';
 import { useCallback } from 'react';
-import { FieldErrors, ResolverResult } from 'react-hook-form';
+import {
+  DeepMap,
+  DeepPartial,
+  FieldError,
+  FieldErrors,
+  ResolverResult,
+  UnionLike,
+} from 'react-hook-form';
 
 export function useValidationResolver<TSchema extends { [K in keyof TSchema]: TSchema[K] }>(
   schema: ClassConstructor<TSchema>,
@@ -21,7 +28,7 @@ export function useValidationResolver<TSchema extends { [K in keyof TSchema]: TS
 
       return {
         values,
-        errors: {},
+        errors: {} as DeepMap<DeepPartial<UnionLike<TSchema>>, FieldError>,
       };
     },
     [schema],
