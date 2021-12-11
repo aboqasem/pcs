@@ -229,7 +229,7 @@ export const AddCourseStudentForm = memo(function AddCourseStudentsForm({
                                       'inline-flex items-center p-1 bg-blue-600 text-white border border-transparent rounded-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ',
                                       state === StudentState.Adding && 'opacity-50',
                                       state === StudentState.Added &&
-                                        'pointer-events-none !bg-green-600',
+                                        'pointer-events-none !bg-emerald-600',
                                     )}
                                     disabled={[StudentState.Added, StudentState.Adding].includes(
                                       state,

@@ -121,7 +121,7 @@ export const SignInForm = memo(function SignInForm({ onSuccess, error }: ISignIn
                   (error ? (
                     <div className="flex flex-col items-center justify-center p-4 mx-8 sm:rounded-md bg-red-50">
                       <div className="flex">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <HiXCircle className="w-5 h-5 text-red-400" aria-hidden="true" />
                         </div>
                         <div className="ml-3">

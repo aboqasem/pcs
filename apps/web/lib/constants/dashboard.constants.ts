@@ -9,7 +9,7 @@ export const dashboardActions = {
       title: 'Manage instructors',
       pathname: PagePath.Users,
       icon: FaChalkboardTeacher,
-      iconColors: 'bg-yellow-50 text-yellow-700',
+      iconColors: 'bg-amber-50 text-amber-700',
     },
     {
       title: 'Manage students',
@@ -23,7 +23,7 @@ export const dashboardActions = {
       title: 'Manage courses',
       pathname: PagePath.Courses,
       icon: FaChalkboardTeacher,
-      iconColors: 'bg-yellow-50 text-yellow-700',
+      iconColors: 'bg-amber-50 text-amber-700',
     },
   ],
   [UserRole.Student]: [],

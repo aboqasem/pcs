@@ -54,7 +54,7 @@ export default function Courses() {
           <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
             {courses.length ? (
               <div className="relative z-0 flex flex-1 overflow-hidden">
-                <aside className="flex-shrink-0 w-full border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
+                <aside className="shrink-0 w-full border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
                   {/* Page title & actions */}
                   <div className="px-6 py-4 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
                     <div className="flex-1 min-w-0">
