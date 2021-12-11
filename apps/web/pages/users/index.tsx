@@ -157,7 +157,7 @@ export default function Users() {
 
                 <aside
                   className={classNames(
-                    'w-full flex-shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col xl:w-96',
+                    'w-full shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col xl:w-96',
                     (selectedUser || isUserNotFound) && 'hidden',
                   )}
                 >

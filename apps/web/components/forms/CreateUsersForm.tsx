@@ -228,7 +228,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex-shrink-0 px-4 py-5 border-t border-gray-200 sm:px-6">
+                  <div className="shrink-0 px-4 py-5 border-t border-gray-200 sm:px-6">
                     <div className="flex justify-end space-x-3">
                       <button
                         type="button"

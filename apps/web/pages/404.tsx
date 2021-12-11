@@ -5,10 +5,10 @@ import Image from 'next/image';
 export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <div className="flex flex-col flex-grow">
-        <main className="flex flex-col flex-grow bg-white lg:relative">
-          <div className="flex flex-col flex-grow w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="flex-shrink-0 pt-10 sm:pt-16">
+      <div className="flex flex-col grow">
+        <main className="flex flex-col grow bg-white lg:relative">
+          <div className="flex flex-col grow w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="shrink-0 pt-10 sm:pt-16">
               <Link href="/" className="inline-flex">
                 <span className="sr-only">PCS</span>
                 <img
@@ -18,7 +18,7 @@ export default function NotFound() {
                 />
               </Link>
             </div>
-            <div className="flex-shrink-0 py-16 my-auto sm:py-32">
+            <div className="shrink-0 py-16 my-auto sm:py-32">
               <p className="text-sm font-semibold tracking-wide text-blue-600 uppercase">
                 404 error
               </p>
@@ -41,7 +41,7 @@ export default function NotFound() {
             </div>
           </div>
         </main>
-        <footer className="flex-shrink-0 bg-gray-50">
+        <footer className="shrink-0 bg-gray-50">
           <div className="w-full px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <nav className="flex space-x-4">
               <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-600">

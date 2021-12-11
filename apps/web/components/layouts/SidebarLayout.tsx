@@ -112,7 +112,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                 </div>
               </Transition.Child>
 
-              <div className="flex items-center justify-center flex-shrink-0 px-4">
+              <div className="flex items-center justify-center shrink-0 px-4">
                 <img
                   className="w-auto h-8"
                   src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
@@ -141,7 +141,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                             >
                               <item.icon
                                 className={classNames(
-                                  'mr-4 flex-shrink-0 h-6 w-6',
+                                  'mr-4 shrink-0 h-6 w-6',
                                   isCurrent
                                     ? 'text-gray-300'
                                     : 'text-gray-400 group-hover:text-gray-300',
@@ -175,18 +175,18 @@ export const SidebarLayout = memo(function MainSidebarLayout({
             </div>
           </Transition.Child>
 
-          <div className="flex-shrink-0 w-14" aria-hidden="true">
+          <div className="shrink-0 w-14" aria-hidden="true">
             {/* Dummy element to force sidebar to shrink to fit close icon */}
           </div>
         </Dialog>
       </Transition.Root>
 
       {/* Static sidebar for desktop */}
-      <div className="hidden md:flex md:flex-shrink-0">
+      <div className="hidden md:flex md:shrink-0">
         <div className="flex flex-col w-64">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-col flex-1 min-h-0">
-            <div className="flex items-center justify-center flex-shrink-0 h-16 px-4 bg-gray-900">
+            <div className="flex items-center justify-center shrink-0 h-16 px-4 bg-gray-900">
               <img
                 className="w-auto h-8"
                 src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
@@ -215,7 +215,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                           >
                             <item.icon
                               className={classNames(
-                                'mr-3 flex-shrink-0 h-6 w-6',
+                                'mr-3 shrink-0 h-6 w-6',
                                 isCurrent
                                   ? 'text-gray-300'
                                   : 'text-gray-400 group-hover:text-gray-300',
@@ -250,7 +250,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
       </div>
 
       <div className="flex flex-col flex-1 w-0 overflow-hidden">
-        <div className="relative z-10 flex flex-shrink-0 h-16 bg-white shadow md:hidden">
+        <div className="relative z-10 flex shrink-0 h-16 bg-white shadow md:hidden">
           <button
             type="button"
             className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
