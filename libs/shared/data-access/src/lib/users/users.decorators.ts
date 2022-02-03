@@ -9,6 +9,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { TCustomValidationOptions } from '../validation/validation.types';
+import { User } from './users.classes';
 import { UserRole } from './users.types';
 
 export function IsUserId(): PropertyDecorator {
@@ -51,9 +52,28 @@ export function IsUserEmail<Target = any>(
 
 export function IsUserUsernameOrEmail(): PropertyDecorator {
   return function (target, propertyKey) {
-    IsUserUsername({ context: { enabled: (t, p) => !t[p]?.includes('@') } })(target, propertyKey);
+    // IsUserUsername and IsUserEmail will not be enabled if the property is not a string, this is to assure that the property is a string
+    IsString()(target, propertyKey);
 
-    IsUserEmail({ context: { enabled: (t, p) => t[p]?.includes('@') } })(target, propertyKey);
+    IsUserUsername<User>({
+      context: {
+        enabled: (target, property) => {
+          const value = target[property];
+
+          return typeof value === 'string' && !value.includes('@');
+        },
+      },
+    })(target, propertyKey);
+
+    IsUserEmail<User>({
+      context: {
+        enabled: (target, property) => {
+          const value = target[property];
+
+          return typeof value === 'string' && value.includes('@');
+        },
+      },
+    })(target, propertyKey);
   };
 }
 

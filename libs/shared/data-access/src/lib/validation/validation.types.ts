@@ -6,8 +6,8 @@ export type TPropsErrors = {
 };
 
 export type TConstraintEnabledFn<TTarget = any> = (
-  target: TTarget,
-  property: keyof TTarget,
+  target: { [K in keyof TTarget]?: unknown },
+  property: Exclude<keyof TTarget, symbol>,
 ) => boolean;
 
 export type TCustomValidationOptions<TTarget = any> = TReplace<
@@ -15,7 +15,7 @@ export type TCustomValidationOptions<TTarget = any> = TReplace<
   {
     context: Record<string, any> & {
       /**
-       * We added this to enable and enable validation decorators individually.
+       * We added this to disable and enable validation decorators individually.
        */
       enabled?: TConstraintEnabledFn<TTarget>;
     };
@@ -31,7 +31,7 @@ export type TCustomValidationArguments<
     /**
      * Object that is being validated.
      */
-    object: TObject;
+    object: { [K in keyof TObject]?: unknown };
 
     /**
      * Name of the object's property being validated.

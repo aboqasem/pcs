@@ -77,8 +77,8 @@ export function IsMaterialEndsAt(): PropertyDecorator {
       options: { message: '$property should be after begin date' },
       propertyName: propertyKey.toString(),
       validator: {
-        validate: (endsAtValue: any, args: TCustomValidationArguments<Material, 'endsAt'>) => {
-          if (!(endsAtValue instanceof Date)) {
+        validate: (endsAtValue: unknown, args: TCustomValidationArguments<Material, 'endsAt'>) => {
+          if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
             return false;
           }
 

@@ -47,8 +47,8 @@ export function IsCourseEndsAt(): PropertyDecorator {
       options: { message: '$property should be after begin date' },
       propertyName: propertyKey.toString(),
       validator: {
-        validate: (endsAtValue: any, args: TCustomValidationArguments<Course, 'endsAt'>) => {
-          if (!(endsAtValue instanceof Date)) {
+        validate: (endsAtValue: unknown, args: TCustomValidationArguments<Course, 'endsAt'>) => {
+          if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
             return false;
           }
 
