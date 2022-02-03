@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional, IsUUID, Length, registerDecorator } from 'class-validator';
+import { IsOptional, IsUUID, Length, ValidateBy } from 'class-validator';
 import { IsValidDate } from '../shared/shared.decorators';
 import {
   TCustomValidationArguments,
@@ -41,20 +41,20 @@ export function IsCourseEndsAt(): PropertyDecorator {
   return function (target, propertyKey) {
     IsValidDate()(target, propertyKey);
 
-    registerDecorator({
-      name: 'isCourseEndsAtBeforeCourseBeginsAt',
-      target: target.constructor,
-      options: { message: '$property should be after begin date' },
-      propertyName: propertyKey.toString(),
-      validator: {
-        validate: (endsAtValue: unknown, args: TCustomValidationArguments<Course, 'endsAt'>) => {
-          if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
-            return false;
-          }
+    ValidateBy(
+      {
+        name: 'isCourseEndsAtBeforeCourseBeginsAt',
+        validator: {
+          validate: (endsAtValue: unknown, args: TCustomValidationArguments<Course, 'endsAt'>) => {
+            if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
+              return false;
+            }
 
-          return endsAtValue > args.object.beginsAt;
+            return endsAtValue > args.object.beginsAt;
+          },
         },
       },
-    });
+      { message: '$property should be after begin date' },
+    )(target, propertyKey);
   };
 }

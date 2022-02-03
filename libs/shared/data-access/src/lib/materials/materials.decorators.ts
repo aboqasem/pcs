@@ -7,7 +7,7 @@ import {
   Length,
   Max,
   Min,
-  registerDecorator,
+  ValidateBy,
   ValidateIf,
 } from 'class-validator';
 import { IsValidDate } from '../shared/shared.decorators';
@@ -71,21 +71,24 @@ export function IsMaterialEndsAt(): PropertyDecorator {
 
     IsValidDate()(target, propertyKey);
 
-    registerDecorator({
-      name: 'isMaterialEndsAtBeforeMaterialBeginsAt',
-      target: target.constructor,
-      options: { message: '$property should be after begin date' },
-      propertyName: propertyKey.toString(),
-      validator: {
-        validate: (endsAtValue: unknown, args: TCustomValidationArguments<Material, 'endsAt'>) => {
-          if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
-            return false;
-          }
+    ValidateBy(
+      {
+        name: 'isMaterialEndsAtBeforeMaterialBeginsAt',
+        validator: {
+          validate: (
+            endsAtValue: unknown,
+            args: TCustomValidationArguments<Material, 'endsAt'>,
+          ) => {
+            if (!(endsAtValue instanceof Date) || !(args.object.beginsAt instanceof Date)) {
+              return false;
+            }
 
-          return endsAtValue > args.object.beginsAt;
+            return endsAtValue > args.object.beginsAt;
+          },
         },
       },
-    });
+      { message: '$property should be after begin date' },
+    )(target, propertyKey);
   };
 }
 
