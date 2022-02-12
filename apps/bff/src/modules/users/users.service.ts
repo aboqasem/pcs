@@ -11,7 +11,7 @@ import {
   validateSync,
   ValidationError,
 } from '@pcs/shared-data-access';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { config } from 'src/config/config';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { UsersRepository } from 'src/db/repositories/user.repository';
@@ -185,7 +185,7 @@ export class UsersService {
       role: UserRole.Admin,
     });
 
-    const errors = validateSync(plainToClass(CreateUserDto, user));
+    const errors = validateSync(plainToInstance(CreateUserDto, user));
     if (errors.length) {
       throw new ValidationError(errors);
     }
