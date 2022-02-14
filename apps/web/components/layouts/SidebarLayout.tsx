@@ -1,11 +1,12 @@
 import { Link } from '@/components/Link';
 import { useSignOutMutation } from '@/lib/api/services/auth.service';
+import { PagePath } from '@/lib/constants/shared.constants';
 import { classNames } from '@/lib/utils/style.utils';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { Fragment, memo, PropsWithChildren, useCallback, useMemo, useState } from 'react';
-import { HiMenuAlt2, HiX } from 'react-icons/hi';
+import { HiMenuAlt2, HiOutlineLogout, HiX } from 'react-icons/hi';
 import { IconType } from 'react-icons/lib';
 
 export interface INavigationItem {
@@ -16,11 +17,13 @@ export interface INavigationItem {
 
 export interface ISidebarLayoutProps extends PropsWithChildren<Record<string, unknown>> {
   navigationItems?: INavigationItem[];
+  narrow?: boolean;
 }
 
 export const SidebarLayout = memo(function MainSidebarLayout({
   children,
   navigationItems,
+  narrow,
 }: ISidebarLayoutProps) {
   const { pathname: currPathname, query } = useRouter();
 
@@ -112,12 +115,14 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                 </div>
               </Transition.Child>
 
-              <div className="flex items-center justify-center shrink-0 px-4">
-                <img
-                  className="w-auto h-8"
-                  src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
-                  alt="PCS's Logo"
-                />
+              <div className="flex items-center justify-center px-4 shrink-0">
+                <Link href={PagePath.Dashboard}>
+                  <img
+                    className="w-auto h-8"
+                    src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
+                    alt="PCS's Logo"
+                  />
+                </Link>
               </div>
 
               <div className="flex-1 h-0 mt-5 overflow-y-auto">
@@ -159,14 +164,16 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                   )}
 
                   <div className="space-y-1">
-                    <div className="flex flex-col justify-stretch">
+                    <div className="flex flex-col">
                       <button
                         type="button"
-                        className="px-4 py-2 text-sm font-medium text-center text-white bg-gray-600 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 disabled:opacity-50"
+                        className="flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-white bg-gray-600 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 disabled:opacity-50"
                         disabled={isSignOutDisabled}
                         onClick={onSignOutClick}
+                        title="Sign out"
                       >
-                        Sign out
+                        <HiOutlineLogout className="w-6 h-6 shrink-0" aria-hidden="true" />{' '}
+                        <span className="ml-2">Sign out</span>
                       </button>
                     </div>
                   </div>
@@ -183,19 +190,21 @@ export const SidebarLayout = memo(function MainSidebarLayout({
 
       {/* Static sidebar for desktop */}
       <div className="hidden md:flex md:shrink-0">
-        <div className="flex flex-col w-64">
+        <div className={classNames('flex flex-col', narrow ? 'w-16' : 'w-64')}>
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-col flex-1 min-h-0">
-            <div className="flex items-center justify-center shrink-0 h-16 px-4 bg-gray-900">
-              <img
-                className="w-auto h-8"
-                src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
-                alt="PCS's Logo"
-              />
+            <div className="flex items-center justify-center h-16 px-4 bg-gray-900 shrink-0">
+              <Link href={PagePath.Dashboard}>
+                <img
+                  className="w-auto h-8"
+                  src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg"
+                  alt="PCS's Logo"
+                />
+              </Link>
             </div>
 
             <div className="flex flex-col flex-1 overflow-y-auto bg-gray-800">
-              <nav className="flex-1 px-2 py-4" aria-label="Sidebar">
+              <nav className="flex-1 px-3 py-4" aria-label="Sidebar">
                 {!!navItemsWithHref?.length && (
                   <>
                     <div className="space-y-1">
@@ -211,18 +220,22 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                               isCurrent
                                 ? 'bg-gray-900 text-white'
                                 : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                              narrow && 'h-10 w-10 justify-center',
                             )}
+                            title={item.name}
                           >
                             <item.icon
                               className={classNames(
-                                'mr-3 shrink-0 h-6 w-6',
+                                'shrink-0 h-6 w-6',
                                 isCurrent
                                   ? 'text-gray-300'
                                   : 'text-gray-400 group-hover:text-gray-300',
                               )}
                               aria-hidden="true"
                             />
-                            {item.name}
+                            <span className={classNames('ml-3', narrow && 'sr-only')}>
+                              {item.name}
+                            </span>
                           </Link>
                         );
                       })}
@@ -232,14 +245,16 @@ export const SidebarLayout = memo(function MainSidebarLayout({
                 )}
 
                 <div className="space-y-1">
-                  <div className="flex flex-col justify-stretch">
+                  <div className="flex flex-col">
                     <button
                       type="button"
-                      className="px-4 py-2 text-sm font-medium text-center text-white bg-gray-600 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 disabled:opacity-50"
+                      className="flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-white bg-gray-600 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 disabled:opacity-50"
                       disabled={isSignOutDisabled}
                       onClick={onSignOutClick}
+                      title="Sign out"
                     >
-                      Sign out
+                      <HiOutlineLogout className="w-6 h-6 shrink-0" aria-hidden="true" />{' '}
+                      <span className={classNames('ml-2', narrow && 'sr-only')}>Sign out</span>
                     </button>
                   </div>
                 </div>
@@ -250,7 +265,7 @@ export const SidebarLayout = memo(function MainSidebarLayout({
       </div>
 
       <div className="flex flex-col flex-1 w-0 overflow-hidden">
-        <div className="relative z-10 flex shrink-0 h-16 bg-white shadow md:hidden">
+        <div className="relative z-10 flex h-16 bg-white shadow shrink-0 md:hidden">
           <button
             type="button"
             className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
