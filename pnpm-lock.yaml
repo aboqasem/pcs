@@ -5,6 +5,7 @@ specifiers:
   '@commitlint/cli': 16.2.1
   '@commitlint/config-conventional': 16.2.1
   '@headlessui/react': 1.5.0
+  '@monaco-editor/react': ^4.3.1
   '@nestjs/axios': 0.0.5
   '@nestjs/common': 8.3.1
   '@nestjs/core': 8.3.1
@@ -56,6 +57,7 @@ specifiers:
   cookie-parser: 1.4.6
   core-js: 3.21.1
   cypress: 9.5.0
+  easymde: ^2.16.1
   eslint: 8.9.0
   eslint-config-next: 12.0.9
   eslint-config-prettier: ^8.3.0
@@ -72,6 +74,7 @@ specifiers:
   iterare: ^1.2.1
   jest: 27.5.1
   lodash.get: ^4.4.2
+  monaco-editor: ^0.33.0
   next: 11.1.2
   nprogress: ^0.2.0
   passport: 0.5.2
@@ -85,6 +88,7 @@ specifiers:
   react-hot-toast: 2.2.0
   react-icons: ^4.3.1
   react-query: 3.34.15
+  react-simplemde-editor: ^5.0.2
   reflect-metadata: ^0.1.13
   regenerator-runtime: 0.13.9
   rxjs: 7.5.4
@@ -100,6 +104,7 @@ specifiers:
 
 dependencies:
   '@headlessui/react': 1.5.0_react-dom@17.0.2+react@17.0.2
+  '@monaco-editor/react': 4.3.1_66b714495a9e953b0598750a09f73ca1
   '@nestjs/axios': 0.0.5_9a0e39cada075cf8a453083f94ffa5a6
   '@nestjs/common': 8.3.1_41a73a83cecc93a04fa529b9098e66bd
   '@nestjs/core': 8.3.1_3ee156419336b921cef6d2ae294e6e72
@@ -116,11 +121,13 @@ dependencies:
   connect-pg-simple: 7.0.0
   cookie-parser: 1.4.6
   core-js: 3.21.1
+  easymde: 2.16.1
   express: 4.17.3
   express-session: 1.17.2
   helmet: 5.0.2
   iterare: 1.2.1
   lodash.get: 4.4.2
+  monaco-editor: 0.33.0
   next: 11.1.2_3a6359ff0dae16692fd6f0778ea71593
   nprogress: 0.2.0
   passport: 0.5.2
@@ -132,6 +139,7 @@ dependencies:
   react-hot-toast: 2.2.0_react-dom@17.0.2+react@17.0.2
   react-icons: 4.3.1_react@17.0.2
   react-query: 3.34.15_react-dom@17.0.2+react@17.0.2
+  react-simplemde-editor: 5.0.2_9e5089d75e527152453fc597e421d23c
   reflect-metadata: 0.1.13
   regenerator-runtime: 0.13.9
   rxjs: 7.5.4
@@ -2191,6 +2199,29 @@ packages:
       '@types/node': 17.0.18
       '@types/yargs': 16.0.4
       chalk: 4.1.2
+
+  /@monaco-editor/loader/1.3.0_monaco-editor@0.33.0:
+    resolution: {integrity: sha512-N3mGq1ktC3zh7WUx3NGO+PSDdNq9Vspk/41rEmRdrCqV9vNbBTRzAOplmUpNQsi+hmTs++ERMBobMERb8Kb+3g==}
+    peerDependencies:
+      monaco-editor: '>= 0.21.0 < 1'
+    dependencies:
+      monaco-editor: 0.33.0
+      state-local: 1.0.7
+    dev: false
+
+  /@monaco-editor/react/4.3.1_66b714495a9e953b0598750a09f73ca1:
+    resolution: {integrity: sha512-f+0BK1PP/W5I50hHHmwf11+Ea92E5H1VZXs+wvKplWUWOfyMa1VVwqkJrXjRvbcqHL+XdIGYWhWNdi4McEvnZg==}
+    peerDependencies:
+      monaco-editor: '>= 0.25.0 < 1'
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+    dependencies:
+      '@monaco-editor/loader': 1.3.0_monaco-editor@0.33.0
+      monaco-editor: 0.33.0
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /@napi-rs/triples/1.1.0:
     resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}
@@ -4491,6 +4522,18 @@ packages:
       '@types/node': 17.0.18
     dev: true
 
+  /@types/codemirror/0.0.109:
+    resolution: {integrity: sha512-cSdiHeeLjvGn649lRTNeYrVCDOgDrtP+bDDSFDd1TF+i0jKGPDRozno2NOJ9lTniso+taiv4kiVS8dgM8Jm5lg==}
+    dependencies:
+      '@types/tern': 0.23.4
+    dev: false
+
+  /@types/codemirror/5.60.5:
+    resolution: {integrity: sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==}
+    dependencies:
+      '@types/tern': 0.23.4
+    dev: false
+
   /@types/connect-pg-simple/7.0.0:
     resolution: {integrity: sha512-Sis1C3Ge9OSIropMARkq5dt6VDNzFi5z9eiw81qQP2EnPskGNMq+hzs1dJXUTI+q4GbEEXXUGIZQ7JWRC/Ljjw==}
     dependencies:
@@ -4607,6 +4650,14 @@ packages:
 
   /@types/lodash/4.14.175:
     resolution: {integrity: sha512-XmdEOrKQ8a1Y/yxQFOMbC47G/V2VDO1GvMRnl4O75M4GW/abC5tnfzadQYkqEveqRM1dEJGFFegfPNA2vvx2iw==}
+    dev: false
+
+  /@types/marked/2.0.5:
+    resolution: {integrity: sha512-shRZ7XnYFD/8n8zSjKvFdto1QNSf4tONZIlNEZGrJe8GsOE8DL/hG1Hbl8gZlfLnjS7+f5tZGIaTgfpyW38h4w==}
+    dev: false
+
+  /@types/marked/4.0.3:
+    resolution: {integrity: sha512-HnMWQkLJEf/PnxZIfbm0yGJRRZYYMhb++O9M36UCTA9z53uPvVoSlAwJr3XOpDEryb7Hwl1qAx/MV6YIW1RXxg==}
     dev: false
 
   /@types/mime/1.3.2:
@@ -4753,6 +4804,12 @@ packages:
   /@types/tailwindcss/3.0.8:
     resolution: {integrity: sha512-3BKgtrXdr+E/lsz79Hbkb8X3kjlbsgw1m0x/ewhff+cqN059GpFWHtYuLJd2ToDTeWZa3OE2V4KIo//PnOrKlQ==}
     dev: true
+
+  /@types/tern/0.23.4:
+    resolution: {integrity: sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==}
+    dependencies:
+      '@types/estree': 0.0.50
+    dev: false
 
   /@types/webpack-sources/0.1.9:
     resolution: {integrity: sha512-bvzMnzqoK16PQIC8AYHNdW45eREJQMd6WG/msQWX5V2+vZmODCOPb4TJcbgRljTZZTwTM4wUMcsI8FftNA7new==}
@@ -6337,6 +6394,16 @@ packages:
     resolution: {integrity: sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=}
     engines: {node: '>=0.10.0'}
 
+  /codemirror-spell-checker/1.1.2:
+    resolution: {integrity: sha1-HGYPkIlIPMtRE7m6nKGcP0mTNx4=}
+    dependencies:
+      typo-js: 1.2.1
+    dev: false
+
+  /codemirror/5.65.2:
+    resolution: {integrity: sha512-SZM4Zq7XEC8Fhroqe3LxbEEX1zUPWH1wMr5zxiBuiUF64iYOUH/JI88v4tBag8MiBS8B8gRv8O1pPXGYXQ4ErA==}
+    dev: false
+
   /collect-v8-coverage/1.0.1:
     resolution: {integrity: sha512-iBPtljfCNcTKNAto0KEtDfZ3qzjJvqE3aTGZsbhjSBlorqpXJlaWWtPO35D+ZImoC3KWejX64o+yPGxhWSTzfg==}
 
@@ -7389,6 +7456,16 @@ packages:
   /dotenv/8.6.0:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
     engines: {node: '>=10'}
+    dev: false
+
+  /easymde/2.16.1:
+    resolution: {integrity: sha512-FihYgjRsKfhGNk89SHSqxKLC4aJ1kfybPWW6iAmtb5GnXu+tnFPSzSaGBmk1RRlCuhFSjhF0SnIMGVPjEzkr6g==}
+    dependencies:
+      '@types/codemirror': 5.60.5
+      '@types/marked': 4.0.3
+      codemirror: 5.65.2
+      codemirror-spell-checker: 1.1.2
+      marked: 4.0.12
     dev: false
 
   /ecc-jsbn/0.1.2:
@@ -10524,6 +10601,12 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /marked/4.0.12:
+    resolution: {integrity: sha512-hgibXWrEDNBWgGiK18j/4lkS6ihTe9sxtV4Q1OQppb/0zzyPSzoFANBa5MfsG/zgsWklmNnhm0XACZOH/0HBiQ==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
+
   /match-sorter/6.3.1:
     resolution: {integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==}
     dependencies:
@@ -10694,6 +10777,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+
+  /monaco-editor/0.33.0:
+    resolution: {integrity: sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==}
+    dev: false
 
   /ms/2.0.0:
     resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
@@ -12717,6 +12804,20 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /react-simplemde-editor/5.0.2_9e5089d75e527152453fc597e421d23c:
+    resolution: {integrity: sha512-yaqZSaUBf6B0kQY0mH8WP/nHnvJFz48aO8cMYCL1e/AFiuB/H8UDuyZFP9/exOtwVpaG373HYR1YedKMtCh+Kw==}
+    peerDependencies:
+      easymde: '>= 2.0.0 < 3.0.0'
+      react: '>=16.8.2'
+      react-dom: '>=16.8.2'
+    dependencies:
+      '@types/codemirror': 0.0.109
+      '@types/marked': 2.0.5
+      easymde: 2.16.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
   /react/17.0.2:
     resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
     engines: {node: '>=0.10.0'}
@@ -13525,6 +13626,10 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       type-fest: 0.7.1
+    dev: false
+
+  /state-local/1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==}
     dev: false
 
   /statuses/1.5.0:
@@ -14433,6 +14538,10 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
+
+  /typo-js/1.2.1:
+    resolution: {integrity: sha512-bTGLjbD3WqZDR3CgEFkyi9Q/SS2oM29ipXrWfDb4M74ea69QwKAECVceYpaBu0GfdnASMg9Qfl67ttB23nePHg==}
+    dev: false
 
   /uid-safe/2.1.5:
     resolution: {integrity: sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==}
