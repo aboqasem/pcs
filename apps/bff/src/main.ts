@@ -8,7 +8,6 @@ import passport from 'passport';
 import { AppModule } from 'src/app.module';
 import { config } from 'src/config/config';
 import { session } from 'src/config/session.config';
-import { WithDataInterceptor } from 'src/shared/interceptors/with-data.interceptor';
 import { CustomValidationPipe } from 'src/shared/pipes/custom-validation.pipe';
 
 async function bootstrap(): Promise<void> {
@@ -24,7 +23,6 @@ async function bootstrap(): Promise<void> {
       whitelist: true,
     }),
   );
-  app.useGlobalInterceptors(new WithDataInterceptor());
 
   app.use(helmet());
 
