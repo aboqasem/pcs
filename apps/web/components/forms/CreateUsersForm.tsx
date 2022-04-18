@@ -93,12 +93,13 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     reset();
   }, [close, reset]);
 
-  const roleSelectOptions = useRef(
-    new Map(
-      Object.values(UserRole)
-        .filter((role) => role !== UserRole.Admin)
-        .map((role) => [role, capitalize(role)] as const),
-    ),
+  const { current: roleSelectOptions } = useRef(
+    Object.values(UserRole)
+      .filter((role) => role !== UserRole.Admin)
+      .reduce((acc, role) => {
+        acc[role] = capitalize(role);
+        return acc;
+      }, {} as Record<string, string>),
   );
 
   return (
@@ -198,7 +199,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                             <SelectMenu
                               label="Role"
                               name={`users.${i}.role`}
-                              options={roleSelectOptions.current}
+                              options={roleSelectOptions}
                               control={control}
                               defaultValue={user.role}
                             />
@@ -228,7 +229,7 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                   </div>
 
                   {/* Action buttons */}
-                  <div className="shrink-0 px-4 py-5 border-t border-gray-200 sm:px-6">
+                  <div className="px-4 py-5 border-t border-gray-200 shrink-0 sm:px-6">
                     <div className="flex justify-end space-x-3">
                       <button
                         type="button"
