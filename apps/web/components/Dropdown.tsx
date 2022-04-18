@@ -41,14 +41,15 @@ export const Dropdown = memo(function Dropdown({
         <Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             {items.map((item) => (
-              <Menu.Item key={item.label}>
-                {({ active }) => (
+              <Menu.Item key={item.label} disabled={!item.onClick}>
+                {({ active, disabled }) => (
                   <button
                     onClick={item.onClick}
                     className={classNames(
-                      'block px-4 py-2 text-sm w-full text-left',
+                      'block px-4 py-2 text-sm w-full text-left disabled:opacity-50',
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     )}
+                    disabled={disabled}
                   >
                     {item.label}
                   </button>
