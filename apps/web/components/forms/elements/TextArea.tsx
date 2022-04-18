@@ -13,23 +13,25 @@ export type TTextAreaProps<TFieldValues extends FieldValues = FieldValues> = TRe
     onBlur: ChangeHandler;
     onChange: ChangeHandler;
     control: Control<TFieldValues>;
+  } & {
+    textAreaClassName?: string;
   } & (
-    | {
-        label: string;
-        placeholder?: never;
-        placeholderIcon?: never;
-      }
-    | {
-        label?: never;
-        placeholder: string;
-        placeholderIcon?: IconType;
-      }
-  )
+      | {
+          label: string;
+          placeholder?: never;
+          placeholderIcon?: never;
+        }
+      | {
+          label?: never;
+          placeholder: string;
+          placeholderIcon?: IconType;
+        }
+    )
 >;
 
 export const TextArea = memo(
   forwardRef(function <TFieldValues extends FieldValues = FieldValues>(
-    { label, required, control, ...props }: TTextAreaProps<TFieldValues>,
+    { label, required, control, textAreaClassName, ...props }: TTextAreaProps<TFieldValues>,
     forwardedRef: ForwardedRef<HTMLTextAreaElement>,
   ) {
     const name = props.name as Path<TFieldValues>;
@@ -81,6 +83,7 @@ export const TextArea = memo(
                     ? 'px-3 py-2 pr-10 text-red-900 placeholder-red-300 border-red-300 focus:ring-red-500 focus:border-red-500 caret-red-500'
                     : 'px-3 py-2 placeholder-gray-400 border-gray-300 focus:ring-blue-500 focus:border-blue-500',
                   props.placeholderIcon && 'pl-10',
+                  textAreaClassName,
                 )}
               />
 
