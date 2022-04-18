@@ -7,6 +7,7 @@ import {
 } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
+import { numericTransformer } from 'src/db/transformers/numeric.transformer';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('material')
@@ -39,7 +40,11 @@ export class MaterialEntity extends Material {
   })
   status = MaterialStatus.Draft;
 
-  @Column('numeric', { precision: 6, scale: 2 })
+  @Column('numeric', {
+    precision: 6,
+    scale: 2,
+    transformer: numericTransformer,
+  })
   totalMark!: number;
 
   @Column('smallint', { nullable: true })
