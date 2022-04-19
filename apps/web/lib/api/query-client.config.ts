@@ -1,12 +1,9 @@
 import { config as conf } from '@/lib/config';
+import { noop } from '@/lib/utils/functions.utils';
 import { HttpError } from '@pcs/shared-data-access';
 import { QueryClient, setLogger } from 'react-query';
 
 type TQueryClientConfig = ConstructorParameters<typeof QueryClient>[0];
-
-const noop = () => {
-  // noop
-};
 
 setLogger({ log: noop, warn: noop, error: noop });
 
