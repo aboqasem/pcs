@@ -23,7 +23,8 @@ export async function redirectIf(
 
   const [serverCtx, pageCtx] = [ctx as GetServerSidePropsContext, ctx as NextPageContext];
   const intendedPath = (serverCtx.resolvedUrl ?? pageCtx.asPath) as string | undefined;
-  const intendedQueryParam = (intendedPath && `?intended=${intendedPath}`) ?? '';
+  const intendedQueryParam =
+    (intendedPath && `?intended=${encodeURIComponent(intendedPath)}`) ?? '';
 
   for (const { destination, predicate } of rules) {
     if (predicate(user)) {
