@@ -17,7 +17,7 @@ export function validationErrorsToPropsErrors(validationErrors: ValidationError[
         withoutFirstWord(errorConstraint),
       ];
       const pathParts = pathToError.split('.');
-      const property = pathParts[pathParts.length - 1];
+      const property = pathParts[pathParts.length - 1]!;
 
       const errorMessage = convertConstraintToReadableMessage(constraint, property);
 

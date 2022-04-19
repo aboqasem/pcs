@@ -86,7 +86,7 @@ export class CoursesService {
   ): Promise<CreatedCourseDto> {
     return this.coursesRepository
       .insert({ ...dto, instructorId })
-      .then(({ identifiers: [{ id }] }) => ({ id: id as CreatedCourseDto['id'] }));
+      .then(({ identifiers: [identifier] }) => ({ id: identifier!.id as CreatedCourseDto['id'] }));
   }
 
   async getCoursePeople(

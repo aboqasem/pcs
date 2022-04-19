@@ -60,9 +60,9 @@ export class MaterialsService {
     await this.coursesService.instructorCourseExists(creatorInstructorId, createdForCourseId);
 
     const {
-      identifiers: [{ id }],
+      identifiers: [identifier],
     } = await this.materialsRepository.insert({ ...dto, createdForCourseId, creatorInstructorId });
 
-    return { id: id as CreatedMaterialDto['id'] };
+    return { id: identifier!.id as CreatedMaterialDto['id'] };
   }
 }

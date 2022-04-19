@@ -20,6 +20,7 @@ export interface IAddCourseStudentFormProps {
 }
 
 enum StudentState {
+  None,
   Out,
   Adding,
   Added,
@@ -201,7 +202,7 @@ export const AddCourseStudentForm = memo(function AddCourseStudentsForm({
                               return null;
                             }
 
-                            const { state } = studentsStates[i] ?? {};
+                            const { state } = studentsStates[i] ?? { state: StudentState.None };
 
                             return (
                               <li key={student.id}>

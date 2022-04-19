@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "paths": {
       "@aboqasem/mapped-types": ["libs/shared/mapped-types/src/index.ts"],

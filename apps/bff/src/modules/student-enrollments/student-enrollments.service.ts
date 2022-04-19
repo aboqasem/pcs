@@ -55,7 +55,7 @@ export class StudentEnrollmentsService {
     }
 
     const {
-      identifiers: [{ id }],
+      identifiers: [identifier],
     } = await this.studentsRepository.insert({ ...dto, courseId });
 
     this.emailService.send({
@@ -64,10 +64,10 @@ export class StudentEnrollmentsService {
       data: {
         fullName: student.fullName,
         courseTitle: course.title,
-        courseUrl: config.APP_COURSE_URL.replace('[courseId]', id),
+        courseUrl: config.APP_COURSE_URL.replace('[courseId]', identifier!.id),
       },
     });
 
-    return { id: id as CreatedStudentEnrollmentDto['id'] };
+    return { id: identifier!.id as CreatedStudentEnrollmentDto['id'] };
   }
 }

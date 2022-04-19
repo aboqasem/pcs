@@ -53,7 +53,7 @@ export const SelectMenu = memo(function <TFieldValues extends FieldValues = Fiel
 
   useEffect(() => {
     if (optionsKeys.length && (!field.value || !optionsKeys.includes(field.value))) {
-      onChange(optionsKeys[0]);
+      onChange(optionsKeys[0]!);
     }
   }, [options, field, optionsKeys, onChange]);
 

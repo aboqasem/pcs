@@ -9,5 +9,5 @@ export function withoutFirstWord(str: string) {
 }
 
 export function capitalize<T extends string>(str: T): Capitalize<T> {
-  return `${str[0].toUpperCase()}${str.substring(1)}` as Capitalize<T>;
+  return `${(str[0] ?? '').toUpperCase()}${str.substring(1)}` as Capitalize<T>;
 }

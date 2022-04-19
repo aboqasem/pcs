@@ -178,7 +178,7 @@ export const CodeEditor = memo(function <TFieldValues extends FieldValues = Fiel
   ...props
 }: TCodeEditorProps<TFieldValues>) {
   const language = useMemo(
-    () => props.language?.split(' ')[0].toLocaleLowerCase().replace('c++', 'cpp'),
+    () => props.language?.split(' ')[0]?.toLocaleLowerCase().replace('c++', 'cpp'),
     [props.language],
   );
 
