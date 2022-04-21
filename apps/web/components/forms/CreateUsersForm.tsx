@@ -7,12 +7,14 @@ import { useValidationResolver } from '@/lib/hooks/use-validation-resolver';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   capitalize,
+  CreateUserDto,
   UserRole,
   UsersCreateUsersBody,
   ValidationError,
 } from '@pcs/shared-data-access';
+import { plainToInstance } from 'class-transformer';
 import { Fragment, memo, useCallback, useMemo, useRef } from 'react';
-import { Path, useFieldArray, useForm } from 'react-hook-form';
+import { FieldError, Path, useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { GoVerified } from 'react-icons/go';
 import { HiPlus, HiX } from 'react-icons/hi';
@@ -42,23 +44,28 @@ export const CreateUsersForm = memo(function CreateUsersForm({
     control,
     setError,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm<UsersCreateUsersBody>({
     defaultValues: { users: [emptyUser.current] },
     resolver: useValidationResolver(UsersCreateUsersBody),
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     name: 'users',
     keyName: 'formFieldId',
     control,
   });
+  const usersError = errors.users as unknown as FieldError;
 
   const createUsersMutation = useCreateUsersMutation({
     onError: (error) => {
       if (error instanceof ValidationError) {
         return Object.entries(error.errors).forEach(([property, error]) => {
-          setError(property as Path<UsersCreateUsersBody>, { message: error?.message });
+          setError(
+            property as Path<UsersCreateUsersBody>,
+            { message: error?.message },
+            { shouldFocus: true },
+          );
         });
       }
       toast.error(error.message, { id: 'createUsersError' });
@@ -155,6 +162,14 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                       </div>
                     </div>
 
+                    {usersError?.message && (
+                      <div className="flex items-center justify-center px-4 py-3 mx-4 text-red-400 border border-red-100 rounded-md bg-red-50">
+                        <span className="font-medium whitespace-pre-wrap">
+                          {usersError.message}
+                        </span>
+                      </div>
+                    )}
+
                     {/* Users fields */}
                     <div className="px-4 pb-6 space-y-8 divide-y divide-gray-200 sm:px-6">
                       {fields.map((user, i) => (
@@ -238,6 +253,76 @@ export const CreateUsersForm = memo(function CreateUsersForm({
                       >
                         Cancel
                       </button>
+
+                      <label
+                        htmlFor="import-users"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                      >
+                        <span>Import</span>
+                        <input
+                          id="import-users"
+                          name="import-users"
+                          type="file"
+                          className="sr-only"
+                          accept=".json"
+                          multiple={false}
+                          onChange={(e) => {
+                            const file = e.target.files?.item(0);
+                            if (!file) return;
+
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                              try {
+                                const data = plainToInstance(
+                                  CreateUserDto,
+                                  JSON.parse(reader.result?.toString() ?? ''),
+                                );
+                                const users: CreateUserDto[] = (Array.isArray(data) ? data : [data])
+                                  .map((d) => {
+                                    if (d.role === UserRole.Admin) {
+                                      return null;
+                                    }
+                                    return {
+                                      email:
+                                        typeof d.email === 'string'
+                                          ? d.email
+                                          : emptyUser.current.email,
+                                      username:
+                                        typeof d.username === 'string'
+                                          ? d.username
+                                          : emptyUser.current.username,
+                                      fullName:
+                                        typeof d.fullName === 'string'
+                                          ? d.fullName
+                                          : emptyUser.current.fullName,
+                                      role:
+                                        typeof d.role === 'string' &&
+                                        Object.values(UserRole).includes(d.role)
+                                          ? d.role
+                                          : emptyUser.current.role,
+                                      password: typeof d.password === 'string' ? d.password : '',
+                                    } as CreateUserDto;
+                                  })
+                                  .filter((u): u is CreateUserDto => !!u);
+
+                                if (users.length) {
+                                  if (!isDirty) {
+                                    replace([users.shift()!]);
+                                    append(users, { shouldFocus: true });
+                                  } else {
+                                    append(users, { shouldFocus: true });
+                                  }
+                                }
+                              } catch (e) {
+                                console.warn(e);
+                                toast.error('Unable to parse file.', { id: 'importUsersError' });
+                              }
+                            };
+                            reader.readAsText(file);
+                            e.target.value = '';
+                          }}
+                        />
+                      </label>
 
                       <button
                         type="submit"
