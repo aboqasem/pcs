@@ -35,7 +35,7 @@ function mapChildrenToValidationErrors(
   parentPath?: string,
 ): ValidationError[] {
   if (!(error.children && error.children.length)) {
-    return [error];
+    return [prependConstraintsWithParentProp(error)];
   }
   const validationErrors: ValidationError[] = [];
   parentPath = parentPath ? `${parentPath}.${error.property}` : error.property;
@@ -43,18 +43,20 @@ function mapChildrenToValidationErrors(
     if (child.children && child.children.length) {
       validationErrors.push(...mapChildrenToValidationErrors(child, parentPath));
     }
-    validationErrors.push(prependConstraintsWithParentProp(parentPath, child));
+    validationErrors.push(prependConstraintsWithParentProp(child, parentPath));
   }
   return validationErrors;
 }
 
 function prependConstraintsWithParentProp(
-  parentPath: string,
   error: ValidationError,
+  parentPath?: string,
 ): ValidationError {
   const constraints = {} as any;
   for (const key in error.constraints) {
-    constraints[key] = `${parentPath}.${error.property} ${error.constraints[key]}`;
+    constraints[key] = `${parentPath ? `${parentPath}.` : ''}${error.property} ${
+      error.constraints[key]
+    }`;
   }
   return {
     ...error,
