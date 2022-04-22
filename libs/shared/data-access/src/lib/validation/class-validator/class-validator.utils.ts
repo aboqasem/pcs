@@ -28,7 +28,7 @@ function emptyErrorsFromDisabledConstraints(errors: ValidationError[]): void {
 
 function filterEmptyErrors(errors: ValidationError[] = []): void {
   for (let i = errors.length - 1; i >= 0; --i) {
-    const e = errors[i];
+    const e = errors[i]!;
     if (e.children) {
       filterEmptyErrors(e.children);
     }
