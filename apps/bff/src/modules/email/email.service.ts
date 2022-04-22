@@ -13,7 +13,7 @@ export class EmailService {
     this.sgMail.setApiKey(config.SENDGRID_API_KEY);
   }
 
-  async send<T extends EmailTemplate = any>(...emails: TEmail<T>[]): Promise<boolean> {
+  async send<T extends TEmail<EmailTemplate>>(...emails: T[]): Promise<boolean> {
     return this.sgMail
       .send(emails.map(this._constructEmail))
       .then(() => {
