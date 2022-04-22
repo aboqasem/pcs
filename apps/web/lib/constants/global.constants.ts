@@ -35,5 +35,10 @@ export const globalNavigationItems: { [K in UserRole]: INavigationItem[] } = {
       pathname: PagePath.Dashboard,
       icon: HiHome,
     },
+    {
+      name: 'Courses',
+      pathname: PagePath.Courses,
+      icon: FaChalkboardTeacher,
+    },
   ],
 };

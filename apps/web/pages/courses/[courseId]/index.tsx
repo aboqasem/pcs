@@ -12,7 +12,8 @@ import { courseNavigationItems, courseTabs } from '@/lib/constants/courses.const
 import { PagePath } from '@/lib/constants/shared.constants';
 import { useQueryParams } from '@/lib/hooks/use-query-params';
 import { TPropsWithDehydratedState } from '@/lib/types';
-import { capitalize, MaterialType, UserRole } from '@pcs/shared-data-access';
+import { classNames } from '@/lib/utils/style.utils';
+import { capitalize, MaterialStatus, MaterialType, UserRole } from '@pcs/shared-data-access';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -29,7 +30,8 @@ export default function Course() {
     isShown: false,
   });
 
-  const { data: profile } = useProfileQuery<UserRole.Instructor>();
+  const { data: profile } = useProfileQuery<UserRole.Instructor | UserRole.Student>();
+  const isInstructor = profile?.role === UserRole.Instructor;
 
   const courseQuery = useCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);
@@ -44,11 +46,11 @@ export default function Course() {
     () =>
       materials.reduce((map, { id }) => {
         return map.set(id, {
-          pathname: PagePath.CourseMaterial,
+          pathname: isInstructor ? PagePath.CourseMaterial : PagePath.AttemptMaterial,
           query: { courseId, materialId: id },
         });
       }, new Map<string, UrlObject>()),
-    [courseId, materials],
+    [courseId, isInstructor, materials],
   );
 
   const { current: dropdownItems } = useRef<IDropdownItem[]>(
@@ -94,9 +96,11 @@ export default function Course() {
                             </h1>
                           </div>
 
-                          <div className="flex justify-end mt-4 sm:mt-0">
-                            <Dropdown title="Create" items={dropdownItems} />
-                          </div>
+                          {isInstructor && (
+                            <div className="flex justify-end mt-4 sm:mt-0">
+                              <Dropdown title="Create" items={dropdownItems} />
+                            </div>
+                          )}
                         </div>
 
                         {/* Materials list */}
@@ -122,7 +126,19 @@ export default function Course() {
                                           {/* Extend touch target to entire panel */}
                                           <span className="absolute inset-0" aria-hidden="true" />
                                           <p className="text-sm font-medium text-gray-900">
-                                            {m.title}
+                                            {m.title}{' '}
+                                            {isInstructor && (
+                                              <span
+                                                className={classNames(
+                                                  'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                                  m.status === MaterialStatus.Draft
+                                                    ? 'bg-gray-100 text-gray-800'
+                                                    : 'bg-blue-100 text-blue-800',
+                                                )}
+                                              >
+                                                {m.status}
+                                              </span>
+                                            )}
                                           </p>
                                         </Link>
                                       </div>
@@ -143,7 +159,9 @@ export default function Course() {
         </div>
       </SidebarLayout>
 
-      <CreateMaterialForm {...materialFormState} close={closeCreateMaterialForm} />
+      {isInstructor && (
+        <CreateMaterialForm {...materialFormState} close={closeCreateMaterialForm} />
+      )}
     </>
   );
 }
@@ -156,7 +174,7 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
       { destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated },
       {
         destination: PagePath.Dashboard,
-        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor]),
+        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor, UserRole.Student]),
       },
     ],
     ctx,

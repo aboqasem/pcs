@@ -6,9 +6,10 @@ import {
   UserDto,
 } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
+import { QuestionEntity } from 'src/db/entities/question.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { numericTransformer } from 'src/db/transformers/numeric.transformer';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('material')
 export class MaterialEntity extends Material {
@@ -65,4 +66,9 @@ export class MaterialEntity extends Material {
   @ManyToOne(() => UserEntity, (user) => user.instructorCreatedMaterials)
   @JoinColumn({ name: 'creatorInstructorId', referencedColumnName: 'id' })
   creatorInstructor?: UserDto;
+
+  /* OTHER RELATIONS */
+
+  @OneToMany(() => QuestionEntity, (question) => question.material, { nullable: true })
+  questions?: QuestionEntity[] | null;
 }

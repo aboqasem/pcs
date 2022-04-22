@@ -1,4 +1,6 @@
 import { CreatedMaterialDto, CreateMaterialDto, MaterialDto } from '../materials/materials.classes';
+import { CreatedQuestionDto, CreateQuestionDto } from '../questions/questions.classes';
+import { TMaterialQuestion } from '../questions/questions.types';
 import {
   CreatedStudentEnrollmentDto,
   CreateStudentEnrollmentDto,
@@ -17,8 +19,15 @@ export type TCoursesGetMaterialsData = MaterialDto[];
 
 export type TCoursesGetMaterialData = MaterialDto;
 
+export type TCoursesAnnounceMaterialData = true;
+
 export class CoursesCreateMaterialBody extends CreateMaterialDto {}
 export type TCoursesCreateMaterialData = CreatedMaterialDto;
+
+export type TCoursesGetMaterialQuestionsData = TMaterialQuestion[];
+
+export class CoursesCreateMaterialQuestionBody extends CreateQuestionDto {}
+export type TCoursesCreateMaterialQuestionData = CreatedQuestionDto;
 
 export type TCoursesGetPeopleData = UserDto[];
 

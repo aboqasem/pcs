@@ -6,6 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
     environment:
+      NEXT_PUBLIC_BASE_URL: http://localhost:4200
       NEXT_PUBLIC_BFF_URL: http://localhost:8000/api/
 
       CORS_ORIGINS: http://localhost:4200

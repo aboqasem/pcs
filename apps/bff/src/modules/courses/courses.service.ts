@@ -3,7 +3,7 @@ import { CreateCourseDto, CreatedCourseDto } from '@pcs/shared-data-access';
 import { CourseEntity } from 'src/db/entities/course.entity';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { CoursesRepository } from 'src/db/repositories/course.repository';
-import { createQueryBuilder } from 'typeorm';
+import { createQueryBuilder, SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class CoursesService {
@@ -47,6 +47,29 @@ export class CoursesService {
     });
   }
 
+  getStudentCourses(
+    studentId: UserEntity['id'],
+    select?: (keyof CourseEntity)[],
+    relations?: (keyof CourseEntity)[],
+  ): Promise<CourseEntity[]> {
+    return this.coursesRepository
+      .find({
+        select,
+        relations: ['studentEnrollments', ...(relations ?? [])],
+        where: (qb: SelectQueryBuilder<CourseEntity>) => {
+          qb.where(`"CourseEntity__studentEnrollments"."studentId" = :studentId`, { studentId });
+        },
+      })
+      .then((courses) => {
+        if (!relations?.includes('studentEnrollments')) {
+          courses.forEach((course) => {
+            delete course.studentEnrollments;
+          });
+        }
+        return courses;
+      });
+  }
+
   async getInstructorCourse(
     instructorId: UserEntity['id'],
     courseId: CourseEntity['id'],
@@ -73,11 +96,35 @@ export class CoursesService {
     return course;
   }
 
+  async getStudentCourse(
+    studentId: UserEntity['id'],
+    courseId: CourseEntity['id'],
+    select?: (keyof CourseEntity)[],
+    relations?: (keyof CourseEntity)[],
+  ): Promise<CourseEntity> {
+    return this.getStudentCourses(studentId, select, relations).then((courses) => {
+      const course = courses.find((course) => course.id === courseId);
+
+      if (!course) {
+        throw new NotFoundException('Course not found');
+      }
+
+      return course;
+    });
+  }
+
   async instructorCourseExists(
     instructorId: UserEntity['id'],
     courseId: CourseEntity['id'],
   ): Promise<boolean> {
-    return !!(await this.getInstructorCourse(instructorId, courseId));
+    return !!(await this.getInstructorCourse(instructorId, courseId, ['id']));
+  }
+
+  async studentCourseExists(
+    studentId: UserEntity['id'],
+    courseId: CourseEntity['id'],
+  ): Promise<boolean> {
+    return !!(await this.getStudentCourse(studentId, courseId, ['id']));
   }
 
   createInstructorCourse(

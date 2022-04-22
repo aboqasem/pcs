@@ -1,5 +1,4 @@
 import { PartialType, PickType } from '@aboqasem/mapped-types';
-import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -12,6 +11,7 @@ import {
 } from 'class-validator';
 import { CourseDto } from '../courses/courses.classes';
 import { MaterialDto } from '../materials/materials.classes';
+import { StudentEnrollmentDto } from '../student-enrollments/student-enrollments.classes';
 import { FilterDisabledConstraints } from '../validation/validation.decorators';
 import {
   IsUserEmail,
@@ -84,8 +84,12 @@ export class CreateUserDto extends PickType(User, ['email', 'username', 'fullNam
 export class CreateUsersDto {
   @ValidateNested({ each: true })
   @Type(() => CreateUserDto)
-  @ArrayUnique((v) => v.username?.toLowerCase())
-  @ArrayUnique((v) => v.email?.toLowerCase())
+  @ArrayUnique((v) => v.username?.toLowerCase(), {
+    message: 'Username must be unique',
+  })
+  @ArrayUnique((v) => v.email?.toLowerCase(), {
+    message: 'Email must be unique',
+  })
   // https://sendgrid.api-docs.io/v3.0/mail-send/mail-send-limitations
   @ArrayMaxSize(1000)
   @ArrayMinSize(1)

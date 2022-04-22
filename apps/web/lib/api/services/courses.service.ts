@@ -4,14 +4,18 @@ import {
   CoursesAddStudentBody,
   CoursesCreateCourseBody,
   CoursesCreateMaterialBody,
+  CoursesCreateMaterialQuestionBody,
   HttpError,
   MaterialDto,
   TCoursesAddStudentData,
+  TCoursesAnnounceMaterialData,
   TCoursesCreateCourseData,
   TCoursesCreateMaterialData,
+  TCoursesCreateMaterialQuestionData,
   TCoursesGetCourseData,
   TCoursesGetCoursesData,
   TCoursesGetMaterialData,
+  TCoursesGetMaterialQuestionsData,
   TCoursesGetMaterialsData,
   TCoursesGetPeopleData,
   TReplace,
@@ -35,6 +39,8 @@ export const coursesQueryKeys = {
     [...coursesQueryKeys.getCourse(courseId), 'materials'] as const,
   getCourseMaterial: (courseId: string, materialId: string) =>
     [...coursesQueryKeys.getCourseMaterials(courseId), materialId] as const,
+  getCourseMaterialQuestions: (courseId: string, materialId: string) =>
+    [...coursesQueryKeys.getCourseMaterial(courseId, materialId), 'questions'] as const,
   getCoursePeople: (courseId: string) =>
     [...coursesQueryKeys.getCourse(courseId), 'people'] as const,
 };
@@ -46,6 +52,8 @@ export type TGetCourseQueryKey = ReturnType<typeof coursesQueryKeys.getCourse>;
 export type TGetMaterialsQueryKey = ReturnType<typeof coursesQueryKeys.getCourseMaterials>;
 
 export type TGetMaterialQueryKey = ReturnType<typeof coursesQueryKeys.getCourseMaterial>;
+
+export type TGetQuestionsQueryKey = ReturnType<typeof coursesQueryKeys.getCourseMaterialQuestions>;
 
 export type TGetPeopleQueryKey = ReturnType<typeof coursesQueryKeys.getCoursePeople>;
 
@@ -109,6 +117,61 @@ export class CoursesService {
       .then(({ data: material }) => plainToInstance(MaterialDto, material));
   };
 
+  static announceCourseMaterial = async ({
+    materialId,
+    courseId,
+  }: {
+    courseId: CourseDto['id'];
+    materialId: MaterialDto['id'];
+  }): Promise<TCoursesAnnounceMaterialData> => {
+    return bffAxios
+      .patch<TCoursesAnnounceMaterialData>(
+        BffPath.AnnounceCourseMaterial.replace('[courseId]', courseId).replace(
+          '[materialId]',
+          materialId,
+        ),
+      )
+      .then(({ data }) => data);
+  };
+
+  static getCourseMaterialQuestions = async (
+    courseId: CourseDto['id'],
+    materialId: MaterialDto['id'],
+    cookie?: string,
+  ): Promise<TCoursesGetMaterialQuestionsData> => {
+    const options = cookie ? { headers: { cookie } } : {};
+
+    return bffAxios
+      .get(
+        BffPath.CourseMaterialQuestions.replace('[courseId]', courseId).replace(
+          '[materialId]',
+          materialId,
+        ),
+        options,
+      )
+      .then(({ data }) => data);
+  };
+
+  static createCourseMaterialQuestion = async ({
+    materialId,
+    courseId,
+    body,
+  }: {
+    courseId: CourseDto['id'];
+    materialId: MaterialDto['id'];
+    body: CoursesCreateMaterialQuestionBody;
+  }): Promise<TCoursesCreateMaterialQuestionData> => {
+    return bffAxios
+      .post<TCoursesCreateMaterialQuestionData>(
+        BffPath.CourseMaterialQuestions.replace('[courseId]', courseId).replace(
+          '[materialId]',
+          materialId,
+        ),
+        body,
+      )
+      .then(({ data }) => data);
+  };
+
   static createCourseMaterial = async ({
     courseId,
     body,
@@ -166,7 +229,6 @@ export function useCourseQuery<TData = TCoursesGetCourseData>(
   options?: UseQueryOptions<TCoursesGetCourseData, HttpError, TData, TGetCourseQueryKey>,
 ) {
   const queryClient = useQueryClient();
-  console.log();
 
   return useQuery(coursesQueryKeys.getCourse(courseId), () => CoursesService.getCourse(courseId), {
     onSettled: async (_, error) => {
@@ -232,6 +294,31 @@ export function useCourseMaterialQuery<TData = TCoursesGetMaterialData>(
   );
 }
 
+export function useAnnounceCourseMaterialMutation(
+  options?: UseMutationOptions<
+    TCoursesAnnounceMaterialData,
+    HttpError,
+    {
+      courseId: CourseDto['id'];
+      materialId: MaterialDto['id'];
+    }
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation(CoursesService.announceCourseMaterial, {
+    ...options,
+    onSettled: async (isAnnounced, error, { courseId }) => {
+      if (error) {
+        toast.error(error.message, { id: 'announceMaterialError' });
+      }
+      if (isAnnounced) {
+        toast.success('Material has been announced!', { id: 'announceMaterialSuccess' });
+        queryClient.refetchQueries(coursesQueryKeys.getCourseMaterials(courseId));
+      }
+    },
+  });
+}
+
 export function useCreateCourseMaterialMutation(
   options?: UseMutationOptions<
     TCoursesCreateMaterialData,
@@ -243,6 +330,39 @@ export function useCreateCourseMaterialMutation(
   >,
 ) {
   return useMutation(CoursesService.createCourseMaterial, options);
+}
+
+export function useCourseMaterialQuestionsQuery<TData = TCoursesGetMaterialQuestionsData>(
+  courseId: CourseDto['id'],
+  materialId: MaterialDto['id'],
+  options?: UseQueryOptions<TCoursesGetMaterialQuestionsData, Error, TData, TGetQuestionsQueryKey>,
+) {
+  return useQuery(
+    coursesQueryKeys.getCourseMaterialQuestions(courseId, materialId),
+    () => CoursesService.getCourseMaterialQuestions(courseId, materialId),
+    {
+      onSettled: async (_, error) => {
+        if (error) {
+          return toast.error(error.message, { id: 'questionsError' });
+        }
+      },
+      ...options,
+    },
+  );
+}
+
+export function useCreateMaterialQuestionMutation(
+  options?: UseMutationOptions<
+    TCoursesCreateMaterialQuestionData,
+    HttpError,
+    {
+      courseId: CourseDto['id'];
+      materialId: MaterialDto['id'];
+      body: CoursesCreateMaterialQuestionBody;
+    }
+  >,
+) {
+  return useMutation(CoursesService.createCourseMaterialQuestion, options);
 }
 
 export function useCoursePeopleQuery<TData = TCoursesGetPeopleData>(

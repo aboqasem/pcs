@@ -24,7 +24,8 @@ export default function CoursePeople() {
 
   const [isAddStudentsFormShown, setIsAddStudentsFormShown] = useState(false);
 
-  const { data: profile } = useProfileQuery<UserRole.Instructor>();
+  const { data: profile } = useProfileQuery<UserRole.Instructor | UserRole.Student>();
+  const isInstructor = profile?.role === UserRole.Instructor;
 
   const courseQuery = useCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);
@@ -82,16 +83,18 @@ export default function CoursePeople() {
                             </h1>
                           </div>
 
-                          <div className="flex justify-end mt-4 sm:mt-0">
-                            <button
-                              type="button"
-                              disabled={!course}
-                              onClick={openAddStudentsForm}
-                              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 disabled:opacity-50"
-                            >
-                              Add student
-                            </button>
-                          </div>
+                          {isInstructor && (
+                            <div className="flex justify-end mt-4 sm:mt-0">
+                              <button
+                                type="button"
+                                disabled={!course}
+                                onClick={openAddStudentsForm}
+                                className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 disabled:opacity-50"
+                              >
+                                Add student
+                              </button>
+                            </div>
+                          )}
                         </div>
 
                         {/* People list */}
@@ -158,7 +161,9 @@ export default function CoursePeople() {
         </div>
       </SidebarLayout>
 
-      <AddCourseStudentForm isShown={isAddStudentsFormShown} close={closeAddStudentsForm} />
+      {isInstructor && (
+        <AddCourseStudentForm isShown={isAddStudentsFormShown} close={closeAddStudentsForm} />
+      )}
     </>
   );
 }
@@ -171,7 +176,7 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
       { destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated },
       {
         destination: PagePath.Dashboard,
-        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor]),
+        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor, UserRole.Student]),
       },
     ],
     ctx,

@@ -21,7 +21,8 @@ import { UrlObject } from 'url';
 export default function Courses() {
   const [isCreateCourseFormShown, setIsCreateCourseFormShown] = useState(false);
 
-  const { data: profile } = useProfileQuery();
+  const { data: profile } = useProfileQuery<UserRole.Instructor | UserRole.Student>();
+  const isInstructor = profile?.role === UserRole.Instructor;
 
   const coursesQuery = useCoursesQuery();
   const courses = useMemo(() => coursesQuery.data ?? [], [coursesQuery.data]);
@@ -46,7 +47,7 @@ export default function Courses() {
   return (
     <>
       <Head>
-        <title>Manage courses</title>
+        <title>{isInstructor ? 'Manage ' : ''}Courses</title>
       </Head>
 
       <SidebarLayout navigationItems={globalNavigationItems[profile.role]}>
@@ -54,7 +55,7 @@ export default function Courses() {
           <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
             {courses.length ? (
               <div className="relative z-0 flex flex-1 overflow-hidden">
-                <aside className="shrink-0 w-full border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
+                <aside className="w-full border-r border-gray-200 shrink-0 xl:order-first xl:flex xl:flex-col">
                   {/* Page title & actions */}
                   <div className="px-6 py-4 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
                     <div className="flex-1 min-w-0">
@@ -63,15 +64,17 @@ export default function Courses() {
                       </h1>
                     </div>
 
-                    <div className="flex justify-end mt-4 sm:mt-0">
-                      <button
-                        type="button"
-                        onClick={openCreateCourseForm}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3"
-                      >
-                        Create
-                      </button>
-                    </div>
+                    {isInstructor && (
+                      <div className="flex justify-end mt-4 sm:mt-0">
+                        <button
+                          type="button"
+                          onClick={openCreateCourseForm}
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm order-0 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3"
+                        >
+                          Create
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Courses list */}
@@ -116,18 +119,24 @@ export default function Courses() {
                       aria-hidden="true"
                     />
                     <h3 className="mt-2 text-sm font-medium text-gray-900">No courses</h3>
-                    <p className="mt-1 text-sm text-gray-500">Start by creating new courses.</p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {isInstructor
+                        ? 'Start by creating new courses.'
+                        : 'You are not assigned to any courses.'}
+                    </p>
 
-                    <div className="mt-6">
-                      <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        onClick={openCreateCourseForm}
-                      >
-                        <HiPlus className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-                        Create Course
-                      </button>
-                    </div>
+                    {isInstructor && (
+                      <div className="mt-6">
+                        <button
+                          type="button"
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          onClick={openCreateCourseForm}
+                        >
+                          <HiPlus className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
+                          Create Course
+                        </button>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
@@ -136,7 +145,9 @@ export default function Courses() {
         </div>
       </SidebarLayout>
 
-      <CreateCourseForm isShown={isCreateCourseFormShown} close={closeCreateCourseForm} />
+      {isInstructor && (
+        <CreateCourseForm isShown={isCreateCourseFormShown} close={closeCreateCourseForm} />
+      )}
     </>
   );
 }
@@ -149,7 +160,7 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
       { destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated },
       {
         destination: PagePath.Dashboard,
-        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor]),
+        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor, UserRole.Student]),
       },
     ],
     ctx,

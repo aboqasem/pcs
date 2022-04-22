@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { CourseDto } from '../courses/courses.classes';
 import { IsCourseId } from '../courses/courses.decorators';
+import { QuestionDto } from '../questions/questions.classes';
 import { UserDto } from '../users/users.classes';
 import { IsUserId } from '../users/users.decorators';
 import {
@@ -61,6 +62,12 @@ export class Material {
   @Type(() => UserDto)
   @IsOptional()
   creatorInstructor?: UserDto;
+
+  /* OTHER RELATIONS */
+
+  @Type(() => QuestionDto)
+  @IsOptional()
+  questions?: QuestionDto[] | null;
 }
 
 export class MaterialDto extends PickType(Material, [
@@ -77,6 +84,7 @@ export class MaterialDto extends PickType(Material, [
   'createdForCourse',
   'creatorInstructorId',
   'creatorInstructor',
+  'questions',
 ]) {}
 
 export class CreateMaterialDto extends PickType(Material, [

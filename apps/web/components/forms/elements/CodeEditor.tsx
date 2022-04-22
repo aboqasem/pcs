@@ -1,7 +1,7 @@
 import { FormField } from '@/components/forms/elements/FormField';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import Editor, { EditorProps, Monaco } from '@monaco-editor/react';
-import { TReplace } from '@pcs/shared-data-access';
+import { supportedRuntimes, TReplace } from '@pcs/shared-data-access';
 import type { editor, IDisposable, languages } from 'monaco-editor';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import {
@@ -12,18 +12,6 @@ import {
   UnpackNestedValue,
   useController,
 } from 'react-hook-form';
-
-export const supportedRuntimes = Object.freeze([
-  'C++ (GCC)' as const,
-  'C (GCC)' as const,
-  'Java' as const,
-  'Python' as const,
-  'JavaScript (Node.js)' as const,
-  'TypeScript (Node.js)' as const,
-  'JavaScript (Deno)' as const,
-  'TypeScript (Deno)' as const,
-  'Go' as const,
-]);
 
 export type TCodeEditorProps<TFieldValues extends FieldValues = FieldValues> = TReplace<
   EditorProps,

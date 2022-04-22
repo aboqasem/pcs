@@ -117,6 +117,10 @@ class Configurations {
 
   @IsUrl({ require_tld: isProduction })
   readonly APP_COURSE_URL!: string;
+
+  @IsUrl({ require_tld: false })
+  @IsOptional()
+  readonly PISTON_SERVER?: string;
 }
 
 export const config = ((): Configurations => {

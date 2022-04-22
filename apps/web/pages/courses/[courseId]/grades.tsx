@@ -21,7 +21,7 @@ export default function CourseGrades() {
 
   const { courseId } = useQueryParams<{ courseId: string }>();
 
-  const { data: profile } = useProfileQuery<UserRole.Instructor>();
+  const { data: profile } = useProfileQuery<UserRole.Instructor | UserRole.Student>();
 
   const courseQuery = useCourseQuery(courseId, { onError: () => push(PagePath.Courses) });
   const course = useMemo(() => courseQuery.data, [courseQuery.data]);
@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps<TPropsWithDehydratedState> =
       { destination: PagePath.SignIn, predicate: redirectionPredicates.isNotAuthenticated },
       {
         destination: PagePath.Dashboard,
-        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor]),
+        predicate: redirectionPredicates.isNotInRoles([UserRole.Instructor, UserRole.Student]),
       },
     ],
     ctx,

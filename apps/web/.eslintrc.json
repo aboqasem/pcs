@@ -12,10 +12,10 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@next/next/no-img-element": "off",
-        "react-memo/require-memo": "warn",
-        "react-memo/require-usememo": "warn",
-        "react-memo/require-usememo-children": "off"
+        "@next/next/no-img-element": "off"
+        // "react-memo/require-memo": "warn",
+        // "react-memo/require-usememo": "warn",
+        // "react-memo/require-usememo-children": "off"
       }
     },
     {

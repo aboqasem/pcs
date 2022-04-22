@@ -26,5 +26,12 @@ export const dashboardActions = {
       iconColors: 'bg-amber-50 text-amber-700',
     },
   ],
-  [UserRole.Student]: [],
+  [UserRole.Student]: [
+    {
+      title: 'Courses',
+      pathname: PagePath.Courses,
+      icon: FaChalkboardTeacher,
+      iconColors: 'bg-amber-50 text-amber-700',
+    },
+  ],
 };

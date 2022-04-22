@@ -4,6 +4,7 @@ import 'easymde/dist/easymde.min.css';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { memo, useCallback, useMemo } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import {
   Control,
   FieldValues,
@@ -13,6 +14,7 @@ import {
   useController,
 } from 'react-hook-form';
 import { HiExclamationCircle } from 'react-icons/hi';
+import ReactMarkdown from 'react-markdown';
 import { SimpleMDEReactProps } from 'react-simplemde-editor';
 import { FormField } from './FormField';
 
@@ -100,6 +102,24 @@ export const MarkdownEditor = memo(function <TFieldValues extends FieldValues = 
       maxHeight: '300px',
       ...props.options,
       autoDownloadFontAwesome: false,
+      uploadImage: true,
+      imageUploadFunction: (file, onSuccess, onError) => {
+        if (!file.type.startsWith('image/')) {
+          return onError('Drop only images');
+        }
+        // FIXME: temporary local upload
+        const URL = window.URL || window.webkitURL;
+        const blob = new Blob([file], { type: file.type });
+        const url = URL.createObjectURL(blob);
+        onSuccess(`${url}#${file.name}`);
+      },
+      previewRender: (markdown) => {
+        return ReactDOMServer.renderToStaticMarkup(
+          <article className="block px-4 py-3 text-sm prose rounded-md prose-neutral bg-gray-50">
+            <ReactMarkdown>{markdown}</ReactMarkdown>
+          </article>,
+        );
+      },
     }),
     [props.options],
   );
