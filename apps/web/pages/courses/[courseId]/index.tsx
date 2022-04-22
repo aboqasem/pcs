@@ -1,7 +1,8 @@
-import { CreateMaterialForm, Link } from '@/components';
 import { Dropdown, IDropdownItem } from '@/components/Dropdown';
+import { CreateMaterialForm } from '@/components/forms/CreateMaterialForm';
 import { SidebarLayout } from '@/components/layouts/SidebarLayout';
 import { TabsLayout } from '@/components/layouts/TabsLayout';
+import { Link } from '@/components/Link';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { redirectIf, redirectionPredicates } from '@/lib/api/helpers/redirect-if.helper';
 import { DefaultQueryClient } from '@/lib/api/query-client.config';
