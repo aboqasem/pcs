@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import sgMail, { MailDataRequired } from '@sendgrid/mail';
 import { config } from 'src/config/config';
-import { EmailType, TEmail } from './email.types';
+import { EmailTemplate, TEmail } from './email.types';
 
 @Injectable()
 export class EmailService {
@@ -11,7 +11,7 @@ export class EmailService {
     sgMail.setApiKey(config.SENDGRID_API_KEY);
   }
 
-  async send<T extends EmailType = any>(...emails: TEmail<T>[]): Promise<boolean> {
+  async send<T extends EmailTemplate = any>(...emails: TEmail<T>[]): Promise<boolean> {
     return sgMail
       .send(emails.map(this._constructEmail))
       .then(() => {
@@ -24,7 +24,14 @@ export class EmailService {
       });
   }
 
-  private _constructEmail({ to, type, data, subject, text, html }: TEmail<any>): MailDataRequired {
+  private _constructEmail({
+    to,
+    template,
+    data,
+    subject,
+    text,
+    html,
+  }: TEmail<any>): MailDataRequired {
     return {
       from: config.SENDGRID_FROM,
       to,
@@ -33,7 +40,7 @@ export class EmailService {
       text: text!,
       html,
       mailSettings: { sandboxMode: { enable: config.SENDGRID_SANDBOX } },
-      templateId: type,
+      templateId: template,
       dynamicTemplateData: data,
       hideWarnings: true,
     };

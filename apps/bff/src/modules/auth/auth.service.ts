@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { config } from 'src/config/config';
 import { EmailService } from 'src/modules/email/email.service';
-import { EmailType } from 'src/modules/email/email.types';
+import { EmailTemplate } from 'src/modules/email/email.types';
 import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AuthService {
 
     this.emailService.send({
       to: email,
-      type: EmailType.PasswordRetrieval,
+      template: EmailTemplate.PasswordRetrieval,
       data: {
         fullName: user.fullName,
         password: user.password!,

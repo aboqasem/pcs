@@ -10,7 +10,7 @@ import { UserEntity } from 'src/db/entities/user.entity';
 import { StudentEnrollmentsRepository } from 'src/db/repositories/student-enrollment.repository';
 import { CoursesService } from 'src/modules/courses/courses.service';
 import { EmailService } from 'src/modules/email/email.service';
-import { EmailType } from 'src/modules/email/email.types';
+import { EmailTemplate } from 'src/modules/email/email.types';
 import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class StudentEnrollmentsService {
     } = await this.studentsRepository.insert({ ...dto, courseId });
 
     this.emailService.send({
-      type: EmailType.CourseEnrollment,
+      template: EmailTemplate.CourseEnrollment,
       to: student.email,
       data: {
         fullName: student.fullName,

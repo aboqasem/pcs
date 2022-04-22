@@ -15,7 +15,7 @@ import { plainToInstance } from 'class-transformer';
 import { config } from 'src/config/config';
 import { UserEntity } from 'src/db/entities/user.entity';
 import { UsersRepository } from 'src/db/repositories/user.repository';
-import { EmailType } from 'src/modules/email/email.types';
+import { EmailTemplate } from 'src/modules/email/email.types';
 import { BadPayloadException } from 'src/shared/exceptions/bad-payload.exception';
 import { generateRandomPassword } from 'src/shared/shared.utils';
 import { EmailService } from '../email/email.service';
@@ -157,7 +157,7 @@ export class UsersService {
 
     const emails = users.map((user) => ({
       to: user.email,
-      type: EmailType.NewUser,
+      template: EmailTemplate.NewUser,
       data: {
         fullName: user.fullName,
         username: user.username,

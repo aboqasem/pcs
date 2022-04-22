@@ -1,40 +1,40 @@
-export enum EmailType {
+export enum EmailTemplate {
   NewUser = 'd-2d2027af9f7549ba9d1cb66def9343b9',
   PasswordRetrieval = 'd-88290cd177ca49f79b08c71e886c2240',
   CourseEnrollment = 'd-aa3c84608d814eb2a51d446c0ff3ba0e',
 }
 
-export type TEmail<T extends EmailType> = {
+export type TEmail<T extends EmailTemplate> = {
   to: string;
 } & (
   | {
-      type: T;
+      template: T;
       data: TEmailData[T];
       html?: never;
       text?: never;
       subject?: never;
     }
   | ({
-      type?: never;
+      template?: never;
       data?: never;
       subject: string;
     } & ({ html: string; text?: never } | { html?: never; text: string }))
 );
 
 type TEmailData = {
-  [EmailType.NewUser]: {
+  [EmailTemplate.NewUser]: {
     fullName: string;
     username: string;
     password: string;
     role: string;
     signInUrl: string;
   };
-  [EmailType.PasswordRetrieval]: {
+  [EmailTemplate.PasswordRetrieval]: {
     fullName: string;
     password: string;
     signInUrl: string;
   };
-  [EmailType.CourseEnrollment]: {
+  [EmailTemplate.CourseEnrollment]: {
     fullName: string;
     courseTitle: string;
     courseUrl: string;
