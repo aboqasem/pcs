@@ -1,4 +1,4 @@
-import { classToClass, Transform } from 'class-transformer';
+import { instanceToInstance, Transform } from 'class-transformer';
 import { IsString, MinLength, validate } from 'class-validator';
 import { IntersectionType } from '../lib';
 import { getValidationMetadataByTarget } from './type-helpers.test-utils';
@@ -55,13 +55,13 @@ describe('IntersectionType', () => {
         const validationErrors = await validate(updateDto);
 
         expect(validationErrors.length).toEqual(3);
-        expect(validationErrors[0].constraints).toEqual({
+        expect(validationErrors[0]!.constraints).toEqual({
           minLength: 'password must be longer than or equal to 10 characters',
         });
-        expect(validationErrors[1].constraints).toEqual({
+        expect(validationErrors[1]!.constraints).toEqual({
           minLength: 'lastName must be longer than or equal to 5 characters',
         });
-        expect(validationErrors[2].constraints).toEqual({
+        expect(validationErrors[2]!.constraints).toEqual({
           minLength: 'patronymic must be longer than or equal to 5 characters',
         });
       });
@@ -92,7 +92,7 @@ describe('IntersectionType', () => {
       updateDto.lastName = lastName;
       updateDto.patronymic = patronymic;
 
-      const transformedDto = classToClass(updateDto);
+      const transformedDto = instanceToInstance(updateDto);
       expect(transformedDto.lastName).toEqual(lastName + '_transformed');
       expect(transformedDto.password).toEqual(password + '_transformed');
       expect(transformedDto.patronymic).toEqual(patronymic + '_transformed');
